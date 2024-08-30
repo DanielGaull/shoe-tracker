@@ -1,6 +1,0 @@
-@ShoeTracker.Server_HostAddress = http://localhost:5226
-
-GET {{ShoeTracker.Server_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
