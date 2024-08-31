@@ -20,7 +20,10 @@ namespace ShoeTracker.Server.Controllers
                 new GradientSection(new Color(18, 18, 18), 3),
                 new GradientSection(new Color(86, 39, 122), 3),
                 new GradientSection(new Color(130, 77, 12), 3),
-            }
+            },
+            StartDate = DateTime.Now,
+            WarnAtMileage = 150,
+            Description = "First pair of Vaporflies",
         };
 
         [HttpGet]

@@ -13,12 +13,16 @@
 
         public string ShoeName { get; set; } = string.Empty;
 
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = null;
 
         public double Miles { get; set; }
 
         public TextColor TextColor { get; set; }
 
-        public List<GradientSection> Gradient { get; set; }
+        public List<GradientSection> Gradient { get; set; } = new List<GradientSection>();
+
+        public DateTimeOffset StartDate { get; set; }
+
+        public double WarnAtMileage { get; set; }
     }
 }
