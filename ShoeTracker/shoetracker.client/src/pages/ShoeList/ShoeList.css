@@ -1,0 +1,28 @@
+.shoe-entry-container {
+    background-color: red;
+    border-radius: 10px;
+    max-width: 700px;
+    padding: 10px 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.shoe-list {
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.subtitle {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.description {
+    font-style: italic;
+}
