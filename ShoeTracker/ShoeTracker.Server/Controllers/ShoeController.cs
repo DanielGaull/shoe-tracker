@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShoeTracker.Server.DataAccess;
+using ShoeTracker.Server.DataAccess.Models;
 using ShoeTracker.Server.Models;
 
 namespace ShoeTracker.Server.Controllers
@@ -26,13 +28,60 @@ namespace ShoeTracker.Server.Controllers
             Description = "First pair of Vaporflies",
         };
 
-        [HttpGet]
-        public IActionResult GetShoes()
+        private readonly string _testUserId = "ca60773c-3088-4e81-8631-a7d4889eed1d";
+
+        private readonly IShoeDatabase _database;
+
+        public ShoeController(IShoeDatabase database)
         {
-            return Ok(new List<GetShoeDto> 
+            _database = database;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetShoes()
+        {
+            // TODO: Pull activities to calculate mileage from a shoe doc
+            var shoeDocs = await _database.GetShoesForUserAsync(_testUserId);
+            var shoes = shoeDocs.Select(doc => new GetShoeDto
             {
-                _testShoe
+                Id = Guid.Parse(doc.Id),
+                Brand = doc.Brand,
+                Model = doc.Model,
+                ModelVersion = doc.ModelVersion,
+                ShoeName = doc.ShoeName,
+                Description = doc.Description,
+                TextColor = doc.TextColor == "Light" ? TextColor.Light : TextColor.Dark,
+                Gradient = doc.Gradient,
+                StartDate = doc.StartDate,
+                WarnAtMileage = doc.WarnAtMileage,
+                Miles = doc.StartingMileage,
             });
+
+            return Ok(shoes);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddShoeAsync([FromBody] CreateShoeDto createShoeDto)
+        {
+            ShoeDocument shoe = new ShoeDocument
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = _testUserId,
+                Brand = createShoeDto.Brand,
+                Model = createShoeDto.Model,
+                ModelVersion = createShoeDto.ModelVersion,
+                ShoeName = createShoeDto.ShoeName,
+                Description = createShoeDto.Description,
+                TextColor = createShoeDto.TextColor.ToString(),
+                Gradient = createShoeDto.Gradient,
+                StartDate = createShoeDto.StartDate,
+                WarnAtMileage = createShoeDto.WarnAtMileage,
+                StartingMileage = createShoeDto.StartingMiles,
+            };
+
+            await _database.AddShoeAsync(shoe);
+
+            return Ok();
         }
     }
 }
