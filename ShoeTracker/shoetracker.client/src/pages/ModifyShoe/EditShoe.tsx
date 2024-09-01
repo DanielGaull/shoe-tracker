@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { TextColor } from '../../types/shoes';
+import axios from 'axios';
+import GradientEditor from './GradientEditor';
+import { EditShoeDto, GradientSection, TextColor } from '../../types/shoes';
 
 import './EditShoe.css';
 
@@ -19,6 +21,38 @@ const EditShoe = ({ isNew }: EditShoeProps) => {
     const [warnAtMileage, setWarnAtMileage] = useState('0');
     const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
     const [textColor, setTextColor] = useState<TextColor>('Light');
+    const [gradient, setGradient] = useState<GradientSection[]>([{
+        color: {
+            r: 255,
+            g: 255,
+            b: 255,
+        },
+        points: 5,
+    }]);
+
+    const [err, setErr] = useState('');
+
+    const submit = async () => {
+        const newShoe: EditShoeDto = {
+            brand,
+            model,
+            modelVersion: parseInt(modelVersion),
+            shoeName: name,
+            description: desc.length > 0 ? desc : '',
+            startingMileage: parseInt(startingMiles),
+            warnAtMileage: parseInt(warnAtMileage),
+            startDate,
+            textColor,
+            gradient,
+        };
+
+        const response = await axios.post('/api/shoes', newShoe);
+        if (response.status > 300) {
+            setErr(response.data);
+        } else {
+            setErr('');
+        }
+    };
 
     return (
         <div className="edit-shoe">
@@ -93,14 +127,21 @@ const EditShoe = ({ isNew }: EditShoeProps) => {
                     
                     <div className="label-field">
                         <label>Display Text Color:</label>
-                        <select onChange={(e) => setTextColor(e.target.value as TextColor)}>
-                            {textColors.map(c => <option value={c}>{c}</option>)}
+                        <select onChange={(e) => setTextColor(e.target.value as TextColor)} value={textColor}>
+                            {textColors.map(c => <option value={c} key={c}>{c}</option>)}
                         </select>
+                    </div>
+
+                    <div className="label-field">
+                        <label>Display Gradient:</label>
+                        <GradientEditor value={gradient} onChange={setGradient} />
                     </div>
                 </div>
             </div>
 
-            <button className="mt fc">Submit</button>
+            {err.length > 0 && <div className="error-text">{err}</div>}
+
+            <button className="mt fc" onClick={submit}>Submit</button>
         </div>
     );
 };

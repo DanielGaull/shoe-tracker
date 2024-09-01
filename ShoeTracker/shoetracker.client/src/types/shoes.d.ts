@@ -23,4 +23,18 @@ export interface Shoe {
     gradient: GradientSection[];
     startDate: string;
     warnAtMileage: number;
+    startingMileage: number;
+}
+
+export interface EditShoeDto {
+    brand: string;
+    model: string;
+    modelVersion: number;
+    shoeName: string;
+    description: string?;
+    textColor: TextColor;
+    gradient: GradientSection[];
+    startDate: string;
+    warnAtMileage: number;
+    startingMileage: number;
 }

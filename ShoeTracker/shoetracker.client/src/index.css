@@ -39,13 +39,29 @@ button {
     font-weight: 600;
     vertical-align: center;
 
-    &:hover {
+    &:hover:not([disabled]) {
         background-color: #5b5b5b;
+    }
+
+    &[disabled] {
+        cursor: default;
+        background-color: #555;
+        color: #999;
+    }
+
+    &.small {
+        font-size: 15px;
+        font-weight: 400;
+        max-width: fit-content;
     }
 }
 
 .mt {
     margin-top: 20px;
+}
+
+.mt-s {
+    margin-top: 10px;
 }
 
 .fc {

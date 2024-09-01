@@ -63,6 +63,7 @@ namespace ShoeTracker.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> AddShoeAsync([FromBody] CreateShoeDto createShoeDto)
         {
+            // TODO: Maximum number of gradient sections
             if (createShoeDto.ModelVersion <= 0)
             {
                 return BadRequest("Shoe model version must be greater than 0");
