@@ -80,6 +80,17 @@ namespace ShoeTracker.Server.Controllers
                 return BadRequest("Each gradient point value must be greater than 0");
             }
 
+            var needValueFields = new List<string> 
+            {
+                createShoeDto.Brand,
+                createShoeDto.Model,
+                createShoeDto.ShoeName,
+            };
+            if (needValueFields.Any(f => f.Length <= 0))
+            {
+                return BadRequest("Brand, model, and name must all have values");
+            }
+
             ShoeDocument shoe = new ShoeDocument
             {
                 Id = Guid.NewGuid().ToString(),

@@ -4,9 +4,10 @@ import { calculateBackground } from "../../util/util";
 
 interface ShoeEntryProps {
     shoe: Shoe;
+    displayOnly?: boolean;
 }
 
-const ShoeEntry = ({ shoe }: ShoeEntryProps) => {
+const ShoeEntry = ({ shoe, displayOnly }: ShoeEntryProps) => {
     const backgroundValue = useMemo(() => {
         return calculateBackground(shoe.gradient);
     }, [shoe.gradient]);

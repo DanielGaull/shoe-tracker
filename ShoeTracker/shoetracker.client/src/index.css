@@ -64,6 +64,14 @@ button {
     margin-top: 10px;
 }
 
+.mr {
+    margin-right: 20px;
+}
+
+.mr-s {
+    margin-right: 10px;
+}
+
 .fc {
     align-self: center;
 }
@@ -80,4 +88,9 @@ select {
     &:focus {
         outline: none;
     }
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
 }

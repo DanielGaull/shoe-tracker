@@ -1,11 +1,18 @@
-import { GradientSection } from "../types/shoes";
+import { GradientSection, Color } from "../types/shoes";
+
+const colorToRgbaString = (c: Color): string => {
+    return `rgba(${c.r},${c.g},${c.b},1)`;
+}
 
 const gradientToCssEntry = (gradientSection: GradientSection, totalPoints: number, prevTotal: number) => {
-    return `rgba(${gradientSection.color.r},${gradientSection.color.g},${gradientSection.color.b},1) ` + 
-        `${Math.round((prevTotal + gradientSection.points) / totalPoints * 100)}%`;
+    return `${colorToRgbaString(gradientSection.color)} ${Math.round((prevTotal + gradientSection.points) / totalPoints * 100)}%`;
 };
 
 const calculateBackground = (gradient: GradientSection[]): string => {
+    if (gradient.length === 1) {
+        return colorToRgbaString(gradient[0].color);
+    }
+
     const totalPoints = gradient.reduce((prev, cur) => prev + cur.points, 0);
     const gradStrs: string[] = [];
     let currentPoints = 0;

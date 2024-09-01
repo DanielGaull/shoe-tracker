@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { useNavigate } from 'react-router';
 import GradientEditor from './GradientEditor';
 import { EditShoeDto, GradientSection, TextColor } from '../../types/shoes';
+import ShoeEntry from '../ShoeList/ShoeEntry';
 
 import './EditShoe.css';
 
@@ -32,6 +34,8 @@ const EditShoe = ({ isNew }: EditShoeProps) => {
 
     const [err, setErr] = useState('');
 
+    const navigate = useNavigate();
+
     const submit = async () => {
         const newShoe: EditShoeDto = {
             brand,
@@ -46,11 +50,13 @@ const EditShoe = ({ isNew }: EditShoeProps) => {
             gradient,
         };
 
-        const response = await axios.post('/api/shoes', newShoe);
-        if (response.status > 300) {
-            setErr(response.data);
-        } else {
+        try {
+            await axios.post('/api/shoes', newShoe);
             setErr('');
+            navigate('/');
+        } catch (err) {
+            const axiosError = err as AxiosError;
+            setErr(axiosError.response?.data as string ?? 'Unknown error occurred');
         }
     };
 
@@ -98,7 +104,6 @@ const EditShoe = ({ isNew }: EditShoeProps) => {
                             value={startDate}
                             onChange={(e) => {
                                 setStartDate(e.target.value);
-                                console.log(e.target.value);
                             }}
                         />
                     </div>
@@ -139,9 +144,32 @@ const EditShoe = ({ isNew }: EditShoeProps) => {
                 </div>
             </div>
 
-            {err.length > 0 && <div className="error-text">{err}</div>}
+            <div className="bottom-section">
+                <label>Preview:</label>
+                <ShoeEntry 
+                    shoe={{
+                        id: '',
+                        brand: brand || '[Missing Brand]',
+                        model: model || '[Missing Model]',
+                        modelVersion: parseInt(modelVersion),
+                        shoeName: name,
+                        description: desc.length > 0 ? desc : '',
+                        startingMileage: parseInt(startingMiles),
+                        warnAtMileage: parseInt(warnAtMileage),
+                        startDate,
+                        textColor,
+                        gradient,
+                        miles: 100,
+                    }}
+                />
+                
+                {err.length > 0 && <div className="error-text">{err}</div>}
+            </div>
 
-            <button className="mt fc" onClick={submit}>Submit</button>
+            <div className="button-row">
+                <button className="mt mr-s fc" onClick={() => navigate('/')}>Cancel</button>
+                <button className="mt fc" onClick={submit}>Submit</button>
+            </div>
         </div>
     );
 };

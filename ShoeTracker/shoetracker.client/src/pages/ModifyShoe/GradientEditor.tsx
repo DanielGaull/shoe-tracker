@@ -110,7 +110,6 @@ const GradientEditor = ({ value, onChange }: GradientEditorProps) => {
                     const newSections = [...value];
                     newSections.push(defaultSection);
                     onChange(newSections);
-                    console.log(newSections);
                 }}
                 disabled={value.length >= MAX_SECTIONS}
             >
