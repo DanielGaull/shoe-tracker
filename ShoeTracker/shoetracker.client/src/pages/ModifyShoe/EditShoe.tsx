@@ -22,7 +22,7 @@ const EditShoe = ({ isNew }: EditShoeProps) => {
     const [startingMiles, setStartingMiles] = useState('0');
     const [warnAtMileage, setWarnAtMileage] = useState('0');
     const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
-    const [textColor, setTextColor] = useState<TextColor>('Light');
+    const [textColor, setTextColor] = useState<TextColor>('Dark');
     const [gradient, setGradient] = useState<GradientSection[]>([{
         color: {
             r: 255,
@@ -162,7 +162,7 @@ const EditShoe = ({ isNew }: EditShoeProps) => {
                         miles: 100,
                     }}
                 />
-                
+
                 {err.length > 0 && <div className="error-text">{err}</div>}
             </div>
 
