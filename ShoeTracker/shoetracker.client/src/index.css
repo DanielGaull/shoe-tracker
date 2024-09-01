@@ -34,8 +34,20 @@ button {
     border-radius: 10px;
     cursor: pointer;
     transition: linear 0.2s;
+    padding: 10px 30px;
+    font-size: 20px;
+    font-weight: 600;
+    vertical-align: center;
 
     &:hover {
         background-color: #5b5b5b;
     }
+}
+
+.mt {
+    margin-top: 20px;
+}
+
+.fc {
+    align-self: center;
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ShoeEntry from './ShoeEntry';
+import { Shoe } from '../../types/shoes';
 
 import './ShoeList.css';
 

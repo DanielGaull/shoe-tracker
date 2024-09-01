@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from "react";
+import { GradientSection, Shoe } from "../../types/shoes";
 
 interface ShoeEntryProps {
     shoe: Shoe;

@@ -1,17 +1,17 @@
-interface Color {
+export interface Color {
     r: number;
     g: number;
     b: number;
 }
 
-interface GradientSection {
+export interface GradientSection {
     color: Color;
     points: number;
 }
 
-type TextColor = "Light" | "Dark";
+export type TextColor = "Light" | "Dark";
 
-interface Shoe {
+export interface Shoe {
     id: string;
     brand: string;
     model: string;
