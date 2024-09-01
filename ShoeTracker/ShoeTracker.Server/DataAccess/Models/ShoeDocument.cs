@@ -27,7 +27,7 @@ namespace ShoeTracker.Server.DataAccess.Models
         [FirestoreProperty("description")]
         public string? Description { get; set; } = null;
 
-        [FirestoreProperty("textCoor")]
+        [FirestoreProperty("textColor")]
         public string TextColor { get; set; } = string.Empty;
 
         [FirestoreProperty("gradient")]
