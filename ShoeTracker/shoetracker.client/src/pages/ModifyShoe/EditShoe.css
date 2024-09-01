@@ -11,10 +11,14 @@ input {
     &:focus {
         outline: solid 3px #255e7d;
     }
-}
 
-.thin-input {
-    max-width: 70px;
+    &[type=date] {
+        width: 200px;
+    }
+
+    &.thin-input {
+        width: 70px;
+    }
 }
 
 textarea {
@@ -41,12 +45,18 @@ label {
     cursor: text;
 }
 
-.form {
+.edit-shoe {
     padding: 25px;
     display: flex;
     flex-direction: column;
     width: max-content;
     margin: auto;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
 }
 
 .label-field {
