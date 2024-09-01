@@ -68,6 +68,11 @@ namespace ShoeTracker.Server.Controllers
                 return BadRequest("Shoe model version must be greater than 0");
             }
 
+            if (createShoeDto.Gradient.Count <= 0)
+            {
+                return BadRequest("Gradient must have at least one entry");
+            }
+
             var anyInvalidGradientPoints = createShoeDto.Gradient.Any(g => g.Points <= 0);
             if (anyInvalidGradientPoints)
             {
