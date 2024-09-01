@@ -17,9 +17,15 @@ const ShoeList = () => {
     }, []);
 
     return (
-        <div className="shoe-list">
-            {shoes.map(shoe => <ShoeEntry shoe={shoe} />)}
-        </div>
+        <>
+            <h1>Shoes</h1>
+            {shoes.length > 0 && (
+                <div className="shoe-list">
+                    {shoes.map(shoe => <ShoeEntry shoe={shoe} />)}
+                </div>
+            )}
+            {shoes.length <= 0 && <h3>No shoes to display</h3>}
+        </>
     );
 };
 
