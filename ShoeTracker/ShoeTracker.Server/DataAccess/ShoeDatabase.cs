@@ -13,20 +13,20 @@ namespace ShoeTracker.Server.DataAccess
         {
             _database = new FirestoreDbBuilder
             {
-                ProjectId = config["ProjectId"],
+                ProjectId = config["Firebase:ProjectId"],
             }.Build();
         }
 
         public async Task<IEnumerable<ShoeDocument>> GetShoesForUserAsync(string userId)
         {
-            var query = ShoeCollectionReference().WhereEqualTo("UserId", userId);
+            var query = ShoeCollectionReference().WhereEqualTo("userId", userId);
             var querySnapshot = await query.GetSnapshotAsync();
             return querySnapshot.Documents.Select(doc => doc.ConvertTo<ShoeDocument>());
         }
 
         public async Task AddShoeAsync(ShoeDocument doc)
         {
-            await ShoeCollectionReference().AddAsync(doc);
+            await ShoeCollectionReference().Document(doc.Id).SetAsync(doc);
         }
 
         private CollectionReference ShoeCollectionReference() => _database.Collection("Shoes");
