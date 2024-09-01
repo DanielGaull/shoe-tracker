@@ -30,3 +30,8 @@
 .description {
     font-style: italic;
 }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}

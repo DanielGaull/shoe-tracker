@@ -18,7 +18,10 @@ const ShoeList = () => {
 
     return (
         <>
-            <h1>Shoes</h1>
+            <div className="header">
+                <h1>Shoes</h1>
+                <button>+ Add New Shoe</button>
+            </div>
             {shoes.length > 0 && (
                 <div className="shoe-list">
                     {shoes.map(shoe => <ShoeEntry shoe={shoe} />)}
