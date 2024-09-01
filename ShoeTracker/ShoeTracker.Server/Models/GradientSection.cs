@@ -6,12 +6,12 @@ namespace ShoeTracker.Server.Models
     public struct GradientSection
     {
         [FirestoreProperty("color")]
-        public Color Color { get; }
+        public Color Color { get; set; }
 
         [FirestoreProperty("points")]
-        public byte Points { get; }
+        public int Points { get; set; }
 
-        public GradientSection(Color color, byte points)
+        public GradientSection(Color color, int points)
         {
             Color = color;
             Points = points;

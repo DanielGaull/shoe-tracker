@@ -6,11 +6,11 @@ namespace ShoeTracker.Server.Models
     public struct Color
     {
         [FirestoreProperty("r")]
-        public byte R { get; }
+        public byte R { get; set; }
         [FirestoreProperty("g")]
-        public byte G { get; }
+        public byte G { get; set; }
         [FirestoreProperty("b")]
-        public byte B { get; }
+        public byte B { get; set; }
 
         public Color(byte r, byte g, byte b)
         {

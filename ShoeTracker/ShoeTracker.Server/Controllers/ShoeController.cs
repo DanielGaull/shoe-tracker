@@ -63,6 +63,17 @@ namespace ShoeTracker.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> AddShoeAsync([FromBody] CreateShoeDto createShoeDto)
         {
+            if (createShoeDto.ModelVersion <= 0)
+            {
+                return BadRequest("Shoe model version must be greater than 0");
+            }
+
+            var anyInvalidGradientPoints = createShoeDto.Gradient.Any(g => g.Points <= 0);
+            if (anyInvalidGradientPoints)
+            {
+                return BadRequest("Each gradient point value must be greater than 0");
+            }
+
             ShoeDocument shoe = new ShoeDocument
             {
                 Id = Guid.NewGuid().ToString(),
