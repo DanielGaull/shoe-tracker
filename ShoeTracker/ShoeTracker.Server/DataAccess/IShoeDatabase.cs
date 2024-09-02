@@ -7,5 +7,9 @@ namespace ShoeTracker.Server.DataAccess
         Task<IEnumerable<ShoeDocument>> GetShoesForUserAsync(string userId);
 
         Task AddShoeAsync(ShoeDocument doc);
+
+        Task UpdateShoeAsync(string shoeId, ShoeDocument doc);
+
+        Task DeleteShoeAsync(string shoeId);
     }
 }

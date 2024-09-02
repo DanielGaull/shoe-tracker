@@ -111,5 +111,67 @@ namespace ShoeTracker.Server.Controllers
 
             return Ok();
         }
+
+        [HttpPut]
+        [Route("{shoeId}")]
+        public async Task<IActionResult> UpdateShoeAsync([FromRoute] string shoeId, [FromBody] CreateShoeDto shoeDto)
+        {
+            if (shoeDto.ModelVersion <= 0)
+            {
+                return BadRequest("Shoe model version must be greater than 0");
+            }
+
+            if (shoeDto.Gradient.Count <= 0)
+            {
+                return BadRequest("Gradient must have at least one entry");
+            }
+
+            var anyInvalidGradientPoints = shoeDto.Gradient.Any(g => g.Points <= 0);
+            if (anyInvalidGradientPoints)
+            {
+                return BadRequest("Each gradient point value must be greater than 0");
+            }
+
+            var needValueFields = new List<string>
+            {
+                shoeDto.Brand,
+                shoeDto.Model,
+                shoeDto.ShoeName,
+            };
+            if (needValueFields.Any(f => f.Length <= 0))
+            {
+                return BadRequest("Brand, model, and name must all have values");
+            }
+
+            ShoeDocument shoe = new ShoeDocument
+            {
+                Id = shoeId,
+                UserId = _testUserId,
+                Brand = shoeDto.Brand,
+                Model = shoeDto.Model,
+                ModelVersion = shoeDto.ModelVersion,
+                ShoeName = shoeDto.ShoeName,
+                Description = shoeDto.Description,
+                TextColor = shoeDto.TextColor.ToString(),
+                Gradient = shoeDto.Gradient,
+                StartDate = shoeDto.StartDate,
+                WarnAtMileage = shoeDto.WarnAtMileage,
+                StartingMileage = shoeDto.StartingMiles,
+            };
+
+            await _database.UpdateShoeAsync(shoeId, shoe);
+
+            // TODO: 404 if the shoe doesn't exist (this will currently create the shoe if it doesn't exist)
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("{shoeId}")]
+        public async Task<IActionResult> DeleteShoeAsync([FromRoute] string shoeId)
+        {
+            // TODO: 404 if the shoe doesn't exist
+            await _database.DeleteShoeAsync(shoeId);
+            return Ok();
+        }
     }
 }

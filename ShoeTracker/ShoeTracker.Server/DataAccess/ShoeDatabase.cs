@@ -29,6 +29,16 @@ namespace ShoeTracker.Server.DataAccess
             await ShoeCollectionReference().Document(doc.Id).SetAsync(doc);
         }
 
+        public async Task UpdateShoeAsync(string shoeId, ShoeDocument doc)
+        {
+            await ShoeCollectionReference().Document(shoeId).SetAsync(doc);
+        }
+
+        public async Task DeleteShoeAsync(string shoeId)
+        {
+            await ShoeCollectionReference().Document(shoeId).DeleteAsync();
+        }
+
         private CollectionReference ShoeCollectionReference() => _database.Collection("Shoes");
     }
 }
