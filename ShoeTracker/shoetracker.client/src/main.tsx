@@ -9,12 +9,16 @@ import './index.css';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <ShoeList />,
   },
   {
-    path: "/create-shoe",
+    path: '/create-shoe',
     element: <EditShoe isNew />,
+  },
+  {
+    path: '/edit-shot/:shoeId',
+    element: <EditShoe />,
   },
 ]);
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios, { AxiosError } from 'axios';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import GradientEditor from './GradientEditor';
 import { EditShoeDto, GradientSection, TextColor } from '../../types/shoes';
 import ShoeEntry from '../ShoeList/ShoeEntry';
@@ -8,12 +8,13 @@ import ShoeEntry from '../ShoeList/ShoeEntry';
 import './EditShoe.css';
 
 interface EditShoeProps {
-    isNew: boolean;
+    isNew?: boolean;
 }
 
 const textColors: TextColor[] = ['Light', 'Dark'];
 
-const EditShoe = ({ isNew }: EditShoeProps) => {
+// TODO: Fix start date
+const EditShoe = ({ isNew = false }: EditShoeProps) => {
     const [brand, setBrand] = useState('');
     const [model, setModel] = useState('');
     const [modelVersion, setModelVersion] = useState('1');
@@ -33,6 +34,7 @@ const EditShoe = ({ isNew }: EditShoeProps) => {
     }]);
 
     const [err, setErr] = useState('');
+    const { shoeId } = useParams();
 
     const navigate = useNavigate();
 
