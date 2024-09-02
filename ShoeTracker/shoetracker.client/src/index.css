@@ -54,6 +54,12 @@ button {
         font-weight: 400;
         max-width: fit-content;
     }
+
+    &.i-button {
+        font-size: 12px;
+        padding: 2px 5px;
+        border-radius: 50%;
+    }
 }
 
 .mt {

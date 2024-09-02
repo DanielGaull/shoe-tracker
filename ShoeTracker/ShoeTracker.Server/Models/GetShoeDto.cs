@@ -24,5 +24,7 @@
         public DateTimeOffset StartDate { get; set; }
 
         public double WarnAtMileage { get; set; }
+
+        public double StartingMileage { get; set; }
     }
 }

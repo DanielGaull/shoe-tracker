@@ -42,7 +42,7 @@ const GradientSectionEditor = ({ value, onChange, onDelete, canDelete }: Gradien
     return (
         <div className="gradient-section">
             <button
-                className="gradient-x-button"
+                className="gradient-x-button i-button"
                 onClick={onDelete}
                 disabled={!canDelete}
             >

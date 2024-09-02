@@ -24,6 +24,11 @@ namespace ShoeTracker.Server.DataAccess
             return querySnapshot.Documents.Select(doc => doc.ConvertTo<ShoeDocument>());
         }
 
+        public async Task<ShoeDocument> GetShoeAsync(string shoeId)
+        {
+            return (await ShoeCollectionReference().Document(shoeId).GetSnapshotAsync()).ConvertTo<ShoeDocument>();
+        }
+
         public async Task AddShoeAsync(ShoeDocument doc)
         {
             await ShoeCollectionReference().Document(doc.Id).SetAsync(doc);

@@ -55,9 +55,33 @@ namespace ShoeTracker.Server.Controllers
                 StartDate = doc.StartDate,
                 WarnAtMileage = doc.WarnAtMileage,
                 Miles = doc.StartingMileage,
+                StartingMileage = doc.StartingMileage,
             });
 
             return Ok(shoes);
+        }
+
+        [HttpGet("{shoeId}")]
+        public async Task<IActionResult> GetShoe([FromRoute] string shoeId)
+        {
+            var doc = await _database.GetShoeAsync(shoeId);
+            var shoe = new GetShoeDto
+            {
+                Id = Guid.Parse(doc.Id),
+                Brand = doc.Brand,
+                Model = doc.Model,
+                ModelVersion = doc.ModelVersion,
+                ShoeName = doc.ShoeName,
+                Description = doc.Description,
+                TextColor = doc.TextColor == "Light" ? TextColor.Light : TextColor.Dark,
+                Gradient = doc.Gradient,
+                StartDate = doc.StartDate,
+                WarnAtMileage = doc.WarnAtMileage,
+                Miles = doc.StartingMileage,
+                StartingMileage = doc.StartingMileage,
+            };
+
+            return Ok(shoe);
         }
 
         [HttpPost]
@@ -112,8 +136,7 @@ namespace ShoeTracker.Server.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        [Route("{shoeId}")]
+        [HttpPut("{shoeId}")]
         public async Task<IActionResult> UpdateShoeAsync([FromRoute] string shoeId, [FromBody] CreateShoeDto shoeDto)
         {
             if (shoeDto.ModelVersion <= 0)
@@ -165,8 +188,7 @@ namespace ShoeTracker.Server.Controllers
             return Ok();
         }
 
-        [HttpDelete]
-        [Route("{shoeId}")]
+        [HttpDelete("{shoeId}")]
         public async Task<IActionResult> DeleteShoeAsync([FromRoute] string shoeId)
         {
             // TODO: 404 if the shoe doesn't exist

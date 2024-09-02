@@ -9,6 +9,7 @@
     margin: 10px;
     flex: 1;
     max-width: 400px;
+    position: relative;
 }
 
 .shoe-list {
@@ -34,4 +35,10 @@
 .header {
     display: flex;
     justify-content: space-between;
+}
+
+.shoe-action-icons {
+    position: absolute;
+    top: -7px;
+    right: -7px;
 }

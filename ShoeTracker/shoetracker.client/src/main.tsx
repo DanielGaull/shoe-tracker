@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     element: <EditShoe isNew />,
   },
   {
-    path: '/edit-shot/:shoeId',
+    path: '/edit-shoe/:shoeId',
     element: <EditShoe />,
   },
 ]);

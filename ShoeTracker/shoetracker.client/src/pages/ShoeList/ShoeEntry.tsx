@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { Shoe } from "../../types/shoes";
 import { calculateBackground } from "../../util/util";
+import { useNavigate } from "react-router";
 
 interface ShoeEntryProps {
     shoe: Shoe;
@@ -8,6 +9,8 @@ interface ShoeEntryProps {
 }
 
 const ShoeEntry = ({ shoe, displayOnly }: ShoeEntryProps) => {
+    const navigate = useNavigate();
+
     const backgroundValue = useMemo(() => {
         return calculateBackground(shoe.gradient);
     }, [shoe.gradient]);
@@ -22,6 +25,22 @@ const ShoeEntry = ({ shoe, displayOnly }: ShoeEntryProps) => {
 
     return (
         <div className="shoe-entry-container" style={{ background: backgroundValue, color: textValue }}>
+            {!displayOnly && (
+                <div className="shoe-action-icons">
+                    <button
+                        className="i-button"
+                        onClick={() => navigate(`/edit-shoe/${shoe.id}`)}
+                    >
+                        E
+                    </button>
+                    <button
+                        className="i-button"
+                        onClick={() => alert('Delete modal not yet implemented')}
+                    >
+                        X
+                    </button>
+                </div>
+            )}
             <div className="title">{shoe.shoeName}</div>
             <div className="subtitle">{shoe.brand} {shoe.model} {shoe.modelVersion}</div>
             <div>Start Date: {new Date(shoe.startDate).toLocaleDateString()}</div>

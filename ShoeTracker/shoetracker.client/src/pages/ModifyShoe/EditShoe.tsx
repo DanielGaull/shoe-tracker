@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router';
 import GradientEditor from './GradientEditor';
-import { EditShoeDto, GradientSection, TextColor } from '../../types/shoes';
+import { EditShoeDto, GradientSection, Shoe, TextColor } from '../../types/shoes';
 import ShoeEntry from '../ShoeList/ShoeEntry';
 
 import './EditShoe.css';
@@ -38,6 +38,25 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        async function load() {
+            if (shoeId && !isNew) {
+                const shoe: Shoe = (await axios.get(`/api/shoes/${shoeId}`)).data;
+                setBrand(shoe.brand);
+                setModel(shoe.model);
+                setModelVersion(shoe.modelVersion.toString());
+                setName(shoe.shoeName);
+                setDesc(shoe.description ?? '');
+                setStartingMiles(shoe.startingMileage.toString());
+                setWarnAtMileage(shoe.warnAtMileage.toString());
+                setStartDate(shoe.startDate);
+                setTextColor(shoe.textColor);
+                setGradient(shoe.gradient);
+            }
+        }
+        load();
+    }, [shoeId]);
+
     const submit = async () => {
         const newShoe: EditShoeDto = {
             brand,
@@ -53,7 +72,11 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
         };
 
         try {
-            await axios.post('/api/shoes', newShoe);
+            if (isNew) {
+                await axios.post('/api/shoes', newShoe);
+            } else {
+                await axios.put(`/api/shoes/${shoeId}`, newShoe);
+            }
             setErr('');
             navigate('/');
         } catch (err) {
@@ -163,6 +186,7 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
                         gradient,
                         miles: 100,
                     }}
+                    displayOnly
                 />
 
                 {err.length > 0 && <div className="error-text">{err}</div>}

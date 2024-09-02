@@ -88,9 +88,6 @@ input[type=range] {
 }
 
 .gradient-x-button {
-    font-size: 12px;
-    padding: 2px 5px;
-    border-radius: 50%;
     position: absolute;
     right: -7px;
     top: -7px;
