@@ -5,9 +5,14 @@ import ShoeEntry from './ShoeEntry';
 import { Shoe } from '../../types/shoes';
 
 import './ShoeList.css';
+import Modal from '../../components/Modal/Modal';
 
 const ShoeList = () => {
     const [shoes, setShoes] = useState<Shoe[]>([]);
+
+    const [shoeToDelete, setShoeToDelete] = useState<string | undefined>();
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -33,10 +38,22 @@ const ShoeList = () => {
             </div>
             {shoes.length > 0 && (
                 <div className="shoe-list">
-                    {shoes.map(shoe => <ShoeEntry shoe={shoe} />)}
+                    {shoes.map(shoe => 
+                        <ShoeEntry
+                            shoe={shoe}
+                            onDeleteClicked={() => {
+                                setDeleteModalOpen(true);
+                                setShoeToDelete(shoe.id);
+                            }} 
+                        />
+                    )}
                 </div>
             )}
             {shoes.length <= 0 && <h3>No shoes to display</h3>}
+
+            <Modal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
+                test dialog
+            </Modal>
         </>
     );
 };

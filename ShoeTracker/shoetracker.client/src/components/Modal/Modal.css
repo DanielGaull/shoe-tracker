@@ -1,0 +1,16 @@
+.modal {
+    border: 3px solid #0f0f0f;
+    border-radius: 25px;
+    min-width: 30vw;
+    min-height: 30vh;
+    transition: 1s;
+    background-color: #242424;
+    color: #ffffff;
+    position: fixed;
+    bottom: -150vh;
+    z-index: 1000;
+
+    &.open {
+        bottom: 0;
+    }
+}

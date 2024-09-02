@@ -6,9 +6,11 @@ import { useNavigate } from "react-router";
 interface ShoeEntryProps {
     shoe: Shoe;
     displayOnly?: boolean;
+
+    onDeleteClicked?: () => void;
 }
 
-const ShoeEntry = ({ shoe, displayOnly }: ShoeEntryProps) => {
+const ShoeEntry = ({ shoe, displayOnly, onDeleteClicked = () => {} }: ShoeEntryProps) => {
     const navigate = useNavigate();
 
     const backgroundValue = useMemo(() => {
@@ -35,7 +37,7 @@ const ShoeEntry = ({ shoe, displayOnly }: ShoeEntryProps) => {
                     </button>
                     <button
                         className="i-button"
-                        onClick={() => alert('Delete modal not yet implemented')}
+                        onClick={() => onDeleteClicked()}
                     >
                         X
                     </button>
