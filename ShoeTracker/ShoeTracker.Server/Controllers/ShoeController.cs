@@ -30,6 +30,8 @@ namespace ShoeTracker.Server.Controllers
 
         private readonly string _testUserId = "ca60773c-3088-4e81-8631-a7d4889eed1d";
 
+        private const int MAX_GRADIENT_SECTIONS = 5;
+
         private readonly IShoeDatabase _database;
 
         public ShoeController(IShoeDatabase database)
@@ -98,6 +100,11 @@ namespace ShoeTracker.Server.Controllers
                 return BadRequest("Gradient must have at least one entry");
             }
 
+            if (shoeDto.Gradient.Count > MAX_GRADIENT_SECTIONS)
+            {
+                return BadRequest($"Gradient can have at most {MAX_GRADIENT_SECTIONS} sections");
+            }
+
             var anyInvalidGradientPoints = createShoeDto.Gradient.Any(g => g.Points <= 0);
             if (anyInvalidGradientPoints)
             {
@@ -147,6 +154,11 @@ namespace ShoeTracker.Server.Controllers
             if (shoeDto.Gradient.Count <= 0)
             {
                 return BadRequest("Gradient must have at least one entry");
+            }
+
+            if (shoeDto.Gradient.Count > MAX_GRADIENT_SECTIONS)
+            {
+                return BadRequest($"Gradient can have at most {MAX_GRADIENT_SECTIONS} sections");
             }
 
             var anyInvalidGradientPoints = shoeDto.Gradient.Any(g => g.Points <= 0);
