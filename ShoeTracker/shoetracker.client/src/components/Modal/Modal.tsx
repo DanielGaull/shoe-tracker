@@ -14,11 +14,14 @@ const Modal = ({
     onClose = () => {},
 }: ModalProps) => {
     return (
-        <div className={`modal ${open ? 'open' : ''}`}>
-            <button className="x-button i-button" onClick={onClose}>
-                X
-            </button>
-            {children}
+        <div className="modal-container">
+            {open && <div className="modal-background" />}
+            <div className={`modal ${open ? 'open' : ''}`}>
+                <button className="x-button i-button" onClick={onClose}>
+                    X
+                </button>
+                {children}
+            </div>
         </div>
     );
 }

@@ -3,14 +3,35 @@
     border-radius: 25px;
     min-width: 30vw;
     min-height: 30vh;
-    transition: 1s;
+    transition: 0.5s;
     background-color: #242424;
     color: #ffffff;
     position: fixed;
     bottom: -150vh;
-    z-index: 1000;
+    padding: 10px;
 
     &.open {
-        bottom: 0;
+        bottom: calc(50vh - 30vh / 2);
     }
+
+    .x-button {
+        position: absolute;
+        top: -7px;
+        right: -7px;
+    }
+}
+
+.modal-container {
+    display: flex;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-background {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
 }
