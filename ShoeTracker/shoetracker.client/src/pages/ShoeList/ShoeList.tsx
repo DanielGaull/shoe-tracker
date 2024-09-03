@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 import ShoeEntry from './ShoeEntry';
@@ -10,18 +10,29 @@ import Modal from '../../components/Modal/Modal';
 const ShoeList = () => {
     const [shoes, setShoes] = useState<Shoe[]>([]);
 
-    const [shoeToDelete, setShoeToDelete] = useState<string | undefined>();
+    const [shoeToDelete, setShoeToDelete] = useState<Shoe | undefined>();
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
     const navigate = useNavigate();
 
+    async function load() {
+        const response = await axios.get('/api/shoes');
+        setShoes(response.data);
+    }
+
     useEffect(() => {
-        async function load() {
-            const response = await axios.get('/api/shoes');
-            setShoes(response.data);
+        load();
+    }, []);
+
+    const deleteShoe = useCallback((shoe: Shoe) => {
+        async function doDelete() {
+            await axios.delete(`/api/shoes/${shoe.id}`);
+            await load();
+            setDeleteModalOpen(false);
+            setShoeToDelete(undefined);
         }
 
-        load();
+        doDelete();
     }, []);
 
     return (
@@ -43,7 +54,7 @@ const ShoeList = () => {
                             shoe={shoe}
                             onDeleteClicked={() => {
                                 setDeleteModalOpen(true);
-                                setShoeToDelete(shoe.id);
+                                setShoeToDelete(shoe);
                             }} 
                         />
                     )}
@@ -52,7 +63,21 @@ const ShoeList = () => {
             {shoes.length <= 0 && <h3>No shoes to display</h3>}
 
             <Modal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
-                test dialog
+                <h3>Are you sure?</h3>
+                Are you sure you want to delete "{shoeToDelete?.shoeName ?? '[Missing name]'}"?
+                <div className="button-row mt">
+                    <button
+                        className="mr-s"
+                        onClick={() => setDeleteModalOpen(false)}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        onClick={() => deleteShoe(shoeToDelete!)}
+                    >
+                        Confirm
+                    </button>
+                </div>
             </Modal>
         </>
     );
