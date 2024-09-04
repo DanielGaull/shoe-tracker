@@ -45,7 +45,7 @@ const ShoeEntry = ({ shoe, displayOnly, onDeleteClicked = () => {} }: ShoeEntryP
             )}
             <div className="title">{shoe.shoeName}</div>
             <div className="subtitle">{shoe.brand} {shoe.model} {shoe.modelVersion}</div>
-            <div>Start Date: {new Date(shoe.startDate).toLocaleDateString()}</div>
+            <div>Start Date: {shoe.startDate.month}/{shoe.startDate.day}/{shoe.startDate.year}</div>
             <div>Mileage: {shoe.miles} mi (warning at {shoe.warnAtMileage} mi)</div>
             <div className="description">{shoe.description}</div>
         </div>

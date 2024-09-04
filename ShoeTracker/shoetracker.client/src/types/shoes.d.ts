@@ -11,6 +11,12 @@ export interface GradientSection {
 
 export type TextColor = "Light" | "Dark";
 
+export interface DateModel {
+    month: number;
+    day: number;
+    year: number;
+}
+
 export interface Shoe {
     id: string;
     brand: string;
@@ -21,7 +27,7 @@ export interface Shoe {
     miles: number;
     textColor: TextColor;
     gradient: GradientSection[];
-    startDate: string;
+    startDate: DateModel;
     warnAtMileage: number;
     startingMileage: number;
 }
@@ -34,7 +40,7 @@ export interface EditShoeDto {
     description: string?;
     textColor: TextColor;
     gradient: GradientSection[];
-    startDate: string;
+    startDate: DateModel;
     warnAtMileage: number;
     startingMileage: number;
 }

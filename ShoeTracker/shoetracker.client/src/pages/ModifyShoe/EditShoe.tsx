@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router';
 import GradientEditor from './GradientEditor';
-import { EditShoeDto, GradientSection, Shoe, TextColor } from '../../types/shoes';
+import { DateModel, EditShoeDto, GradientSection, Shoe, TextColor } from '../../types/shoes';
 import ShoeEntry from '../ShoeList/ShoeEntry';
 
 import './EditShoe.css';
@@ -13,7 +13,12 @@ interface EditShoeProps {
 
 const textColors: TextColor[] = ['Light', 'Dark'];
 
-// TODO: Fix start date
+const stringDateToDateModel = (date: string): DateModel => ({
+    month: new Date(date).getMonth() + 1,
+    day: new Date(date).getDate() + 1,
+    year: new Date(date).getFullYear(),
+});
+
 const EditShoe = ({ isNew = false }: EditShoeProps) => {
     const [brand, setBrand] = useState('');
     const [model, setModel] = useState('');
@@ -49,7 +54,7 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
                 setDesc(shoe.description ?? '');
                 setStartingMiles(shoe.startingMileage.toString());
                 setWarnAtMileage(shoe.warnAtMileage.toString());
-                setStartDate(shoe.startDate);
+                setStartDate(new Date(shoe.startDate.year, shoe.startDate.month - 1, shoe.startDate.day).toISOString().split('T')[0]);
                 setTextColor(shoe.textColor);
                 setGradient(shoe.gradient);
             }
@@ -66,7 +71,7 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
             description: desc.length > 0 ? desc : '',
             startingMileage: parseInt(startingMiles),
             warnAtMileage: parseInt(warnAtMileage),
-            startDate,
+            startDate: stringDateToDateModel(startDate),
             textColor,
             gradient,
         };
@@ -181,7 +186,7 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
                         description: desc.length > 0 ? desc : '',
                         startingMileage: parseInt(startingMiles),
                         warnAtMileage: parseInt(warnAtMileage),
-                        startDate,
+                        startDate: stringDateToDateModel(startDate),
                         textColor,
                         gradient,
                         miles: 100,
