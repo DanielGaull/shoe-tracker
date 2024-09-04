@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShoeTracker.Server.DataAccess;
+using ShoeTracker.Server.DataAccess.Models;
 using ShoeTracker.Server.Models;
 
 namespace ShoeTracker.Server.Controllers
@@ -19,20 +20,7 @@ namespace ShoeTracker.Server.Controllers
         public async Task<IActionResult> GetActivitiesAsync()
         {
             var activityDocs = await _database.GetActivitiesForUserAsync(_testUserId);
-            var activities = activityDocs.Select(doc => new GetActivityDto
-            {
-                Id = Guid.Parse(doc.Id),
-                UserId = doc.UserId,
-                ShoeId = doc.ShoeId,
-                Distance = doc.Distance,
-                DistanceUnits = 
-                    doc.DistanceUnits == "Meters" ? DistanceUnits.Meters : doc.DistanceUnits == "Kilometeres" ? DistanceUnits.Kilometers : DistanceUnits.Miles,
-                Time = doc.Time,
-                Name = doc.Name,
-                Description = doc.Description,
-                Date = doc.Date,
-                Ordinal = doc.Ordinal,
-            });
+            var activities = activityDocs.Select(doc => DocToDto(doc));
 
             return Ok(activities);
         }
@@ -41,7 +29,13 @@ namespace ShoeTracker.Server.Controllers
         public async Task<IActionResult> GetActivityAsync([FromRoute] string activityId)
         {
             var doc = await _database.GetActivityAsync(activityId);
-            var activity = new GetActivityDto
+            var activity = DocToDto(doc);
+            return Ok(activity);
+        }
+
+        private GetActivityDto DocToDto(ActivityDocument doc)
+        {
+            return new GetActivityDto
             {
                 Id = Guid.Parse(doc.Id),
                 UserId = doc.UserId,
@@ -52,11 +46,9 @@ namespace ShoeTracker.Server.Controllers
                 Time = doc.Time,
                 Name = doc.Name,
                 Description = doc.Description,
-                Date = doc.Date,
+                Date = new DateModel(doc.Month, doc.Day, doc.Year),
                 Ordinal = doc.Ordinal,
             };
-
-            return Ok(activity);
         }
     }
 }

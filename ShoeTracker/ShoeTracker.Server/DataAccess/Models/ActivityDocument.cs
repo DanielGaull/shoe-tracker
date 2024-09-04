@@ -30,8 +30,14 @@ namespace ShoeTracker.Server.DataAccess.Models
         [FirestoreProperty("desc")]
         public string? Description { get; set; }
 
-        [FirestoreProperty("date")]
-        public DateTimeOffset Date { get; set; }
+        [FirestoreProperty("month")]
+        public int Month { get; set; }
+
+        [FirestoreProperty("day")]
+        public int Day { get; set; }
+
+        [FirestoreProperty("year")]
+        public int Year { get; set; }
 
         [FirestoreProperty("ord")]
         public int Ordinal { get; set; }
