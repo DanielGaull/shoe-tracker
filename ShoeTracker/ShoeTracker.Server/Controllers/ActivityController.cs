@@ -36,5 +36,27 @@ namespace ShoeTracker.Server.Controllers
 
             return Ok(activities);
         }
+
+        [HttpGet("{activityId}")]
+        public async Task<IActionResult> GetActivityAsync([FromRoute] string activityId)
+        {
+            var doc = await _database.GetActivityAsync(activityId);
+            var activity = new GetActivityDto
+            {
+                Id = Guid.Parse(doc.Id),
+                UserId = doc.UserId,
+                ShoeId = doc.ShoeId,
+                Distance = doc.Distance,
+                DistanceUnits =
+                    doc.DistanceUnits == "Meters" ? DistanceUnits.Meters : doc.DistanceUnits == "Kilometeres" ? DistanceUnits.Kilometers : DistanceUnits.Miles,
+                Time = doc.Time,
+                Name = doc.Name,
+                Description = doc.Description,
+                Date = doc.Date,
+                Ordinal = doc.Ordinal,
+            };
+
+            return Ok(activity);
+        }
     }
 }

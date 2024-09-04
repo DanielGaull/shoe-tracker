@@ -67,37 +67,10 @@ namespace ShoeTracker.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> AddShoeAsync([FromBody] CreateShoeDto createShoeDto)
         {
-            // TODO: Maximum number of gradient sections
-            if (createShoeDto.ModelVersion <= 0)
+            string message = ValidateShoe(createShoeDto);
+            if (message is not null)
             {
-                return BadRequest("Shoe model version must be greater than 0");
-            }
-
-            if (createShoeDto.Gradient.Count <= 0)
-            {
-                return BadRequest("Gradient must have at least one entry");
-            }
-
-            if (createShoeDto.Gradient.Count > MAX_GRADIENT_SECTIONS)
-            {
-                return BadRequest($"Gradient can have at most {MAX_GRADIENT_SECTIONS} sections");
-            }
-
-            var anyInvalidGradientPoints = createShoeDto.Gradient.Any(g => g.Points <= 0);
-            if (anyInvalidGradientPoints)
-            {
-                return BadRequest("Each gradient point value must be greater than 0");
-            }
-
-            var needValueFields = new List<string> 
-            {
-                createShoeDto.Brand,
-                createShoeDto.Model,
-                createShoeDto.ShoeName,
-            };
-            if (needValueFields.Any(f => f.Length <= 0))
-            {
-                return BadRequest("Brand, model, and name must all have values");
+                return BadRequest(message);
             }
 
             ShoeDocument shoe = new ShoeDocument
@@ -124,36 +97,10 @@ namespace ShoeTracker.Server.Controllers
         [HttpPut("{shoeId}")]
         public async Task<IActionResult> UpdateShoeAsync([FromRoute] string shoeId, [FromBody] CreateShoeDto shoeDto)
         {
-            if (shoeDto.ModelVersion <= 0)
+            string message = ValidateShoe(shoeDto);
+            if (message is not null)
             {
-                return BadRequest("Shoe model version must be greater than 0");
-            }
-
-            if (shoeDto.Gradient.Count <= 0)
-            {
-                return BadRequest("Gradient must have at least one entry");
-            }
-
-            if (shoeDto.Gradient.Count > MAX_GRADIENT_SECTIONS)
-            {
-                return BadRequest($"Gradient can have at most {MAX_GRADIENT_SECTIONS} sections");
-            }
-
-            var anyInvalidGradientPoints = shoeDto.Gradient.Any(g => g.Points <= 0);
-            if (anyInvalidGradientPoints)
-            {
-                return BadRequest("Each gradient point value must be greater than 0");
-            }
-
-            var needValueFields = new List<string>
-            {
-                shoeDto.Brand,
-                shoeDto.Model,
-                shoeDto.ShoeName,
-            };
-            if (needValueFields.Any(f => f.Length <= 0))
-            {
-                return BadRequest("Brand, model, and name must all have values");
+                return BadRequest(message);
             }
 
             ShoeDocument shoe = new ShoeDocument
@@ -184,6 +131,44 @@ namespace ShoeTracker.Server.Controllers
             // TODO: 404 if the shoe doesn't exist
             await _database.DeleteShoeAsync(shoeId);
             return Ok();
+        }
+
+        // Returns null if shoe is valid, or a message if it is invalid
+        private string ValidateShoe(CreateShoeDto dto)
+        {
+            if (dto.ModelVersion <= 0)
+            {
+                return "Shoe model version must be greater than 0";
+            }
+
+            if (dto.Gradient.Count <= 0)
+            {
+                return "Gradient must have at least one entry";
+            }
+
+            if (dto.Gradient.Count > MAX_GRADIENT_SECTIONS)
+            {
+                return $"Gradient can have at most {MAX_GRADIENT_SECTIONS} sections";
+            }
+
+            var anyInvalidGradientPoints = dto.Gradient.Any(g => g.Points <= 0);
+            if (anyInvalidGradientPoints)
+            {
+                return "Each gradient point value must be greater than 0";
+            }
+
+            var needValueFields = new List<string>
+            {
+                dto.Brand,
+                dto.Model,
+                dto.ShoeName,
+            };
+            if (needValueFields.Any(f => f.Length <= 0))
+            {
+                return "Brand, model, and name must all have values";
+            }
+
+            return null;
         }
     }
 }
