@@ -1,6 +1,7 @@
 ﻿using Firebase.Auth;
 using Google.Cloud.Firestore;
 using Google.Cloud.Firestore.V1;
+using Google.Type;
 using ShoeTracker.Server.DataAccess.Models;
 
 namespace ShoeTracker.Server.DataAccess
@@ -21,7 +22,8 @@ namespace ShoeTracker.Server.DataAccess
 
         public async Task<IEnumerable<ShoeDocument>> GetShoesForUserAsync(string userId)
         {
-            var query = ShoeCollectionReference().WhereEqualTo("userId", userId);
+            var query = ShoeCollectionReference()
+                .WhereEqualTo("userId", userId);
             var querySnapshot = await query.GetSnapshotAsync();
             return querySnapshot.Documents.Select(doc => doc.ConvertTo<ShoeDocument>());
         }
@@ -48,9 +50,12 @@ namespace ShoeTracker.Server.DataAccess
 
         // ======================================================================
 
-        public async Task<IEnumerable<ActivityDocument>> GetActivitiesForUserAsync(string userId)
+        public async Task<IEnumerable<ActivityDocument>> GetActivitiesForUserAsync(string userId, int month, int year)
         {
-            var query = ActivityCollectionReference().WhereEqualTo("userId", userId);
+            var query = ActivityCollectionReference()
+                .WhereEqualTo("userId", userId)
+                .WhereEqualTo("month", month)
+                .WhereEqualTo("year", year);
             var querySnapshot = await query.GetSnapshotAsync();
             return querySnapshot.Documents.Select(doc => doc.ConvertTo<ActivityDocument>());
         }

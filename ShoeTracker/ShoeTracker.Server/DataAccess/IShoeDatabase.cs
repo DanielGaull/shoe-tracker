@@ -16,7 +16,7 @@ namespace ShoeTracker.Server.DataAccess
 
         // ======================================================================
 
-        Task<IEnumerable<ActivityDocument>> GetActivitiesForUserAsync(string userId);
+        Task<IEnumerable<ActivityDocument>> GetActivitiesForUserAsync(string userId, int month, int year);
 
         Task<ActivityDocument> GetActivityAsync(string activityId);
 

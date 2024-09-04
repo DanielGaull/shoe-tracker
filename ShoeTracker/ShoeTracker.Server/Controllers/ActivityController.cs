@@ -16,12 +16,11 @@ namespace ShoeTracker.Server.Controllers
             _database = database;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetActivitiesAsync()
+        [HttpGet("{month}/{year}")]
+        public async Task<IActionResult> GetActivitiesAsync([FromRoute] int month, [FromRoute] int year)
         {
-            var activityDocs = await _database.GetActivitiesForUserAsync(_testUserId);
+            var activityDocs = await _database.GetActivitiesForUserAsync(_testUserId, month, year);
             var activities = activityDocs.Select(doc => DocToDto(doc));
-
             return Ok(activities);
         }
 
