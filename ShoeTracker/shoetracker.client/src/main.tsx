@@ -6,6 +6,7 @@ import ShoeList from './pages/ShoeList/ShoeList.tsx';
 import EditShoe from './pages/ModifyShoe/EditShoe.tsx';
 
 import './index.css';
+import NavBar from './components/NavBar/NavBar.tsx';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <NavBar />
     <RouterProvider router={router} />
   </StrictMode>,
 )

@@ -1,0 +1,20 @@
+.nav-bar {
+    text-align: center;
+}
+
+.nav-bar .navlink + .navlink:before {
+    content: " • ";
+}
+
+.navlink a {
+    color: white;
+}
+
+.navlink a:hover {
+    color: rgb(160, 243, 243);
+    text-decoration: underline;
+}
+
+.navlink a.current {
+    text-decoration: underline;
+}
