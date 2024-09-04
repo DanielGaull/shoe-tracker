@@ -22,22 +22,7 @@ namespace ShoeTracker.Server.Controllers
         {
             // TODO: Pull activities to calculate mileage from a shoe doc
             var shoeDocs = await _database.GetShoesForUserAsync(_testUserId);
-            var shoes = shoeDocs.Select(doc => new GetShoeDto
-            {
-                Id = Guid.Parse(doc.Id),
-                Brand = doc.Brand,
-                Model = doc.Model,
-                ModelVersion = doc.ModelVersion,
-                ShoeName = doc.ShoeName,
-                Description = doc.Description,
-                TextColor = doc.TextColor == "Light" ? TextColor.Light : TextColor.Dark,
-                Gradient = doc.Gradient,
-                StartDate = doc.StartDate,
-                WarnAtMileage = doc.WarnAtMileage,
-                Miles = doc.StartingMileage,
-                StartingMileage = doc.StartingMileage,
-            });
-
+            var shoes = shoeDocs.Select(doc => DocToDto(doc));
             return Ok(shoes);
         }
 
@@ -45,50 +30,20 @@ namespace ShoeTracker.Server.Controllers
         public async Task<IActionResult> GetShoeAsync([FromRoute] string shoeId)
         {
             var doc = await _database.GetShoeAsync(shoeId);
-            var shoe = new GetShoeDto
-            {
-                Id = Guid.Parse(doc.Id),
-                Brand = doc.Brand,
-                Model = doc.Model,
-                ModelVersion = doc.ModelVersion,
-                ShoeName = doc.ShoeName,
-                Description = doc.Description,
-                TextColor = doc.TextColor == "Light" ? TextColor.Light : TextColor.Dark,
-                Gradient = doc.Gradient,
-                StartDate = doc.StartDate,
-                WarnAtMileage = doc.WarnAtMileage,
-                Miles = doc.StartingMileage,
-                StartingMileage = doc.StartingMileage,
-            };
-
+            var shoe = DocToDto(doc);
             return Ok(shoe);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddShoeAsync([FromBody] CreateShoeDto createShoeDto)
         {
-            string message = ValidateShoe(createShoeDto);
+            string? message = ValidateShoe(createShoeDto);
             if (message is not null)
             {
                 return BadRequest(message);
             }
 
-            ShoeDocument shoe = new ShoeDocument
-            {
-                Id = Guid.NewGuid().ToString(),
-                UserId = _testUserId,
-                Brand = createShoeDto.Brand,
-                Model = createShoeDto.Model,
-                ModelVersion = createShoeDto.ModelVersion,
-                ShoeName = createShoeDto.ShoeName,
-                Description = createShoeDto.Description,
-                TextColor = createShoeDto.TextColor.ToString(),
-                Gradient = createShoeDto.Gradient,
-                StartDate = createShoeDto.StartDate,
-                WarnAtMileage = createShoeDto.WarnAtMileage,
-                StartingMileage = createShoeDto.StartingMiles,
-            };
-
+            ShoeDocument shoe = DtoToDoc(Guid.NewGuid().ToString(), _testUserId, createShoeDto);
             await _database.AddShoeAsync(shoe);
 
             return Ok();
@@ -97,27 +52,13 @@ namespace ShoeTracker.Server.Controllers
         [HttpPut("{shoeId}")]
         public async Task<IActionResult> UpdateShoeAsync([FromRoute] string shoeId, [FromBody] CreateShoeDto shoeDto)
         {
-            string message = ValidateShoe(shoeDto);
+            string? message = ValidateShoe(shoeDto);
             if (message is not null)
             {
                 return BadRequest(message);
             }
 
-            ShoeDocument shoe = new ShoeDocument
-            {
-                Id = shoeId,
-                UserId = _testUserId,
-                Brand = shoeDto.Brand,
-                Model = shoeDto.Model,
-                ModelVersion = shoeDto.ModelVersion,
-                ShoeName = shoeDto.ShoeName,
-                Description = shoeDto.Description,
-                TextColor = shoeDto.TextColor.ToString(),
-                Gradient = shoeDto.Gradient,
-                StartDate = shoeDto.StartDate,
-                WarnAtMileage = shoeDto.WarnAtMileage,
-                StartingMileage = shoeDto.StartingMiles,
-            };
+            ShoeDocument shoe = DtoToDoc(shoeId, _testUserId, shoeDto);
 
             await _database.UpdateShoeAsync(shoeId, shoe);
 
@@ -134,7 +75,7 @@ namespace ShoeTracker.Server.Controllers
         }
 
         // Returns null if shoe is valid, or a message if it is invalid
-        private string ValidateShoe(CreateShoeDto dto)
+        private string? ValidateShoe(CreateShoeDto dto)
         {
             if (dto.ModelVersion <= 0)
             {
@@ -169,6 +110,46 @@ namespace ShoeTracker.Server.Controllers
             }
 
             return null;
+        }
+
+        private ShoeDocument DtoToDoc(string id, string userId, CreateShoeDto dto)
+        {
+            return new ShoeDocument
+            {
+                Id = id,
+                UserId = userId,
+                Brand = dto.Brand,
+                Model = dto.Model,
+                ModelVersion = dto.ModelVersion,
+                ShoeName = dto.ShoeName,
+                Description = dto.Description,
+                TextColor = dto.TextColor.ToString(),
+                Gradient = dto.Gradient,
+                StartMonth = dto.StartDate.Month,
+                StartDay = dto.StartDate.Day,
+                StartYear = dto.StartDate.Year,
+                WarnAtMileage = dto.WarnAtMileage,
+                StartingMileage = dto.StartingMiles,
+            };
+        }
+
+        private GetShoeDto DocToDto(ShoeDocument doc)
+        {
+            return new GetShoeDto
+            {
+                Id = Guid.Parse(doc.Id),
+                Brand = doc.Brand,
+                Model = doc.Model,
+                ModelVersion = doc.ModelVersion,
+                ShoeName = doc.ShoeName,
+                Description = doc.Description,
+                TextColor = doc.TextColor == "Light" ? TextColor.Light : TextColor.Dark,
+                Gradient = doc.Gradient,
+                StartDate = new DateModel(doc.StartMonth, doc.StartDay, doc.StartYear),
+                WarnAtMileage = doc.WarnAtMileage,
+                Miles = doc.StartingMileage,
+                StartingMileage = doc.StartingMileage,
+            };
         }
     }
 }

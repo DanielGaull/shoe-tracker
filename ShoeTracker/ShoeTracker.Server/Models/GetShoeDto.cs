@@ -21,7 +21,7 @@
 
         public List<GradientSection> Gradient { get; set; } = new List<GradientSection>();
 
-        public DateTimeOffset StartDate { get; set; }
+        public DateModel StartDate { get; set; }
 
         public double WarnAtMileage { get; set; }
 

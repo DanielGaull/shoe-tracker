@@ -33,8 +33,14 @@ namespace ShoeTracker.Server.DataAccess.Models
         [FirestoreProperty("gradient")]
         public List<GradientSection> Gradient { get; set; } = new List<GradientSection>();
 
-        [FirestoreProperty("startDate")]
-        public DateTimeOffset StartDate { get; set; }
+        [FirestoreProperty("startMonth")]
+        public int StartMonth { get; set; }
+
+        [FirestoreProperty("startDay")]
+        public int StartDay { get; set; }
+
+        [FirestoreProperty("startYear")]
+        public int StartYear { get; set; }
 
         [FirestoreProperty("warnAt")]
         public double WarnAtMileage { get; set; }
