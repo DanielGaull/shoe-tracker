@@ -8,30 +8,8 @@ namespace ShoeTracker.Server.Controllers
     [Route("/api/shoes")]
     public class ShoeController : Controller
     {
-        private readonly GetShoeDto _testShoe = new GetShoeDto
-        {
-            Id = Guid.NewGuid(),
-            Brand = "Nike",
-            Model = "Vaporfly",
-            ModelVersion = 2,
-            ShoeName = "Vaporfly #1",
-            Miles = 27.71,
-            TextColor = TextColor.Light,
-            Gradient = new List<GradientSection> 
-            { 
-                new GradientSection(new Color(18, 18, 18), 3),
-                new GradientSection(new Color(86, 39, 122), 3),
-                new GradientSection(new Color(130, 77, 12), 3),
-            },
-            StartDate = DateTime.Now,
-            WarnAtMileage = 150,
-            Description = "First pair of Vaporflies",
-        };
-
         private readonly string _testUserId = "ca60773c-3088-4e81-8631-a7d4889eed1d";
-
         private const int MAX_GRADIENT_SECTIONS = 5;
-
         private readonly IShoeDatabase _database;
 
         public ShoeController(IShoeDatabase database)
@@ -40,7 +18,7 @@ namespace ShoeTracker.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetShoes()
+        public async Task<IActionResult> GetShoesAsync()
         {
             // TODO: Pull activities to calculate mileage from a shoe doc
             var shoeDocs = await _database.GetShoesForUserAsync(_testUserId);
@@ -64,7 +42,7 @@ namespace ShoeTracker.Server.Controllers
         }
 
         [HttpGet("{shoeId}")]
-        public async Task<IActionResult> GetShoe([FromRoute] string shoeId)
+        public async Task<IActionResult> GetShoeAsync([FromRoute] string shoeId)
         {
             var doc = await _database.GetShoeAsync(shoeId);
             var shoe = new GetShoeDto
@@ -100,7 +78,7 @@ namespace ShoeTracker.Server.Controllers
                 return BadRequest("Gradient must have at least one entry");
             }
 
-            if (shoeDto.Gradient.Count > MAX_GRADIENT_SECTIONS)
+            if (createShoeDto.Gradient.Count > MAX_GRADIENT_SECTIONS)
             {
                 return BadRequest($"Gradient can have at most {MAX_GRADIENT_SECTIONS} sections");
             }

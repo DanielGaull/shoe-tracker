@@ -17,6 +17,8 @@ namespace ShoeTracker.Server.DataAccess
             }.Build();
         }
 
+        // ======================================================================
+
         public async Task<IEnumerable<ShoeDocument>> GetShoesForUserAsync(string userId)
         {
             var query = ShoeCollectionReference().WhereEqualTo("userId", userId);
@@ -44,6 +46,38 @@ namespace ShoeTracker.Server.DataAccess
             await ShoeCollectionReference().Document(shoeId).DeleteAsync();
         }
 
+        // ======================================================================
+
+        public async Task<IEnumerable<ActivityDocument>> GetActivitiesForUserAsync(string userId)
+        {
+            var query = ActivityCollectionReference().WhereEqualTo("userId", userId);
+            var querySnapshot = await query.GetSnapshotAsync();
+            return querySnapshot.Documents.Select(doc => doc.ConvertTo<ActivityDocument>());
+        }
+
+        public async Task<ActivityDocument> GetActivityAsync(string activityId)
+        {
+            return (await ActivityCollectionReference().Document(activityId).GetSnapshotAsync()).ConvertTo<ActivityDocument>();
+        }
+
+        public async Task AddActivityAsync(ActivityDocument doc)
+        {
+            await ActivityCollectionReference().Document(doc.Id).SetAsync(doc);
+        }
+
+        public async Task UpdateActivityAsync(string activityId, ActivityDocument doc)
+        {
+            await ActivityCollectionReference().Document(activityId).SetAsync(doc);
+        }
+
+        public async Task DeleteActivityAsync(string activityId)
+        {
+            await ActivityCollectionReference().Document(activityId).DeleteAsync();
+        }
+
+        // ======================================================================
+
         private CollectionReference ShoeCollectionReference() => _database.Collection("Shoes");
+        private CollectionReference ActivityCollectionReference() => _database.Collection("Activities");
     }
 }
