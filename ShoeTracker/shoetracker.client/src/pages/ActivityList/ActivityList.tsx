@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
+import Calendar from '../../components/Calendar/Calendar';
+import { months } from '../../util/util';
 
 import './ActivityList.css';
-
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const ActivityList = () => {
     const navigate = useNavigate();
@@ -62,6 +62,11 @@ const ActivityList = () => {
                 </select>
                 <button onClick={nextMonth}>&gt;</button>
             </div>
+
+            <Calendar
+                month={month}
+                year={year}
+            />
         </>
     );
 };
