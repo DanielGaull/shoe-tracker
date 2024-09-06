@@ -46,7 +46,7 @@ const ActivityList = () => {
                 <h1>Activities</h1>
                 <button
                     onClick={() => {
-                        navigate('/add-activity');
+                        navigate('/create-activity');
                     }}
                 >
                     + Add Activity

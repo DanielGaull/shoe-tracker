@@ -1,0 +1,13 @@
+.edit-activity {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    margin: auto;
+}
+
+.thin-select {
+    width: 175px;
+    padding: 6px 20px;
+    margin-left: 5px;
+}

@@ -1,73 +1,9 @@
-input {
-    font-size: 24px;
-    width: 500px;
-    border-radius: 10px;
-    border: none;
-    padding: 5px 10px;
-    background-color: #3b3b3b;
-    color: white;
-    margin-top: 5px;
-
-    &:focus {
-        outline: solid 3px #255e7d;
-    }
-
-    &[type=date] {
-        width: 200px;
-    }
-
-    &.thin-input {
-        width: 70px;
-    }
-}
-
-textarea {
-    font-size: 15px;
-    width: 500px;
-    resize: vertical;
-    border-radius: 10px;
-    border: none;
-    padding: 5px 10px;
-    background-color: #3b3b3b;
-    color: white;
-    margin-top: 5px;
-    font-family: Arial, Helvetica, sans-serif;
-
-    &:focus {
-        outline: solid 3px #255e7d;
-    }
-}
-
-label {
-    margin-right: 10px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: text;
-}
-
 .edit-shoe {
     padding: 25px;
     display: flex;
     flex-direction: column;
     width: max-content;
     margin: auto;
-}
-
-.form {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-
-.label-field {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-}
-
-.spacer {
-    height: 20px;
-    content: none;
 }
 
 .gradient-section {
@@ -83,19 +19,10 @@ label {
     align-items: flex-end;
 }
 
-input[type=range] {
-    padding: 0;
-}
-
 .gradient-x-button {
     position: absolute;
     right: -7px;
     top: -7px;
-}
-
-.error-text {
-    color: #d11919;
-    font-weight: 700;
 }
 
 .bottom-section {

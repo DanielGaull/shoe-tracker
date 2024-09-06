@@ -6,6 +6,7 @@ import { DateModel, EditShoeDto, GradientSection, Shoe, TextColor } from '../../
 import ShoeEntry from '../ShoeList/ShoeEntry';
 
 import './EditShoe.css';
+import NumberInput from '../../components/NumberInput/NumberInput';
 
 interface EditShoeProps {
     isNew?: boolean;
@@ -105,12 +106,9 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
                     </div>
                     <div className="label-field">
                         <label>Version:</label>
-                        <input
-                            className="thin-input"
+                        <NumberInput 
                             value={modelVersion}
-                            onChange={(e) => {
-                                setModelVersion(e.target.value.replace(/\D/,''));
-                            }}
+                            onChange={(v) => setModelVersion(v)}
                         />
                     </div>
 
@@ -139,22 +137,16 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
                     </div>
                     <div className="label-field">
                         <label>Starting Mileage:</label>
-                        <input
-                            className="thin-input"
+                        <NumberInput 
                             value={startingMiles}
-                            onChange={(e) => {
-                                setStartingMiles(e.target.value.replace(/\D/,''));
-                            }}
+                            onChange={(v) => setStartingMiles(v)}
                         />
                     </div>
                     <div className="label-field">
                         <label>Warn at Mileage:</label>
-                        <input
-                            className="thin-input"
+                        <NumberInput 
                             value={warnAtMileage}
-                            onChange={(e) => {
-                                setWarnAtMileage(e.target.value.replace(/\D/,''));
-                            }}
+                            onChange={(v) => setWarnAtMileage(v)}
                         />
                     </div>
 
