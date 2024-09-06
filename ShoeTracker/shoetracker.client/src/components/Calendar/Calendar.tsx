@@ -70,8 +70,6 @@ interface CalendarProps {
 const Calendar = ({ month, year }: CalendarProps) => {
     const weeksToDisplay = constructDays(month, year);
 
-    console.log(weeksToDisplay);
-
     return (
         <div className="calendar-container">
             <table className="calendar">

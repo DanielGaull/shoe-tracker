@@ -30,7 +30,7 @@ const ActivityList = () => {
     const prevMonth = () => {
         if (month <= 1) {
             setMonth(months.length);
-            if (year < years[years.length - 1]) {
+            if (year <= years[years.length - 1]) {
                 setYear(years[0]);
             } else {
                 setYear(y => y - 1);
