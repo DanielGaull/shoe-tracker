@@ -3,9 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router';
 import ShoeEntry from './ShoeEntry';
 import { Shoe } from '../../types/shoes';
+import Modal from '../../components/Modal/Modal';
 
 import './ShoeList.css';
-import Modal from '../../components/Modal/Modal';
 
 const ShoeList = () => {
     const [shoes, setShoes] = useState<Shoe[]>([]);

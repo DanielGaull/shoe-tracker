@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DistanceUnit } from '../../types/activity';
 import NumberInput from '../../components/NumberInput/NumberInput';
 import { useNavigate } from 'react-router';
+import { Shoe } from '../../types/shoes';
+import axios from 'axios';
+import { calculateBackground } from '../../util/util';
 
 import './EditActivity.css';
 
@@ -14,7 +17,8 @@ interface EditActivityProps {
 const EditActivity = ({ isNew }: EditActivityProps) => {
     const navigate = useNavigate();
 
-    const [shoeId, setShoeId] = useState<string | null>(null);
+    const [shoes, setShoes] = useState<Shoe[]>([]);
+    const [shoeId, setShoeId] = useState<string>('none');
     const [distance, setDistance] = useState('0');
     const [distanceUnits, setDistanceUnits] = useState<DistanceUnit>('Miles');
     const [hours, setHours] = useState('0');
@@ -24,6 +28,15 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
     const [desc, setDesc] = useState('');
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [ordinal, setOrdinal] = useState('0');
+
+    async function load() {
+        const response = await axios.get('/api/shoes');
+        setShoes(response.data);
+    }
+
+    useEffect(() => {
+        load();
+    }, []);
 
     return (
         <div className="edit-activity">
@@ -95,6 +108,20 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
                             onChange={(e) => setDesc(e.target.value)}
                             className="tall"
                         />
+                    </div>
+                    <div className="label-field">
+                        <label>Shoe:</label>
+                        <select value={shoeId} onChange={e => setShoeId(e.target.value)}>
+                            <option value="none">None</option>
+                            {shoes.map(shoe => (
+                                <option
+                                    value={shoe.id}
+                                    key={shoe.id}
+                                >
+                                    {shoe.shoeName}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
             </div>

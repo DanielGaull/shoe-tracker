@@ -1,4 +1,4 @@
-import { GradientSection, Color } from "../types/shoes";
+import { GradientSection, Color, DateModel } from "../types/shoes";
 
 const colorToRgbaString = (c: Color): string => {
     return `rgba(${c.r},${c.g},${c.b},1)`;
@@ -24,6 +24,12 @@ const calculateBackground = (gradient: GradientSection[]): string => {
     return `linear-gradient(90deg, ${gradStrs.join(', ')})`;
 };
 
+const stringDateToDateModel = (date: string): DateModel => ({
+    month: new Date(date).getMonth() + 1,
+    day: new Date(date).getDate() + 1,
+    year: new Date(date).getFullYear(),
+});
+
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -31,4 +37,5 @@ export {
     calculateBackground,
     weekdays,
     months,
+    stringDateToDateModel,
 };

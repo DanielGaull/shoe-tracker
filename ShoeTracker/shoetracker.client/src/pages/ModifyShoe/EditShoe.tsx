@@ -2,23 +2,18 @@ import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router';
 import GradientEditor from './GradientEditor';
-import { DateModel, EditShoeDto, GradientSection, Shoe, TextColor } from '../../types/shoes';
+import { EditShoeDto, GradientSection, Shoe, TextColor } from '../../types/shoes';
 import ShoeEntry from '../ShoeList/ShoeEntry';
+import NumberInput from '../../components/NumberInput/NumberInput';
+import { stringDateToDateModel } from '../../util/util';
 
 import './EditShoe.css';
-import NumberInput from '../../components/NumberInput/NumberInput';
 
 interface EditShoeProps {
     isNew?: boolean;
 }
 
 const textColors: TextColor[] = ['Light', 'Dark'];
-
-const stringDateToDateModel = (date: string): DateModel => ({
-    month: new Date(date).getMonth() + 1,
-    day: new Date(date).getDate() + 1,
-    year: new Date(date).getFullYear(),
-});
 
 const EditShoe = ({ isNew = false }: EditShoeProps) => {
     const [brand, setBrand] = useState('');
