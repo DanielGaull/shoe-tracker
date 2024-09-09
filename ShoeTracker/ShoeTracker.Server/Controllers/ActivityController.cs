@@ -32,6 +32,21 @@ namespace ShoeTracker.Server.Controllers
             return Ok(activity);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateActivityAsync([FromBody] CreateActivityDto dto)
+        {
+            string? msg = ValidateActivity(dto);
+            if (msg != null)
+            {
+                return BadRequest(msg);
+            }
+
+            ActivityDocument activity = DtoToDoc(dto);
+            await _database.AddActivityAsync(activity);
+
+            return Ok();
+        }
+
         private GetActivityDto DocToDto(ActivityDocument doc)
         {
             return new GetActivityDto
@@ -48,6 +63,40 @@ namespace ShoeTracker.Server.Controllers
                 Date = new DateModel(doc.Month, doc.Day, doc.Year),
                 Ordinal = doc.Ordinal,
             };
+        }
+
+        private ActivityDocument DtoToDoc(CreateActivityDto dto)
+        {
+            return new ActivityDocument
+            {
+                Id = dto.Id.ToString(),
+                UserId = dto.UserId,
+                ShoeId = dto.ShoeId,
+                Distance = dto.Distance,
+                DistanceUnits = dto.DistanceUnits.ToString(),
+                Time = dto.Time,
+                Name = dto.Name,
+                Description = dto.Description,
+                Month = dto.Date.Month,
+                Day = dto.Date.Day,
+                Year = dto.Date.Year,
+                Ordinal = dto.Ordinal,
+            };
+        }
+
+        private string? ValidateActivity(CreateActivityDto dto)
+        {
+            if (dto.Distance < 0)
+            {
+                return "Distance must be greater than zero";
+            }
+
+            if (dto.Name.Length <= 0)
+            {
+                return "Name is required";
+            }
+
+            return null;
         }
     }
 }
