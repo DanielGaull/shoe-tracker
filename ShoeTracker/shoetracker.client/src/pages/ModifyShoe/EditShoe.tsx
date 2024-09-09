@@ -181,7 +181,7 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
                     displayOnly
                 />
 
-                {err.length > 0 && <div className="error-text">{err}</div>}
+                {err.length > 0 && <pre className="error-text">{err}</pre>}
             </div>
 
             <div className="button-row">

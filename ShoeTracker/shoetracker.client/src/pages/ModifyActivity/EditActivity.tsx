@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { DistanceUnit } from '../../types/activity';
+import { DistanceUnit, EditActivityDto } from '../../types/activity';
 import NumberInput from '../../components/NumberInput/NumberInput';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { Shoe } from '../../types/shoes';
-import axios from 'axios';
-import { calculateBackground } from '../../util/util';
+import axios, { AxiosError } from 'axios';
+import { stringDateToDateModel } from '../../util/util';
 
 import './EditActivity.css';
 
@@ -29,6 +29,9 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [ordinal, setOrdinal] = useState('0');
 
+    const [err, setErr] = useState('');
+    const { activityId } = useParams();
+
     async function load() {
         const response = await axios.get('/api/shoes');
         setShoes(response.data);
@@ -37,6 +40,36 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
     useEffect(() => {
         load();
     }, []);
+
+    const submit = async () => {
+        const newActivity: EditActivityDto = {
+            name: name,
+            description: desc.length > 0 ? desc : '',
+            distance: parseFloat(distance),
+            distanceUnits,
+            date: stringDateToDateModel(date),
+            ordinal: parseInt(ordinal),
+            time: {
+                hours: parseInt(hours),
+                minutes: parseInt(minutes),
+                seconds: parseInt(seconds),
+            },
+            shoeId,
+        };
+
+        try {
+            if (isNew) {
+                await axios.post('/api/activities', newActivity);
+            } else {
+                await axios.put(`/api/activities/${activityId}`, newActivity);
+            }
+            setErr('');
+            navigate('/activities');
+        } catch (err) {
+            const axiosError = err as AxiosError;
+            setErr(axiosError.response?.data as string ?? 'Unknown error occurred');
+        }
+    };
 
     return (
         <div className="edit-activity">
@@ -126,9 +159,11 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
                 </div>
             </div>
 
+            {err.length > 0 && <pre className="error-text">{err}</pre>}
+
             <div className="button-row">
                 <button className="mt mr-s fc" onClick={() => navigate('/activities')}>Cancel</button>
-                <button className="mt fc">Submit</button>
+                <button className="mt fc" onClick={submit}>Submit</button>
             </div>
         </div>
     );

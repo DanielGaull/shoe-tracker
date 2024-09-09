@@ -20,3 +20,14 @@ export interface Activity {
     date: DateModel;
     ordinal: number;
 }
+
+export interface EditActivityDto {
+    shoeId: string;
+    distance: number;
+    distanceUnits: DistanceUnit;
+    time: Time;
+    name: string;
+    description?: string;
+    date: DateModel;
+    ordinal: number;
+}

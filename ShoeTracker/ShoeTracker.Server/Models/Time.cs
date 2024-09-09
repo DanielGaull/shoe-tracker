@@ -3,7 +3,7 @@
 namespace ShoeTracker.Server.Models
 {
     [FirestoreData]
-    public class Time
+    public struct Time
     {
         [FirestoreProperty("h")]
         public int Hours { get; set; }
@@ -14,11 +14,11 @@ namespace ShoeTracker.Server.Models
         [FirestoreProperty("s")]
         public int Seconds { get; set; }
 
-        public Time(int h, int m, int s)
+        public Time(int hours, int minutes, int seconds)
         {
-            Hours = h;
-            Minutes = m;
-            Seconds = s;
+            Hours = hours;
+            Minutes = minutes;
+            Seconds = seconds;
         }
     }
 }
