@@ -1,4 +1,5 @@
 using ShoeTracker.Server.DataAccess;
+using ShoeTracker.Server.Service;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IShoeDatabase, ShoeDatabase>();
+builder.Services.AddScoped<IShoeService, ShoeService>();
+builder.Services.AddScoped<IActivityService, ActivityService>();
 
 var app = builder.Build();
 

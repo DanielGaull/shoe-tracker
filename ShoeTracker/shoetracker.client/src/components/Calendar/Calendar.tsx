@@ -1,7 +1,8 @@
 import React from 'react';
+import { weekdays } from '../../util/util';
+import { Activity } from '../../types/activity';
 
 import './Calendar.css';
-import { weekdays } from '../../util/util';
 
 const getDaysInMonth = (month: number, year: number): number => {
     return new Date(year, month, 0).getDate();
@@ -65,9 +66,10 @@ const constructDays = (month: number, year: number): Day[][] => {
 interface CalendarProps {
     month: number;
     year: number;
+    activities: Activity[];
 }
 
-const Calendar = ({ month, year }: CalendarProps) => {
+const Calendar = ({ month, year, activities }: CalendarProps) => {
     const weeksToDisplay = constructDays(month, year);
 
     return (
@@ -83,6 +85,10 @@ const Calendar = ({ month, year }: CalendarProps) => {
                                 if (!day.exists) {
                                     return <td />;
                                 }
+
+                                const todayActivities = activities.filter(a => a.date.day === day.date);
+                                // TODO: Get the shoes for each activity
+
                                 return (
                                     <td key={ix} className={`day ${day.isToday ? 'today' : ''}`}>
                                         {day.date}

@@ -21,5 +21,7 @@
         public DateModel Date { get; set; }
 
         public int Ordinal { get; set; }
+
+        public GetShoeDto? Shoe { get; set; } = null;
     }
 }

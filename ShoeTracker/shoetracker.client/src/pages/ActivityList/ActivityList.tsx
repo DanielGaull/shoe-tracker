@@ -1,7 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Calendar from '../../components/Calendar/Calendar';
 import { months } from '../../util/util';
+import { Activity } from '../../types/activity';
+import axios from 'axios';
 
 import './ActivityList.css';
 
@@ -11,6 +13,8 @@ const ActivityList = () => {
     const today = new Date();
     const [month, setMonth] = useState(today.getMonth() + 1);
     const [year, setYear] = useState(today.getFullYear());
+
+    const [activities, setActivities] = useState<Activity[]>([]);
 
     const years = [...Array(20).keys()].map(i => today.getFullYear() - i);
 
@@ -40,6 +44,19 @@ const ActivityList = () => {
         }
     };
 
+    async function load() {
+        const response = await axios.get(`/api/activities/${month}/${year}`, {
+            params: {
+                includeShoes: true,
+            },
+        });
+        setActivities(response.data);
+    }
+
+    useEffect(() => {
+        load();
+    }, []);
+
     return (
         <>
             <div className="header">
@@ -66,6 +83,7 @@ const ActivityList = () => {
             <Calendar
                 month={month}
                 year={year}
+                activities={activities}
             />
         </>
     );
