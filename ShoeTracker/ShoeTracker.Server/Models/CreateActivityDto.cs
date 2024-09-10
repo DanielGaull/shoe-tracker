@@ -2,9 +2,6 @@
 {
     public class CreateActivityDto
     {
-        public Guid Id { get; set; }
-
-        public string UserId { get; set; } = string.Empty;
 
         public string ShoeId { get; set; } = string.Empty;
 

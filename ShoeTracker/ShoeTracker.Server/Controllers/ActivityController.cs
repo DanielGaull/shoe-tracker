@@ -41,7 +41,7 @@ namespace ShoeTracker.Server.Controllers
                 return BadRequest(msg);
             }
 
-            ActivityDocument activity = DtoToDoc(dto);
+            ActivityDocument activity = DtoToDoc(Guid.NewGuid().ToString(), _testUserId, dto);
             await _database.AddActivityAsync(activity);
 
             return Ok();
@@ -65,12 +65,12 @@ namespace ShoeTracker.Server.Controllers
             };
         }
 
-        private ActivityDocument DtoToDoc(CreateActivityDto dto)
+        private ActivityDocument DtoToDoc(string id, string userId, CreateActivityDto dto)
         {
             return new ActivityDocument
             {
-                Id = dto.Id.ToString(),
-                UserId = dto.UserId,
+                Id = id,
+                UserId = userId,
                 ShoeId = dto.ShoeId,
                 Distance = dto.Distance,
                 DistanceUnits = dto.DistanceUnits.ToString(),
