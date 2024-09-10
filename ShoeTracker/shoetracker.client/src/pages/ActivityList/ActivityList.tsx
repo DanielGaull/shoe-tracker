@@ -13,7 +13,7 @@ const ActivityList = () => {
     const today = new Date();
     const [month, setMonth] = useState(today.getMonth() + 1);
     const [year, setYear] = useState(today.getFullYear());
-
+    const [isLoading, setIsLoading] = useState(false);
     const [activities, setActivities] = useState<Activity[]>([]);
 
     const years = [...Array(20).keys()].map(i => today.getFullYear() - i);
@@ -45,17 +45,19 @@ const ActivityList = () => {
     };
 
     async function load() {
+        setIsLoading(true);
         const response = await axios.get(`/api/activities/${month}/${year}`, {
             params: {
                 includeShoes: true,
             },
         });
         setActivities(response.data);
+        setIsLoading(false);
     }
 
     useEffect(() => {
         load();
-    }, []);
+    }, [month, year]);
 
     return (
         <>
@@ -80,11 +82,13 @@ const ActivityList = () => {
                 <button onClick={nextMonth}>&gt;</button>
             </div>
 
-            <Calendar
-                month={month}
-                year={year}
-                activities={activities}
-            />
+            {!isLoading && (
+                <Calendar
+                    month={month}
+                    year={year}
+                    activities={activities}
+                />
+            )}
         </>
     );
 };

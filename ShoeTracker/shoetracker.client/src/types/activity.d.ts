@@ -1,4 +1,4 @@
-import { DateModel } from "./shoes";
+import { DateModel, Shoe } from "./shoes";
 
 export type DistanceUnit = 'Miles' | 'Meters' | 'Kilometers';
 
@@ -19,6 +19,7 @@ export interface Activity {
     description?: string;
     date: DateModel;
     ordinal: number;
+    shoe?: Shoe;
 }
 
 export interface EditActivityDto {

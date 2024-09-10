@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Shoe } from "../../types/shoes";
-import { calculateBackground } from "../../util/util";
+import { calculateBackground, calculateTextColor } from "../../util/util";
 import { useNavigate } from "react-router";
 
 interface ShoeEntryProps {
@@ -18,11 +18,7 @@ const ShoeEntry = ({ shoe, displayOnly, onDeleteClicked = () => {} }: ShoeEntryP
     }, [shoe.gradient]);
 
     const textValue = useMemo(() => {
-        if (shoe.textColor === 'Light') {
-            return '#dedede';
-        } else {
-            return '#1a1a1a';
-        }
+        return calculateTextColor(shoe.textColor);
     }, [shoe.textColor]);
 
     return (

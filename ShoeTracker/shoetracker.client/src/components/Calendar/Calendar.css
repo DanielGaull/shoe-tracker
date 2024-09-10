@@ -7,6 +7,8 @@
     padding: 5px;
     box-shadow: 2px 2px 2px black;
     transition: 0.5s;
+    cursor: pointer;
+    user-select: none;
 
     &:hover {
         transform: translate(-3px, -3px);
