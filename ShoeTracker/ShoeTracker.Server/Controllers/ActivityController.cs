@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShoeTracker.Server.Models;
+using ShoeTracker.Server.Models.Request;
 using ShoeTracker.Server.Service;
 
 namespace ShoeTracker.Server.Controllers

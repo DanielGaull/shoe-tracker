@@ -1,4 +1,4 @@
-﻿namespace ShoeTracker.Server.Models
+﻿namespace ShoeTracker.Server.Models.Request
 {
     public class GetActivityDto
     {

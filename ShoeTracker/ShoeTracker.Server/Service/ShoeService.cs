@@ -2,6 +2,7 @@
 using ShoeTracker.Server.DataAccess.Models;
 using ShoeTracker.Server.Exception;
 using ShoeTracker.Server.Models;
+using ShoeTracker.Server.Models.Request;
 
 namespace ShoeTracker.Server.Service
 {

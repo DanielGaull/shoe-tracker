@@ -1,4 +1,4 @@
-﻿using ShoeTracker.Server.Models;
+﻿using ShoeTracker.Server.Models.Request;
 
 namespace ShoeTracker.Server.Service
 {
