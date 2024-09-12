@@ -13,9 +13,9 @@ namespace ShoeTracker.Server.Service
             _database = database;
         }
 
-        public async Task CreateUserAsync(CreateAccountDto accountDto)
+        public async Task CreateUserAsync(string id, CreateAccountDto accountDto)
         {
-            UserDocument doc = DtoToDoc(Guid.NewGuid().ToString(), accountDto);
+            UserDocument doc = DtoToDoc(id, accountDto);
             await _database.AddUserAsync(doc);
         }
 

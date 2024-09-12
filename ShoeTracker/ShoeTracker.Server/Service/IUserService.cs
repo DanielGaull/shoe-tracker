@@ -4,7 +4,7 @@ namespace ShoeTracker.Server.Service
 {
     public interface IUserService
     {
-        Task CreateUserAsync(CreateAccountDto accountDto);
+        Task CreateUserAsync(string id, CreateAccountDto accountDto);
         Task<GetUserDto> GetUserAsync(string id);
     }
 }
