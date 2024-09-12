@@ -82,7 +82,20 @@ namespace ShoeTracker.Server.DataAccess
 
         // ======================================================================
 
+        public async Task AddUserAsync(UserDocument doc)
+        {
+            await UserCollectionReference().Document(doc.Id).SetAsync(doc);
+        }
+
+        public async Task<UserDocument> GetUserAsync(string userId)
+        {
+            return (await UserCollectionReference().Document(userId).GetSnapshotAsync()).ConvertTo<UserDocument>();
+        }        
+
+        // ======================================================================
+
         private CollectionReference ShoeCollectionReference() => _database.Collection("Shoes");
         private CollectionReference ActivityCollectionReference() => _database.Collection("Activities");
+        private CollectionReference UserCollectionReference() => _database.Collection("Users");
     }
 }
