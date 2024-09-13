@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using ShoeTracker.Server.Models.Request;
 using ShoeTracker.Server.Service;
 using System.Net;
+using System.Security.Claims;
 
 namespace ShoeTracker.Server.Controllers
 {
@@ -17,7 +20,7 @@ namespace ShoeTracker.Server.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("/sign-in")]
         public async Task<IActionResult> SignInAsync([FromBody] SignInDto dto)
         {
             string? userId = await _authService.SignInUserAsync(dto.Email, dto.Password);
@@ -25,19 +28,37 @@ namespace ShoeTracker.Server.Controllers
             {
                 return StatusCode((int)HttpStatusCode.Unauthorized);
             }
+            // https://learn.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-8.0
             // TODO: create cookie that has the user ID on it
-            throw new NotImplementedException();
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Email, dto.Email),
+                new Claim(ClaimTypes.Upn, userId),
+            };
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                ExpiresUtc = DateTime.UtcNow.AddDays(15),
+                IsPersistent = true,
+                IssuedUtc = DateTime.UtcNow,
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+
+            return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("/create-account")]
         public async Task<IActionResult> CreateAccountAsync([FromBody] CreateAccountDto dto)
         {
             // TODO: make sure email doesn't exist yet
-            // TODO: create cookie
             string newUserId = await _authService.RegisterUserAsync(dto.Email, dto.Password);
             await _userService.CreateUserAsync(newUserId, dto);
 
-            throw new NotImplementedException();
+            return Ok();
         }
     }
 }
