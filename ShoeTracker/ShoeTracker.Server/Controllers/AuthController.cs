@@ -54,6 +54,20 @@ namespace ShoeTracker.Server.Controllers
         [HttpPost("/create-account")]
         public async Task<IActionResult> CreateAccountAsync([FromBody] CreateAccountDto dto)
         {
+            var nonEmptyFields = new List<string>
+            {
+                dto.FirstName, dto.LastName, dto.Email,
+            };
+            if (nonEmptyFields.Any(x => x.Length <= 0))
+            {
+                return BadRequest("First name, last name, and email must not be empty");
+            }
+
+            if (dto.Password.Length < 8)
+            {
+                return BadRequest("Password must be at least 8 characters");
+            }
+
             // TODO: make sure email doesn't exist yet
             string newUserId = await _authService.RegisterUserAsync(dto.Email, dto.Password);
             await _userService.CreateUserAsync(newUserId, dto);

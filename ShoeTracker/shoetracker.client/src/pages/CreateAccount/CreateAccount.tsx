@@ -18,9 +18,12 @@ const CreateAccount = () => {
     useEffect(() => {
         if (password.length > 0 && confirmedPassword.length > 0 && password !== confirmedPassword) {
             setPwErr('Passwords do not match');
-        } else {
-            setPwErr(null);
+            return;
         }
+        if (password.length < 8) {
+            setPwErr('Password must be at least 8 characters long');
+        }
+        setPwErr(null);
 
     }, [password, confirmedPassword]);
 
