@@ -34,7 +34,7 @@ const CreateAccount = () => {
                 <div className="form-column">
                     <div className="label-field">
                         <label>Email</label>
-                        <input value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="label-field">
                         <label>First Name</label>
