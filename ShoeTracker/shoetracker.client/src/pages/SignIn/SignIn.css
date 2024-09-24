@@ -1,0 +1,7 @@
+.sign-in {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    margin: auto;
+}

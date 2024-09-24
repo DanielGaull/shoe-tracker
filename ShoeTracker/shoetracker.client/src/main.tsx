@@ -9,6 +9,7 @@ import ActivityList from './pages/ActivityList/ActivityList.tsx';
 import EditActivity from './pages/ModifyActivity/EditActivity.tsx';
 import CreateAccount from './pages/CreateAccount/CreateAccount.tsx';
 import AccountCreated from './pages/CreateAccount/AccountCreated.tsx';
+import SignIn from './pages/SignIn/SignIn.tsx';
 
 import './index.css';
 
@@ -39,8 +40,12 @@ const router = createBrowserRouter([
   },
   {
     path: '/account-created',
-    element: <AccountCreated />
+    element: <AccountCreated />,
   },
+  {
+    path: '/sign-in',
+    element: <SignIn />,
+  }
 ]);
 
 
