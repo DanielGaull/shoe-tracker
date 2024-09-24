@@ -50,7 +50,7 @@ const SignIn = () => {
                 </div>
             </div>
 
-            {err.length > 0 && <div className="error-text">{err}</div>}
+            {err.length > 0 && <pre className="error-text">{err}</pre>}
 
             <div className="button-row">
                 <button onClick={submit}>Submit</button>

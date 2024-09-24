@@ -78,7 +78,7 @@ const CreateAccount = () => {
                 </div>
             </div>
 
-            {pwErr && <div className="error-text">{pwErr}</div>}
+            {pwErr && <pre className="error-text">{pwErr}</pre>}
             {err.length > 0 && <pre className="error-text">{err}</pre>}
 
             <div className="button-row">
