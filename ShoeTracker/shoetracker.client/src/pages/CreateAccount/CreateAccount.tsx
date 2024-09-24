@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import axios, { AxiosError } from 'axios';
+import { CreateAccountDto } from '../../types/account';
+import { useNavigate } from 'react-router';
 
 import './CreateAccount.css';
 
@@ -10,9 +13,27 @@ const CreateAccount = () => {
     const [confirmedPassword, setConfirmedPassword] = useState('');
 
     const [pwErr, setPwErr] = useState<string | null>(null);
+    const [err, setErr] = useState('');
 
-    const submit = () => {
+    const navigate = useNavigate();
 
+    const submit = async () => {
+        const newAccount: CreateAccountDto = {
+            firstName: first,
+            lastName: last,
+            email,
+            password
+        };
+
+        try {
+            await axios.post('/api/create-account', newAccount);
+            setErr('');
+            navigate('/account-created');
+
+        } catch (err) {
+            const axiosError = err as AxiosError;
+            setErr(axiosError.response?.data as string ?? 'Unknown error occurred');
+        }
     };
 
     useEffect(() => {
@@ -58,6 +79,7 @@ const CreateAccount = () => {
             </div>
 
             {pwErr && <div className="error-text">{pwErr}</div>}
+            {err.length > 0 && <pre className="error-text">{err}</pre>}
 
             <div className="button-row">
                 <button className="mt mr-s fc">
