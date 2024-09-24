@@ -14,8 +14,9 @@ namespace ShoeTracker.Server.Service
                 ApiKey = config["Firebase:ApiKey"],
                 Providers = new FirebaseAuthProvider[]
                 {
-                    new GoogleProvider().AddScopes("email"),
-                }
+                    new EmailProvider()
+                },
+                AuthDomain = "localhost",
             };
             _client = new FirebaseAuthClient(firebaseConfig);
         }

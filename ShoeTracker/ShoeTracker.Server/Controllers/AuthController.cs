@@ -20,7 +20,7 @@ namespace ShoeTracker.Server.Controllers
             _userService = userService;
         }
 
-        [HttpPost("/sign-in")]
+        [HttpPost("sign-in")]
         public async Task<IActionResult> SignInAsync([FromBody] SignInDto dto)
         {
             string? userId = await _authService.SignInUserAsync(dto.Email, dto.Password);
@@ -51,7 +51,7 @@ namespace ShoeTracker.Server.Controllers
             return Ok();
         }
 
-        [HttpPost("/create-account")]
+        [HttpPost("create-account")]
         public async Task<IActionResult> CreateAccountAsync([FromBody] CreateAccountDto dto)
         {
             var nonEmptyFields = new List<string>

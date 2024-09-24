@@ -20,7 +20,7 @@ const SignIn = () => {
         };
 
         try {
-            await axios.post('/api/sign-in', newAccount);
+            await axios.post('/api/auth/sign-in', newAccount);
             setErr('');
             navigate('/');
 

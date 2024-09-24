@@ -19,6 +19,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IShoeDatabase, ShoeDatabase>();
 builder.Services.AddScoped<IShoeService, ShoeService>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

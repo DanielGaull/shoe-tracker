@@ -26,7 +26,7 @@ const CreateAccount = () => {
         };
 
         try {
-            await axios.post('/api/create-account', newAccount);
+            await axios.post('/api/auth/create-account', newAccount);
             setErr('');
             navigate('/account-created');
 
