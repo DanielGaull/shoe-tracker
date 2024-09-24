@@ -82,7 +82,7 @@ const CreateAccount = () => {
             {err.length > 0 && <pre className="error-text">{err}</pre>}
 
             <div className="button-row">
-                <button className="mt mr-s fc">
+                <button className="mt mr-s fc" onClick={submit}>
                     Submit
                 </button>
             </div>

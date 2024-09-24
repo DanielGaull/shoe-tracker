@@ -119,6 +119,10 @@ input {
         width: 200px;
     }
 
+    &[type=checkbox] {
+        width: unset;
+    }
+
     &.thin-input {
         width: 70px;
     }
@@ -176,4 +180,12 @@ label {
 .error-text {
     color: #d11919;
     font-weight: 700;
+}
+
+.c-pointer {
+    cursor: pointer;
+}
+
+.us-none {
+    user-select: none;
 }
