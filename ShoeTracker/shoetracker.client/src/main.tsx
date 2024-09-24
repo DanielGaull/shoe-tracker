@@ -8,6 +8,7 @@ import EditShoe from './pages/ModifyShoe/EditShoe.tsx';
 import ActivityList from './pages/ActivityList/ActivityList.tsx';
 import EditActivity from './pages/ModifyActivity/EditActivity.tsx';
 import CreateAccount from './pages/CreateAccount/CreateAccount.tsx';
+import AccountCreated from './pages/CreateAccount/AccountCreated.tsx';
 
 import './index.css';
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: '/create-account',
     element: <CreateAccount />,
+  },
+  {
+    path: '/account-created',
+    element: <AccountCreated />
   },
 ]);
 
