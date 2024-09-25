@@ -12,7 +12,7 @@ interface NavItem {
 const navItems: NavItem[] = [
     {
         title: 'Shoes',
-        path: '/',
+        path: '/shoes',
     },
     {
         title: 'Activities',

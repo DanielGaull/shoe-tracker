@@ -16,7 +16,7 @@ const router = createBrowserRouter([
         element: <NavBar />,
         children: [
             {
-                path: '/',
+                path: '/shoes',
                 element: <ShoeList />,
             },
             {
