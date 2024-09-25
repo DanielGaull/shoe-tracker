@@ -53,8 +53,13 @@ const SignIn = () => {
             {err.length > 0 && <pre className="error-text">{err}</pre>}
 
             <div className="button-row">
-                <button onClick={submit}>Submit</button>
+                <button className="mt fc" onClick={submit}>Submit</button>
             </div>
+
+
+            <a className="button-row mt" href="/create-account">
+                Don't have an account? Create account instead
+            </a>
         </div>
     )
 };

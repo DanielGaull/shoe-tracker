@@ -82,10 +82,14 @@ const CreateAccount = () => {
             {err.length > 0 && <pre className="error-text">{err}</pre>}
 
             <div className="button-row">
-                <button className="mt mr-s fc" onClick={submit}>
+                <button className="mt fc" onClick={submit}>
                     Submit
                 </button>
             </div>
+
+            <a className="button-row mt" href="/sign-in">
+                Already have an account? Sign-in instead
+            </a>
         </div>
     );
 };
