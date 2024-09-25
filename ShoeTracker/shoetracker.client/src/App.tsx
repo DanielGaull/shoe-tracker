@@ -12,44 +12,49 @@ import SignIn from './pages/SignIn/SignIn.tsx';
 
 const router = createBrowserRouter([
     {
-      path: '/',
-      element: <ShoeList />,
+        path: '/',
+        element: <NavBar />,
+        children: [
+            {
+                path: '/',
+                element: <ShoeList />,
+            },
+            {
+                path: '/create-shoe',
+                element: <EditShoe isNew />,
+            },
+            {
+                path: '/edit-shoe/:shoeId',
+                element: <EditShoe />,
+            },
+            {
+                path: '/activities',
+                element: <ActivityList />,
+            },
+            {
+                path: '/create-activity',
+                element: <EditActivity isNew />,
+            }
+        ]
     },
     {
-      path: '/create-shoe',
-      element: <EditShoe isNew />,
+        path: '/create-account',
+        element: <CreateAccount />,
     },
     {
-      path: '/edit-shoe/:shoeId',
-      element: <EditShoe />,
+        path: '/account-created',
+        element: <AccountCreated />,
     },
     {
-      path: '/activities',
-      element: <ActivityList />,
+        path: '/sign-in',
+        element: <SignIn />,
     },
-    {
-      path: '/create-activity',
-      element: <EditActivity isNew />,
-    },
-    {
-      path: '/create-account',
-      element: <CreateAccount />,
-    },
-    {
-      path: '/account-created',
-      element: <AccountCreated />,
-    },
-    {
-      path: '/sign-in',
-      element: <SignIn />,
-    }
   ]);
   
 
 const App = () => {
     return (
         <>
-            <NavBar />
             <RouterProvider router={router} />
         </>
     );
