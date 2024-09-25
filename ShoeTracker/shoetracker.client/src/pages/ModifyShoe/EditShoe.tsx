@@ -82,7 +82,8 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
             navigate('/');
         } catch (err) {
             const axiosError = err as AxiosError;
-            setErr(axiosError.response?.data as string ?? 'Unknown error occurred');
+            console.log(axiosError);
+            setErr(axiosError.response?.data as string || 'Unknown error occurred');
         }
     };
 

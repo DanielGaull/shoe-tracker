@@ -1,6 +1,6 @@
-using Google.Api;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using ShoeTracker.Server.DataAccess;
+using ShoeTracker.Server.Middleware;
 using ShoeTracker.Server.Service;
 using System.Text.Json.Serialization;
 
@@ -45,6 +45,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.MapControllers();
 
