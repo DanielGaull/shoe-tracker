@@ -26,7 +26,7 @@ const NavBar = () => {
 
     const signOut = async () => {
         await axios.post('/api/auth/sign-out');
-        
+        window.location.href = '/sign-in';
     };
 
     return (

@@ -37,9 +37,15 @@ namespace ShoeTracker.Server.Service
             return userCred?.User?.Uid;
         }
 
-        public string GetCurrentUserId()
+        public string? GetCurrentUserId()
         {
-            return _contextAccessor.HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Upn).FirstOrDefault().Value;
+            return _contextAccessor
+                .HttpContext?
+                .User
+                .Claims
+                .Where(c => c.Type == ClaimTypes.Upn)
+                .FirstOrDefault()?
+                .Value;
         }
     }
 }
