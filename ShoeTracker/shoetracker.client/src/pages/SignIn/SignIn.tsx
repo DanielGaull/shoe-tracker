@@ -22,7 +22,7 @@ const SignIn = () => {
         try {
             await axios.post('/api/auth/sign-in', newAccount);
             setErr('');
-            navigate('/');
+            navigate('/shoes');
 
         } catch (err) {
             const axiosError = err as AxiosError;
