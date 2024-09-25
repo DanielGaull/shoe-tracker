@@ -43,10 +43,10 @@ const SignIn = () => {
                         <label>Password</label>
                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
-                    <label className="c-pointer us-none">
+                    {/* <label className="c-pointer us-none">
                         <input type="checkbox" checked={remember} onChange={() => setRemember(c => !c)} />
                         Remember Me
-                    </label>
+                    </label> */}
                 </div>
             </div>
 
