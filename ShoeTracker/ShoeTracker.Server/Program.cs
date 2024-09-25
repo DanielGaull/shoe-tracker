@@ -30,6 +30,8 @@ builder.Services.AddAuthentication().AddCookie(CookieAuthenticationDefaults.Auth
 
 var app = builder.Build();
 
+app.UseExceptionHandler("/Error");
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 

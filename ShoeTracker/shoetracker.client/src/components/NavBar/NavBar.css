@@ -1,3 +1,8 @@
+.nav-bar-container {
+    display: flex;
+    justify-content: space-between;
+}
+
 .nav-bar {
     text-align: center;
 }

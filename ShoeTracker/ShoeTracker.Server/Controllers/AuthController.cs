@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShoeTracker.Server.Models.Request;
 using ShoeTracker.Server.Service;
@@ -72,6 +73,14 @@ namespace ShoeTracker.Server.Controllers
             string newUserId = await _authService.RegisterUserAsync(dto.Email, dto.Password);
             await _userService.CreateUserAsync(newUserId, dto);
 
+            return Ok();
+        }
+
+        [HttpPost("sign-out")]
+        [Authorize]
+        public async Task<IActionResult> SignOutAsync()
+        {
+            await HttpContext.SignOutAsync();
             return Ok();
         }
     }
