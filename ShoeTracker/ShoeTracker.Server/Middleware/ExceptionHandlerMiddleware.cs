@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShoeTracker.Server.Exception;
 
 namespace ShoeTracker.Server.Middleware
 {
@@ -18,6 +19,11 @@ namespace ShoeTracker.Server.Middleware
             try
             {
                 await _next(context);
+            }
+            catch (BadInputException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsync(ex.Message);
             }
             catch (System.Exception ex)
             {
