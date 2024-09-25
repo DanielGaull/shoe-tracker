@@ -1,18 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShoeTracker.Server.Models.Request;
 using ShoeTracker.Server.Service;
 
 namespace ShoeTracker.Server.Controllers
 {
     [Route("/api/activities")]
+    [Authorize]
     public class ActivityController : Controller
     {
-        private readonly string _testUserId = "ca60773c-3088-4e81-8631-a7d4889eed1d";
         private readonly IActivityService _activityService;
+        private readonly IAuthService _authService;
 
-        public ActivityController(IActivityService activityService)
+        public ActivityController(IActivityService activityService, IAuthService authService)
         {
             _activityService = activityService;
+            _authService = authService;
         }
 
         [HttpGet("{month}/{year}")]
@@ -23,12 +26,12 @@ namespace ShoeTracker.Server.Controllers
         {
             if (includeShoes)
             {
-                var activities = await _activityService.GetActivitiesWithShoeAsync(_testUserId, month, year);
+                var activities = await _activityService.GetActivitiesWithShoeAsync(_authService.GetCurrentUserId(), month, year);
                 return Ok(activities);
             }
             else
             {
-                var activities = await _activityService.GetActivitiesAsync(_testUserId, month, year);
+                var activities = await _activityService.GetActivitiesAsync(_authService.GetCurrentUserId(), month, year);
                 return Ok(activities);
             }
         }
@@ -43,7 +46,7 @@ namespace ShoeTracker.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateActivityAsync([FromBody] CreateActivityDto dto)
         {
-            await _activityService.AddActivityAsync(_testUserId, dto);
+            await _activityService.AddActivityAsync(_authService.GetCurrentUserId(), dto);
             return Ok();
         }
     }
