@@ -1,25 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ShoeTracker.Server.DataAccess.Models;
-using ShoeTracker.Server.Models;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ShoeTracker.Server.Models.Request;
 using ShoeTracker.Server.Service;
 
 namespace ShoeTracker.Server.Controllers
 {
     [Route("/api/shoes")]
+    [Authorize]
     public class ShoeController : Controller
     {
-        private readonly string _testUserId = "ca60773c-3088-4e81-8631-a7d4889eed1d";
         private readonly IShoeService _shoeService;
+        private readonly IAuthService _authService;
 
-        public ShoeController(IShoeService shoeService)
+        public ShoeController(IShoeService shoeService, IAuthService authService)
         {
             _shoeService = shoeService;
+            _authService = authService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetShoesAsync()
         {
-            var shoes = await _shoeService.GetShoesForUserAsync(_testUserId);
+            var user = User;
+            var shoes = await _shoeService.GetShoesForUserAsync(_authService.GetCurrentUserId());
             return Ok(shoes);
         }
 
@@ -33,14 +36,14 @@ namespace ShoeTracker.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> AddShoeAsync([FromBody] CreateShoeDto createShoeDto)
         {
-            await _shoeService.AddShoeAsync(_testUserId, createShoeDto);
+            await _shoeService.AddShoeAsync(_authService.GetCurrentUserId(), createShoeDto);
             return Ok();
         }
 
         [HttpPut("{shoeId}")]
         public async Task<IActionResult> UpdateShoeAsync([FromRoute] string shoeId, [FromBody] CreateShoeDto shoeDto)
         {
-            await _shoeService.UpdateShoeAsync(shoeId, _testUserId, shoeDto);
+            await _shoeService.UpdateShoeAsync(shoeId, _authService.GetCurrentUserId(), shoeDto);
             return Ok();
         }
 

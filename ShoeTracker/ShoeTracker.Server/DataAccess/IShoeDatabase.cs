@@ -25,5 +25,11 @@ namespace ShoeTracker.Server.DataAccess
         Task UpdateActivityAsync(string activityId, ActivityDocument doc);
 
         Task DeleteActivityAsync(string activityId);
+
+        // ======================================================================
+
+        Task AddUserAsync(UserDocument doc);
+
+        Task<UserDocument> GetUserAsync(string userId);
     }
 }

@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using ShoeTracker.Server.DataAccess;
+using ShoeTracker.Server.Middleware;
 using ShoeTracker.Server.Service;
 using System.Text.Json.Serialization;
 
@@ -16,11 +18,23 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 builder.Services.AddScoped<IShoeDatabase, ShoeDatabase>();
 builder.Services.AddScoped<IShoeService, ShoeService>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.AccessDeniedPath = "/sign-in";
+    });
 
 var app = builder.Build();
+
+app.UseExceptionHandler("/Error");
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -35,6 +49,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.MapControllers();
 

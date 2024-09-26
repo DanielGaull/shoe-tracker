@@ -70,6 +70,14 @@ button {
     margin-top: 10px;
 }
 
+.mb {
+    margin-bottom: 20px;
+}
+
+.mb-s {
+    margin-bottom: 10px;
+}
+
 .mr {
     margin-right: 20px;
 }
@@ -117,6 +125,10 @@ input {
 
     &[type=date] {
         width: 200px;
+    }
+
+    &[type=checkbox] {
+        width: unset;
     }
 
     &.thin-input {
@@ -176,4 +188,12 @@ label {
 .error-text {
     color: #d11919;
     font-weight: 700;
+}
+
+.c-pointer {
+    cursor: pointer;
+}
+
+.us-none {
+    user-select: none;
 }

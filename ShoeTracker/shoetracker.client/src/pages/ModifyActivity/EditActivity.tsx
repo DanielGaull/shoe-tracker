@@ -67,7 +67,7 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
             navigate('/activities');
         } catch (err) {
             const axiosError = err as AxiosError;
-            setErr(axiosError.response?.data as string ?? 'Unknown error occurred');
+            setErr(axiosError.response?.data as string || 'Unknown error occurred');
         }
     };
 
