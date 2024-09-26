@@ -14,7 +14,7 @@ namespace ShoeTracker.Server.DataAccess
         {
             _database = new FirestoreDbBuilder
             {
-                ProjectId = config["Firebase:ProjectId"],
+                ProjectId = config["Firebase.ProjectId"],
             }.Build();
         }
 
