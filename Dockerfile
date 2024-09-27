@@ -19,6 +19,16 @@ RUN mkdir -p /root/.aspnet/https
 # Publish a deploy-ready version of the application (-a $ARCH)
 RUN dotnet publish --no-restore -o /app/publish
 
+# Construct a Google credentials file using environment variables
+COPY cred_template.json .
+RUN sed \
+    "s|{PROJECT_ID}|$G_PROJECT_ID|g; \
+    s|{PRIVATE_KEY_ID}|$G_PRIVATE_KEY_ID|g; \
+    s|{PRIVATE_KEY}|$G_PRIVATE_KEY|g; \
+    s|{CLIENT_EMAIL}|$G_CLIENT_EMAIL|g; \
+    s|{CLIENT_ID}|$G_CLIENT_ID|g" \
+    ./cred_template.json > /app/creds.json
+
 # Project built, now actually run it
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 # Expose necessary ports
