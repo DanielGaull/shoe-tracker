@@ -1,6 +1,8 @@
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 # Define argument & set default value; can be overwritten with --build-arg <name>=<value>
 ARG ARCH=x86
+# Pass in the environment variable
+ENV GOOGLE_APPLICATION_CREDENTIALS=/app/creds.json
 # Workdir in the container
 WORKDIR /app
 
