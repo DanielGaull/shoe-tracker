@@ -1,6 +1,8 @@
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 # Define argument & set default value; can be overwritten with --build-arg <name>=<value>
 ARG ARCH=x86
+# Pass in the environment variable
+ENV GOOGLE_APPLICATION_CREDENTIALS=/app/creds.json
 # Workdir in the container
 WORKDIR /app
 
@@ -21,6 +23,10 @@ RUN dotnet publish --no-restore -o /app/publish
 
 # Copy Google credentials
 COPY creds.json .
+# Copy environment variables from file into the actual environment
+COPY ".env" .
+RUN export $(xargs < .env)
+RUN rm .env
 
 # Project built, now actually run it
 FROM mcr.microsoft.com/dotnet/aspnet:8.0

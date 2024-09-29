@@ -6,4 +6,3 @@
 .dotnet
 .Microsoft.DotNet.ImageBuilder
 **/node_modules/
-.env

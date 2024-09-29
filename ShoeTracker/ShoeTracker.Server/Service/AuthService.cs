@@ -13,7 +13,7 @@ namespace ShoeTracker.Server.Service
         {
             var firebaseConfig = new FirebaseAuthConfig
             {
-                ApiKey = config["Firebase.ApiKey"],
+                ApiKey = config["FirebaseApiKey"],
                 Providers = new FirebaseAuthProvider[]
                 {
                     new EmailProvider()
