@@ -23,6 +23,10 @@ RUN dotnet publish --no-restore -o /app/publish
 
 # Copy Google credentials
 COPY creds.json .
+# Copy environment variables from file into the actual environment
+COPY ".env" .
+RUN export $(xargs < .env)
+RUN rm .env
 
 # Project built, now actually run it
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
