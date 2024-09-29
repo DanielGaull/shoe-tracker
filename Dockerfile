@@ -19,6 +19,9 @@ RUN mkdir -p /root/.aspnet/https
 # Publish a deploy-ready version of the application (-a $ARCH)
 RUN dotnet publish --no-restore -o /app/publish
 
+# Copy Google credentials
+COPY creds.json .
+
 # Project built, now actually run it
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 # Expose necessary ports
@@ -27,6 +30,7 @@ EXPOSE 8080
 WORKDIR /app
 # Copy from the build container to the run container
 COPY --from=build /app/publish .
+COPY --from=build /app/creds.json .
 # Sets the user to use for subsequent commands
 USER $APP_UID
 # Run the application

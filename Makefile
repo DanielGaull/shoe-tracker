@@ -7,4 +7,4 @@ docker-build:
 
 .PHONY: docker-run
 docker-run: docker-build
-	docker run -it --rm -p 8080:8080 --name shoetracker shoetrackerapp
+	docker run -it --rm -p 8080:8080 --env-file=.env --name shoetracker shoetrackerapp
