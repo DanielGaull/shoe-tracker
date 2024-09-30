@@ -29,7 +29,7 @@ WORKDIR /app
 COPY --from=build /app/publish .
 COPY creds.json .
 # Copy the appsecrets file from the root of the project to the /app directory
-COPY appsecrets.json .
+COPY --chown=$APP_UID appsecrets.json .
 ENV GOOGLE_APPLICATION_CREDENTIALS=/app/creds.json
 # Sets the user to use for subsequent commands
 USER $APP_UID
