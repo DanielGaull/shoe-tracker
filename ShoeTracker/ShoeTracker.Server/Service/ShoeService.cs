@@ -18,16 +18,16 @@ namespace ShoeTracker.Server.Service
 
         public async Task<IEnumerable<GetShoeDto>> GetShoesForUserAsync(string userId)
         {
-            // TODO: Pull activities to calculate mileage from a shoe doc
             var shoeDocs = await _database.GetShoesForUserAsync(userId);
-            var shoes = shoeDocs.Select(doc => DocToDto(doc));
+            var shoes = await Task.WhenAll(shoeDocs.Select(doc => DocToDtoAsync(doc)));
             return shoes;
         }
 
-        public async Task<GetShoeDto> GetShoeAsync(string id)
+        public async Task<GetShoeDto?> GetShoeAsync(string id)
         {
             var doc = await _database.GetShoeAsync(id);
-            var shoe = DocToDto(doc);
+            if (doc is null) return null;
+            var shoe = await DocToDtoAsync(doc);
             return shoe;
         }
 
@@ -42,13 +42,11 @@ namespace ShoeTracker.Server.Service
         {
             ValidateShoe(dto);
             ShoeDocument shoe = DtoToDoc(id, userId, dto);
-            // TODO: 404 if the shoe doesn't exist (this will currently create the shoe if it doesn't exist)
             await _database.UpdateShoeAsync(id, shoe);
         }
 
         public async Task DeleteShoeAsync(string id)
         {
-            // TODO: 404 if the shoe doesn't exist
             await _database.DeleteShoeAsync(id);
         }
 
@@ -73,11 +71,19 @@ namespace ShoeTracker.Server.Service
             };
         }
 
-        private GetShoeDto DocToDto(ShoeDocument doc)
+        private async Task<GetShoeDto> DocToDtoAsync(ShoeDocument doc)
         {
+            var activities = await _database.GetActivitiesForShoeAsync(doc.Id);
+            var mileage = doc.StartingMileage + 
+                activities
+                    .Select(a => 
+                        DistanceInMiles(a.DistanceUnits, a.Distance))
+                    .Sum();
+
             return new GetShoeDto
             {
                 Id = Guid.Parse(doc.Id),
+                UserId = doc.UserId,
                 Brand = doc.Brand,
                 Model = doc.Model,
                 ModelVersion = doc.ModelVersion,
@@ -87,7 +93,7 @@ namespace ShoeTracker.Server.Service
                 Gradient = doc.Gradient,
                 StartDate = new DateModel(doc.StartMonth, doc.StartDay, doc.StartYear),
                 WarnAtMileage = doc.WarnAtMileage,
-                Miles = doc.StartingMileage,
+                Miles = mileage,
                 StartingMileage = doc.StartingMileage,
             };
         }
@@ -125,6 +131,20 @@ namespace ShoeTracker.Server.Service
             {
                 throw new BadInputException("Brand, model, and name must all have values");
             }
+        }
+
+        private double DistanceInMiles(string units, double distance)
+        {
+            switch (units)
+            {
+                case "Miles":
+                    return distance;
+                case "Meters":
+                    return distance / 1609;
+                case "Kilometers":
+                    return distance * 1000 / 1609;
+            }
+            throw new InvalidDataException($"Invalid distance unit found: {units}");
         }
     }
 }

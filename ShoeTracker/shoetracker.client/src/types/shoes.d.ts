@@ -42,5 +42,5 @@ export interface EditShoeDto {
     gradient: GradientSection[];
     startDate: DateModel;
     warnAtMileage: number;
-    startingMileage: number;
+    startingMiles: number;
 }

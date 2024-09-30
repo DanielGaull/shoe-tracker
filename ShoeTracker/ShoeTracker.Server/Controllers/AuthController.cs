@@ -30,7 +30,6 @@ namespace ShoeTracker.Server.Controllers
                 return StatusCode((int)HttpStatusCode.Unauthorized);
             }
             // https://learn.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-8.0
-            // TODO: create cookie that has the user ID on it
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, dto.Email),

@@ -15,12 +15,11 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
             }}
             className="activity-card"
         >
-            <div className="activity-title">
-                <span>{activity.name}</span>
-                <span>{activity.distance}
-                    {distanceUnitToAbbreviation(activity.distanceUnits)} •&nbsp;
-                    {timeToString(activity.time)}
-                </span>
+            <div>{activity.name}</div>
+            <div>
+                {activity.distance}
+                {distanceUnitToAbbreviation(activity.distanceUnits)} •&nbsp;
+                {timeToString(activity.time)}
             </div>
             <i>{activity.shoe?.shoeName}</i>
         </div>

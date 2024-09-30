@@ -39,7 +39,13 @@ namespace ShoeTracker.Server.Controllers
         [HttpGet("{activityId}")]
         public async Task<IActionResult> GetActivityAsync([FromRoute] string activityId)
         {
+            var userId = _authService.GetCurrentUserId();
             var activity = await _activityService.GetActivityAsync(activityId);
+            if (activity is null || activity.UserId != userId)
+            {
+                return NotFound();
+            }
+
             return Ok(activity);
         }
 

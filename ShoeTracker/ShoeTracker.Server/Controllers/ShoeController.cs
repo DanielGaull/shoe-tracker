@@ -29,7 +29,13 @@ namespace ShoeTracker.Server.Controllers
         [HttpGet("{shoeId}")]
         public async Task<IActionResult> GetShoeAsync([FromRoute] string shoeId)
         {
+            var userId = _authService.GetCurrentUserId();
             var shoe = await _shoeService.GetShoeAsync(shoeId);
+            if (shoe is null || shoe.UserId != userId)
+            {
+                return NotFound();
+            }
+
             return Ok(shoe);
         }
 
@@ -43,13 +49,27 @@ namespace ShoeTracker.Server.Controllers
         [HttpPut("{shoeId}")]
         public async Task<IActionResult> UpdateShoeAsync([FromRoute] string shoeId, [FromBody] CreateShoeDto shoeDto)
         {
-            await _shoeService.UpdateShoeAsync(shoeId, _authService.GetCurrentUserId(), shoeDto);
+            var userId = _authService.GetCurrentUserId();
+            var shoe = await _shoeService.GetShoeAsync(shoeId);
+            if (shoe is null || shoe.UserId != userId)
+            {
+                return NotFound();
+            }
+
+            await _shoeService.UpdateShoeAsync(shoeId, userId, shoeDto);
             return Ok();
         }
 
         [HttpDelete("{shoeId}")]
         public async Task<IActionResult> DeleteShoeAsync([FromRoute] string shoeId)
         {
+            var userId = _authService.GetCurrentUserId();
+            var shoe = await _shoeService.GetShoeAsync(shoeId);
+            if (shoe is null || shoe.UserId != userId)
+            {
+                return NotFound();
+            }
+
             await _shoeService.DeleteShoeAsync(shoeId);
             return Ok();
         }

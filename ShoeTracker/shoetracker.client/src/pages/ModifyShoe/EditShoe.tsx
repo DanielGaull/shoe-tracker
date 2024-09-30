@@ -65,7 +65,7 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
             modelVersion: parseInt(modelVersion),
             shoeName: name,
             description: desc.length > 0 ? desc : '',
-            startingMileage: parseInt(startingMiles),
+            startingMiles: parseInt(startingMiles),
             warnAtMileage: parseInt(warnAtMileage),
             startDate: stringDateToDateModel(startDate),
             textColor,
@@ -79,7 +79,7 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
                 await axios.put(`/api/shoes/${shoeId}`, newShoe);
             }
             setErr('');
-            navigate('/');
+            navigate('/shoes');
         } catch (err) {
             const axiosError = err as AxiosError;
             console.log(axiosError);
