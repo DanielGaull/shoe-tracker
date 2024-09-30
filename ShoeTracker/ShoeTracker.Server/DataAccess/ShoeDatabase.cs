@@ -28,7 +28,7 @@ namespace ShoeTracker.Server.DataAccess
             return querySnapshot.Documents.Select(doc => doc.ConvertTo<ShoeDocument>());
         }
 
-        public async Task<ShoeDocument> GetShoeAsync(string shoeId)
+        public async Task<ShoeDocument?> GetShoeAsync(string shoeId)
         {
             return (await ShoeCollectionReference().Document(shoeId).GetSnapshotAsync()).ConvertTo<ShoeDocument>();
         }
@@ -60,7 +60,15 @@ namespace ShoeTracker.Server.DataAccess
             return querySnapshot.Documents.Select(doc => doc.ConvertTo<ActivityDocument>());
         }
 
-        public async Task<ActivityDocument> GetActivityAsync(string activityId)
+        public async Task<IEnumerable<ActivityDocument>> GetActivitiesForShoeAsync(string shoeId)
+        {
+            var query = ActivityCollectionReference()
+                .WhereEqualTo("shoeId", shoeId);
+            var querySnapshot = await query.GetSnapshotAsync();
+            return querySnapshot.Documents.Select(doc => doc.ConvertTo<ActivityDocument>());
+        }
+
+        public async Task<ActivityDocument?> GetActivityAsync(string activityId)
         {
             return (await ActivityCollectionReference().Document(activityId).GetSnapshotAsync()).ConvertTo<ActivityDocument>();
         }
@@ -87,7 +95,7 @@ namespace ShoeTracker.Server.DataAccess
             await UserCollectionReference().Document(doc.Id).SetAsync(doc);
         }
 
-        public async Task<UserDocument> GetUserAsync(string userId)
+        public async Task<UserDocument?> GetUserAsync(string userId)
         {
             return (await UserCollectionReference().Document(userId).GetSnapshotAsync()).ConvertTo<UserDocument>();
         }        

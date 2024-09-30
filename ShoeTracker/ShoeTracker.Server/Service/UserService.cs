@@ -40,7 +40,7 @@ namespace ShoeTracker.Server.Service
         {
             return new GetUserDto
             {
-                Id = Guid.Parse(doc.Id),
+                Id = doc.Id,
                 FirstName = doc.FirstName,
                 LastName = doc.LastName,
             };

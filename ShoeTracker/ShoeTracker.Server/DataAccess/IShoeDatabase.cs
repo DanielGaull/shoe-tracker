@@ -6,7 +6,7 @@ namespace ShoeTracker.Server.DataAccess
     {
         Task<IEnumerable<ShoeDocument>> GetShoesForUserAsync(string userId);
 
-        Task<ShoeDocument> GetShoeAsync(string shoeId);
+        Task<ShoeDocument?> GetShoeAsync(string shoeId);
 
         Task AddShoeAsync(ShoeDocument doc);
 
@@ -18,7 +18,9 @@ namespace ShoeTracker.Server.DataAccess
 
         Task<IEnumerable<ActivityDocument>> GetActivitiesForUserAsync(string userId, int month, int year);
 
-        Task<ActivityDocument> GetActivityAsync(string activityId);
+        Task<IEnumerable<ActivityDocument>> GetActivitiesForShoeAsync(string shoeId);
+
+        Task<ActivityDocument?> GetActivityAsync(string activityId);
 
         Task AddActivityAsync(ActivityDocument doc);
 
@@ -30,6 +32,6 @@ namespace ShoeTracker.Server.DataAccess
 
         Task AddUserAsync(UserDocument doc);
 
-        Task<UserDocument> GetUserAsync(string userId);
+        Task<UserDocument?> GetUserAsync(string userId);
     }
 }
