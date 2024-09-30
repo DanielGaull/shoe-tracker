@@ -27,7 +27,7 @@ EXPOSE 8080
 WORKDIR /app
 # Copy from the build container to the run container
 COPY --from=build /app/publish .
-COPY creds.json .
+COPY --chown=$APP_UID creds.json .
 # Copy the appsecrets file from the root of the project to the /app directory
 COPY --chown=$APP_UID appsecrets.json .
 ENV GOOGLE_APPLICATION_CREDENTIALS=/app/creds.json
