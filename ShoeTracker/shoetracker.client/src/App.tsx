@@ -10,6 +10,7 @@ import CreateAccount from './pages/CreateAccount/CreateAccount.tsx';
 import AccountCreated from './pages/CreateAccount/AccountCreated.tsx';
 import SignIn from './pages/SignIn/SignIn.tsx';
 import CouldNotReachServer from './pages/ErrorPages/CouldNotReachServer.tsx';
+import DaySummary from './pages/DaySummary/DaySummary.tsx';
 
 const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
             {
                 path: '/create-activity',
                 element: <EditActivity isNew />,
+            },
+            {
+                path: '/day-summary/:year/:month/:day',
+                element: <DaySummary />,
             },
         ]
     },

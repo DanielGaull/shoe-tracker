@@ -36,6 +36,25 @@ namespace ShoeTracker.Server.Controllers
             }
         }
 
+        [HttpGet("{month}/{day}/{year}")]
+        public async Task<IActionResult> GetActivitiesAsync(
+            [FromRoute] int month,
+            [FromRoute] int day,
+            [FromRoute] int year,
+            [FromQuery] bool includeShoes = false)
+        {
+            if (includeShoes)
+            {
+                var activities = await _activityService.GetActivitiesWithShoeAsync(_authService.GetCurrentUserId(), month, year);
+                return Ok(activities);
+            }
+            else
+            {
+                var activities = await _activityService.GetActivitiesAsync(_authService.GetCurrentUserId(), month, year);
+                return Ok(activities);
+            }
+        }
+
         [HttpGet("{activityId}")]
         public async Task<IActionResult> GetActivityAsync([FromRoute] string activityId)
         {

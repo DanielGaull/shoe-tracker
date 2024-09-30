@@ -136,6 +136,14 @@ input {
     }
 }
 
+.white-text-link {
+    color: white;
+
+    &:hover {
+        color: white;
+    }
+}
+
 input[type=range] {
     padding: 0;
 }

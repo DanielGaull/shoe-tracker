@@ -4,6 +4,7 @@ import { Activity } from '../../types/activity';
 
 import './Calendar.css';
 import ActivityCard from '../../pages/ActivityList/ActivityCard';
+import { Link } from 'react-router-dom';
 
 const getDaysInMonth = (month: number, year: number): number => {
     return new Date(year, month, 0).getDate();
@@ -92,10 +93,17 @@ const Calendar = ({ month, year, activities }: CalendarProps) => {
 
                                 return (
                                     <td key={ix} className={`day ${day.isToday ? 'today' : ''}`}>
-                                        {day.date}
-                                        {todayActivities.map(activity => (
-                                            <ActivityCard activity={activity} key={activity.id} />
-                                        ))}
+                                        <Link
+                                            to={`/day-summary/${year}/${month}/${day.date}`}
+                                            className="white-text-link"
+                                        >
+                                            <div>
+                                                {day.date}
+                                                {todayActivities.map(activity => (
+                                                    <ActivityCard activity={activity} key={activity.id} />
+                                                ))}
+                                            </div>
+                                        </Link>
                                     </td>
                                 );
                             })}

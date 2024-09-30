@@ -1,0 +1,6 @@
+.day-summary {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+}
