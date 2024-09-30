@@ -12,7 +12,11 @@ const NumberInput = ({ value, onChange, allowFloats = false, ...rest }: NumberIn
         value={value}
         onChange={(e) => {
             if (allowFloats) {
-                onChange(e.target.value.replace(/[^0-9\.]/,''));
+                const sanitizedValue = e.target.value.replace(/[^0-9\.]/,'');
+                // Only allow change if the value has only one decimal point
+                if (sanitizedValue.indexOf('.') === sanitizedValue.lastIndexOf('.')) {
+                    onChange(sanitizedValue);
+                }
             } else {
                 onChange(e.target.value.replace(/[^0-9]/,''));
             }
