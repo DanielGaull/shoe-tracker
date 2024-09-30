@@ -9,6 +9,7 @@ import EditActivity from './pages/ModifyActivity/EditActivity.tsx';
 import CreateAccount from './pages/CreateAccount/CreateAccount.tsx';
 import AccountCreated from './pages/CreateAccount/AccountCreated.tsx';
 import SignIn from './pages/SignIn/SignIn.tsx';
+import CouldNotReachServer from './pages/ErrorPages/CouldNotReachServer.tsx';
 
 const router = createBrowserRouter([
     {
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
             {
                 path: '/create-activity',
                 element: <EditActivity isNew />,
-            }
+            },
         ]
     },
     {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
     {
         path: '/sign-in',
         element: <SignIn />,
+    },
+    {
+        path: '/500',
+        element: <CouldNotReachServer />,
     },
   ]);
   
