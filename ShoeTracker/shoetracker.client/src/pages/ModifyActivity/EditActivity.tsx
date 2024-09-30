@@ -86,6 +86,7 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
                             <NumberInput
                                 value={distance}
                                 onChange={(v) => setDistance(v)}
+                                allowFloats
                             />
                             <select
                                 className="thin-select"

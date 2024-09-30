@@ -65,7 +65,7 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
             modelVersion: parseInt(modelVersion),
             shoeName: name,
             description: desc.length > 0 ? desc : '',
-            startingMiles: parseInt(startingMiles),
+            startingMiles: parseFloat(startingMiles),
             warnAtMileage: parseInt(warnAtMileage),
             startDate: stringDateToDateModel(startDate),
             textColor,
@@ -136,6 +136,7 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
                         <NumberInput 
                             value={startingMiles}
                             onChange={(v) => setStartingMiles(v)}
+                            allowFloats
                         />
                     </div>
                     <div className="label-field">
