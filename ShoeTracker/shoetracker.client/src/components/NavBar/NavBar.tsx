@@ -34,10 +34,7 @@ const NavBar = () => {
     useEffect(() => {
         async function run() {
             try {
-                const response = await axios.get('/api/whoami');
-                if (response.status === 200) {
-                    navigate('/shoes');
-                }
+                await axios.get('/api/whoami');
             } catch (err) {
                 const axiosErr = err as AxiosError;
                 if (axiosErr.response?.status === 401) {

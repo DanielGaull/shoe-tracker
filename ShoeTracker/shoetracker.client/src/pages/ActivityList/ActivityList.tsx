@@ -4,6 +4,7 @@ import Calendar from '../../components/Calendar/Calendar';
 import { months } from '../../util/util';
 import { Activity } from '../../types/activity';
 import axios from 'axios';
+import Spinner from '../../components/Spinner/Spinner';
 
 import './ActivityList.css';
 
@@ -89,6 +90,7 @@ const ActivityList = () => {
                     activities={activities}
                 />
             )}
+            {isLoading && <Spinner />}
         </>
     );
 };

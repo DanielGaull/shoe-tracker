@@ -4,20 +4,23 @@ import { useNavigate } from 'react-router';
 import ShoeEntry from './ShoeEntry';
 import { Shoe } from '../../types/shoes';
 import Modal from '../../components/Modal/Modal';
+import Spinner from '../../components/Spinner/Spinner';
 
 import './ShoeList.css';
 
 const ShoeList = () => {
     const [shoes, setShoes] = useState<Shoe[]>([]);
-
+    const [loading, setLoading] = useState(false);
     const [shoeToDelete, setShoeToDelete] = useState<Shoe | undefined>();
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
     const navigate = useNavigate();
 
     async function load() {
+        setLoading(true);
         const response = await axios.get('/api/shoes');
         setShoes(response.data);
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -47,20 +50,26 @@ const ShoeList = () => {
                     + Add New Shoe
                 </button>
             </div>
-            {shoes.length > 0 && (
-                <div className="shoe-list">
-                    {shoes.map(shoe => 
-                        <ShoeEntry
-                            shoe={shoe}
-                            onDeleteClicked={() => {
-                                setDeleteModalOpen(true);
-                                setShoeToDelete(shoe);
-                            }} 
-                        />
+
+            {!loading && (
+                <>
+                    {shoes.length > 0 && (
+                        <div className="shoe-list">
+                            {shoes.map(shoe => 
+                                <ShoeEntry
+                                    shoe={shoe}
+                                    onDeleteClicked={() => {
+                                        setDeleteModalOpen(true);
+                                        setShoeToDelete(shoe);
+                                    }} 
+                                />
+                            )}
+                        </div>
                     )}
-                </div>
+                    {shoes.length <= 0 && <h3>No shoes to display</h3>}
+                </>
             )}
-            {shoes.length <= 0 && <h3>No shoes to display</h3>}
+            {loading && <Spinner />}
 
             <Modal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
                 <h3>Are you sure?</h3>
