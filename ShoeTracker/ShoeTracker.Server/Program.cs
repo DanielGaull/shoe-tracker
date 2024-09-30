@@ -6,6 +6,9 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("appsettings.json")
+    .AddJsonFile("appsecrets.json");
+
 // Add services to the container.
 
 builder.Services.AddControllers()
