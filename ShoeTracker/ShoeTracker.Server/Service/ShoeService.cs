@@ -42,13 +42,11 @@ namespace ShoeTracker.Server.Service
         {
             ValidateShoe(dto);
             ShoeDocument shoe = DtoToDoc(id, userId, dto);
-            // TODO: 404 if the shoe doesn't exist (this will currently create the shoe if it doesn't exist)
             await _database.UpdateShoeAsync(id, shoe);
         }
 
         public async Task DeleteShoeAsync(string id)
         {
-            // TODO: 404 if the shoe doesn't exist
             await _database.DeleteShoeAsync(id);
         }
 

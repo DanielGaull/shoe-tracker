@@ -88,7 +88,6 @@ const Calendar = ({ month, year, activities }: CalendarProps) => {
                                 }
 
                                 const todayActivities = activities.filter(a => a.date.day === day.date);
-                                // TODO: Get the shoes for each activity
                                 // TODO: today's activities should be sorted by the ordinal
 
                                 return (
