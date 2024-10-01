@@ -7,11 +7,16 @@ interface ActivityCardProps {
 }
 
 const ActivityCard = ({ activity }: ActivityCardProps) => {
+    console.log(activity);
+
+    const background = activity.shoe ? calculateBackground(activity.shoe.gradient) : 'white';
+    const color = calculateTextColor(activity.shoe ? activity.shoe.textColor : 'Dark');
+
     return (
         <div
             style={{
-                background: calculateBackground(activity.shoe?.gradient!),
-                color: calculateTextColor(activity.shoe?.textColor!),
+                background,
+                color,
             }}
             className="activity-card"
         >
