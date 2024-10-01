@@ -5,7 +5,7 @@ import { Activity } from "../../types/activity";
 
 import './DaySummary.css';
 import Spinner from "../../components/Spinner/Spinner";
-import { distanceAsMiles } from "../../util/util";
+import { distanceAsMiles, roundTo } from "../../util/util";
 import SummaryStat from "./SummaryStat";
 import { Link } from "react-router-dom";
 
@@ -60,8 +60,8 @@ const DaySummary = () => {
                         />
                         <SummaryStat
                             title="Total Daily Mileage"
-                            value={activities.reduce((prev, cur) => 
-                                prev + distanceAsMiles(cur.distance, cur.distanceUnits), 0)}
+                            value={roundTo(activities.reduce((prev, cur) => 
+                                    prev + distanceAsMiles(cur.distance, cur.distanceUnits), 0), 2)}
                             units="mi."
                             className="summary-stat-green"
                         />

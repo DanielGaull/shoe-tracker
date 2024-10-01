@@ -90,7 +90,7 @@ const Calendar = ({ month, year, activities }: CalendarProps) => {
 
                                 const todayActivities = activities
                                     .filter(a => a.date.day === day.date)
-                                    .sort((a, b) => b.ordinal - a.ordinal);
+                                    .sort((a, b) => a.ordinal - b.ordinal);
 
                                 return (
                                     <td key={ix} className={`day ${day.isToday ? 'today' : ''}`}>

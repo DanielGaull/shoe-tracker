@@ -79,6 +79,8 @@ const distanceAsMiles = (dist: number, units: DistanceUnit): number => {
     }
 };
 
+const roundTo = (v: number, d: number): number => Math.round(v * Math.pow(10, d)) / Math.pow(10, d);
+
 export { 
     calculateBackground,
     calculateTextColor,
@@ -88,4 +90,5 @@ export {
     distanceUnitToAbbreviation,
     timeToString,
     distanceAsMiles,
+    roundTo,
 };
