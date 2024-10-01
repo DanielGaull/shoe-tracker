@@ -4,3 +4,34 @@
     flex-direction: column;
     width: max-content;
 }
+
+.summary-stat {
+    border: 5px solid white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    margin: 10px;
+    min-width: 200px;
+
+    .summary-stat-title {
+        font-size: 20px;
+    }
+    .summary-stat-value {
+        font-size: 64px;
+    }
+
+    &.summary-stat-yellow {
+        border-color: #8e7701;
+        background-color: #9e8b2e;
+    }
+    &.summary-stat-green {
+        border-color: #004e05;
+        background-color: #008809;
+    }
+}
+
+.summary {
+    display: flex;
+}

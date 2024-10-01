@@ -59,7 +59,18 @@ const timeToString = (time: Time): string => {
     } else {
         return base;
     }
-}
+};
+
+const distanceAsMiles = (dist: number, units: DistanceUnit): number => {
+    switch (units) {
+        case 'Kilometers':
+            return dist * 1000 / 1609;
+        case 'Meters':
+            return dist / 1609;
+        case 'Miles':
+            return dist;
+    }
+};
 
 export { 
     calculateBackground,
@@ -69,4 +80,5 @@ export {
     stringDateToDateModel,
     distanceUnitToAbbreviation,
     timeToString,
+    distanceAsMiles,
 };
