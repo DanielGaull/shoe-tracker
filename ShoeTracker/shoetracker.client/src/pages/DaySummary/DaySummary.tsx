@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Activity } from "../../types/activity";
 
 import './DaySummary.css';
 import Spinner from "../../components/Spinner/Spinner";
 import { distanceAsMiles } from "../../util/util";
 import SummaryStat from "./SummaryStat";
+import { Link } from "react-router-dom";
 
 const DaySummary = () => {
     const { year, month, day } = useParams();
     const [activities, setActivities] = useState<Activity[]>([]);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     async function load() {
         setLoading(true);
@@ -28,6 +30,11 @@ const DaySummary = () => {
         load();
     }, []);
 
+    const goBack = () => {
+        // TODO: Pass params to calendar to go back to proper month/year
+        navigate('/activities');
+    };
+
     // TODO:
     // No. of activities
     // Total daily mileage
@@ -36,6 +43,9 @@ const DaySummary = () => {
 
     return (
         <div className="day-summary">
+            <Link to="/activities">
+                <button className="small">← Back</button>
+            </Link>
             <h2>Day Summary ({month}/{day}/{year})</h2>
 
             {loading && <Spinner />}
