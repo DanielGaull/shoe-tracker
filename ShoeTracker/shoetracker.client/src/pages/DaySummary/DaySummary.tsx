@@ -31,16 +31,11 @@ const DaySummary = () => {
         load();
     }, []);
 
-    const goBack = () => {
-        // TODO: Pass params to calendar to go back to proper month/year
-        navigate('/activities');
-    };
-
     // TODO: Ability to add new activity for today
 
     return (
         <div className="day-summary">
-            <Link to="/activities">
+            <Link to={`/activities/${year}/${month}`}>
                 <button className="small">← Back</button>
             </Link>
             <h2>Day Summary ({month}/{day}/{year})</h2>
