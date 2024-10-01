@@ -45,12 +45,12 @@ namespace ShoeTracker.Server.Controllers
         {
             if (includeShoes)
             {
-                var activities = await _activityService.GetActivitiesWithShoeAsync(_authService.GetCurrentUserId(), month, year);
+                var activities = await _activityService.GetActivitiesWithShoeAsync(_authService.GetCurrentUserId(), month, day, year);
                 return Ok(activities);
             }
             else
             {
-                var activities = await _activityService.GetActivitiesAsync(_authService.GetCurrentUserId(), month, year);
+                var activities = await _activityService.GetActivitiesAsync(_authService.GetCurrentUserId(), month, day, year);
                 return Ok(activities);
             }
         }
