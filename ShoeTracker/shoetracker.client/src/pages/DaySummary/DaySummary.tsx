@@ -8,6 +8,7 @@ import Spinner from "../../components/Spinner/Spinner";
 import { distanceAsMiles, roundTo } from "../../util/util";
 import SummaryStat from "./SummaryStat";
 import { Link } from "react-router-dom";
+import ActivityCard from "./ActivityCard";
 
 const DaySummary = () => {
     const { year, month, day } = useParams();
@@ -36,10 +37,8 @@ const DaySummary = () => {
     };
 
     // TODO:
-    // No. of activities
-    // Total daily mileage
     // Total daily minutes
-    // List each activity
+    // Ability to add new activity for today
 
     return (
         <div className="day-summary">
@@ -67,6 +66,9 @@ const DaySummary = () => {
                         />
                     </div>
                     <h3>Activities</h3>
+                    {activities
+                        .sort((a, b) => a.ordinal - b.ordinal)
+                        .map((a) => <ActivityCard activity={a} />)}
                 </>
             )}
         </div>

@@ -60,7 +60,8 @@ const distanceUnitToAbbreviation = (unit: DistanceUnit): string => {
 };
 
 const timeToString = (time: Time): string => {
-    const base: string = `${time.minutes.toString().padStart(2, '0')}:${time.seconds.toString().padStart(2, '0')}`;
+    const base: string = `${time.minutes.toString().padStart(2, '0')}:` + 
+        `${roundTo(time.seconds, 2).toString().padStart(2, '0')}`;
     if (time.hours > 0) {
         return `${time.hours.toString().padStart(2, '0')}:${base}`;
     } else {
@@ -81,6 +82,30 @@ const distanceAsMiles = (dist: number, units: DistanceUnit): number => {
 
 const roundTo = (v: number, d: number): number => Math.round(v * Math.pow(10, d)) / Math.pow(10, d);
 
+const getSecondsFromTime = (time: Time): number => {
+    return time.hours * 60 * 60 + time.minutes * 60 + time.seconds;
+};
+
+const calculatePace = (distance: number, time: Time): Time => {
+    const totalSeconds = getSecondsFromTime(time);
+    if (totalSeconds <= 0) {
+        return {
+            hours: 0,
+            minutes: 0,
+            seconds: 0,
+        };
+    }
+    const secondsPer = totalSeconds / distance;
+    const hours = Math.floor(secondsPer / (60 * 60));
+    const minutes = Math.floor((secondsPer - hours * 60 * 60) / 60);
+    const seconds = secondsPer % 60;
+    return {
+        hours,
+        minutes,
+        seconds,
+    };
+};
+
 export { 
     calculateBackground,
     calculateTextColor,
@@ -91,4 +116,6 @@ export {
     timeToString,
     distanceAsMiles,
     roundTo,
+    getSecondsFromTime,
+    calculatePace,
 };

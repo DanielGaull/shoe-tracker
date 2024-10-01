@@ -35,3 +35,21 @@
 .summary {
     display: flex;
 }
+
+.day-activity-card {
+    border-radius: 10px;
+    padding: 2px 5px;
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    width: 45vw;
+}
+
+.day-activity-details {
+    font-size: 17px;
+}
+
+.day-activity-desc {
+    font-size: 14px;
+    font-weight: 400;
+}

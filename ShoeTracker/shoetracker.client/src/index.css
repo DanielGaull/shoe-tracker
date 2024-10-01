@@ -144,6 +144,10 @@ input {
     }
 }
 
+.i {
+    font-style: italic;
+}
+
 input[type=range] {
     padding: 0;
 }

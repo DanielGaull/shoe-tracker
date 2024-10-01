@@ -7,8 +7,6 @@ interface ActivityCardProps {
 }
 
 const ActivityCard = ({ activity }: ActivityCardProps) => {
-    console.log(activity);
-
     const background = activity.shoe ? calculateBackground(activity.shoe.gradient) : 'white';
     const color = calculateTextColor(activity.shoe ? activity.shoe.textColor : 'Dark');
 
