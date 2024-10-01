@@ -33,11 +33,18 @@ const calculateTextColor = (c: TextColor): string => {
     }
 }
 
-const stringDateToDateModel = (date: string): DateModel => ({
-    month: new Date(date).getMonth() + 1,
-    day: new Date(date).getDate() + 1,
-    year: new Date(date).getFullYear(),
-});
+const stringDateToDateModel = (date: string): DateModel => {
+    const firstDash = date.indexOf('-');
+    const lastDash = date.lastIndexOf('-');
+    const year = parseInt(date.substring(0, firstDash));
+    const month = parseInt(date.substring(firstDash + 1, lastDash));
+    const day = parseInt(date.substring(lastDash + 1));
+    return {
+        month,
+        year,
+        day,
+    };
+};
 
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

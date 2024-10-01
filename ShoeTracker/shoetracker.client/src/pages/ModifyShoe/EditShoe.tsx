@@ -187,7 +187,7 @@ const EditShoe = ({ isNew = false }: EditShoeProps) => {
             </div>
 
             <div className="button-row">
-                <button className="mt mr-s fc" onClick={() => navigate('/')}>Cancel</button>
+                <button className="mt mr-s fc" onClick={() => navigate('/shoes')}>Cancel</button>
                 <button className="mt fc" onClick={submit}>Submit</button>
             </div>
         </div>
