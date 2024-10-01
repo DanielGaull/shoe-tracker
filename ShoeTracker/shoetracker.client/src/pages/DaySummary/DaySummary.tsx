@@ -5,7 +5,7 @@ import { Activity } from "../../types/activity";
 
 import './DaySummary.css';
 import Spinner from "../../components/Spinner/Spinner";
-import { distanceAsMiles, roundTo } from "../../util/util";
+import { addTimes, distanceAsMiles, roundTo, timeToString } from "../../util/util";
 import SummaryStat from "./SummaryStat";
 import { Link } from "react-router-dom";
 import ActivityCard from "./ActivityCard";
@@ -63,6 +63,14 @@ const DaySummary = () => {
                                     prev + distanceAsMiles(cur.distance, cur.distanceUnits), 0), 2)}
                             units="mi."
                             className="summary-stat-green"
+                        />
+                        <SummaryStat
+                            title="Total Time"
+                            value={timeToString(
+                                activities.reduce((prev, cur) => 
+                                    addTimes(prev, cur.time), { hours: 0, minutes: 0, seconds: 0 })
+                            )}
+                            className="summary-stat-red"
                         />
                     </div>
                     <h3>Activities</h3>

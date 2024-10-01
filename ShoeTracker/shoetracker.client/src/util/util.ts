@@ -86,6 +86,17 @@ const getSecondsFromTime = (time: Time): number => {
     return time.hours * 60 * 60 + time.minutes * 60 + time.seconds;
 };
 
+const secondsToTime = (s: number): Time => {
+    const hours = Math.floor(s / (60 * 60));
+    const minutes = Math.floor((s - hours * 60 * 60) / 60);
+    const seconds = s % 60;
+    return {
+        hours,
+        minutes,
+        seconds,
+    };
+};
+
 const calculatePace = (distance: number, time: Time): Time => {
     const totalSeconds = getSecondsFromTime(time);
     if (totalSeconds <= 0) {
@@ -96,14 +107,12 @@ const calculatePace = (distance: number, time: Time): Time => {
         };
     }
     const secondsPer = totalSeconds / distance;
-    const hours = Math.floor(secondsPer / (60 * 60));
-    const minutes = Math.floor((secondsPer - hours * 60 * 60) / 60);
-    const seconds = secondsPer % 60;
-    return {
-        hours,
-        minutes,
-        seconds,
-    };
+    return secondsToTime(secondsPer);
+};
+
+const addTimes = (t1: Time, t2: Time): Time => {
+    const totalSeconds = getSecondsFromTime(t1) + getSecondsFromTime(t2);
+    return secondsToTime(totalSeconds);
 };
 
 export { 
@@ -118,4 +127,5 @@ export {
     roundTo,
     getSecondsFromTime,
     calculatePace,
+    addTimes,
 };

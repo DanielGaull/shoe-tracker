@@ -23,12 +23,16 @@
     }
 
     &.summary-stat-yellow {
-        border-color: #8e7701;
-        background-color: #9e8b2e;
+        border-color: #5f5420;
+        /* background-color: #867520; */
     }
     &.summary-stat-green {
-        border-color: #004e05;
-        background-color: #008809;
+        border-color: #294d2b;
+        /* background-color: #334034; */
+    }
+    &.summary-stat-red {
+        border-color: #672222;
+        /* background-color: #a63939; */
     }
 }
 
