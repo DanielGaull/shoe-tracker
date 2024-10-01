@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DistanceUnit, EditActivityDto } from '../../types/activity';
+import { Activity, DistanceUnit, EditActivityDto } from '../../types/activity';
 import NumberInput from '../../components/NumberInput/NumberInput';
 import { useNavigate, useParams } from 'react-router';
 import { Shoe } from '../../types/shoes';
@@ -36,6 +36,25 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
         const response = await axios.get('/api/shoes');
         setShoes(response.data);
     }
+
+    useEffect(() => {
+        async function load() {
+            if (activityId && !isNew) {
+                const activity: Activity = (await axios.get(`/api/activities/${activityId}`)).data;
+                setName(activity.name);
+                setDesc(activity.description ?? '');
+                setDate(new Date(activity.date.year, activity.date.month - 1, activity.date.day).toISOString().split('T')[0]);
+                setShoeId(activity.shoeId);
+                setDistance(activity.distance.toString());
+                setDistanceUnits(activity.distanceUnits);
+                setHours(activity.time.hours.toString());
+                setMinutes(activity.time.minutes.toString());
+                setSeconds(activity.time.seconds.toString());
+                setOrdinal(activity.ordinal.toString());
+            }
+        }
+        load();
+    }, [activityId]);
 
     useEffect(() => {
         load();

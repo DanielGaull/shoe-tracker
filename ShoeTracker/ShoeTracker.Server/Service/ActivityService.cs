@@ -64,14 +64,16 @@ namespace ShoeTracker.Server.Service
             await _database.AddActivityAsync(activity);
         }
 
-        public Task UpdateActivityAsync(string id, string userId, CreateActivityDto dto)
+        public async Task UpdateActivityAsync(string id, string userId, CreateActivityDto dto)
         {
-            throw new NotImplementedException();
+            ValidateActivity(dto);
+            ActivityDocument doc = DtoToDoc(id, userId, dto);
+            await _database.UpdateActivityAsync(id, doc);
         }
 
-        public Task DeleteActivityAsync(string id)
+        public async Task DeleteActivityAsync(string id)
         {
-            throw new NotImplementedException();
+            await _database.DeleteActivityAsync(id);
         }
 
         private GetActivityDto DocToDto(ActivityDocument doc)

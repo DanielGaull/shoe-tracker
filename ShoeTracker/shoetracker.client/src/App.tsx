@@ -41,6 +41,10 @@ const router = createBrowserRouter([
                 path: '/day-summary/:year/:month/:day',
                 element: <DaySummary />,
             },
+            {
+                path: '/edit-activity/:activityId',
+                element: <EditActivity />,
+            },
         ]
     },
     {

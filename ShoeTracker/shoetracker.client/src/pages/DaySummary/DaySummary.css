@@ -47,6 +47,7 @@
     font-weight: 500;
     margin-bottom: 10px;
     width: 45vw;
+    position: relative;
 }
 
 .day-activity-details {
@@ -56,4 +57,10 @@
 .day-activity-desc {
     font-size: 14px;
     font-weight: 400;
+}
+
+.activity-action-icons {
+    position: absolute;
+    top: -23px;
+    right: -7px;
 }
