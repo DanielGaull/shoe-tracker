@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import Calendar from '../../components/Calendar/Calendar';
 import { months } from '../../util/util';
 import { Activity } from '../../types/activity';
@@ -11,11 +11,17 @@ import './ActivityList.css';
 const ActivityList = () => {
     const navigate = useNavigate();
 
+    const params = useParams();
+
     const today = new Date();
-    const [month, setMonth] = useState(today.getMonth() + 1);
-    const [year, setYear] = useState(today.getFullYear());
+    const [month, setMonth] = useState(params.month ? parseInt(params.month) : today.getMonth() + 1);
+    const [year, setYear] = useState(params.year ? parseInt(params.year) : today.getFullYear());
     const [isLoading, setIsLoading] = useState(false);
     const [activities, setActivities] = useState<Activity[]>([]);
+
+    useEffect(() => {
+        window.history.replaceState(null, "Calendar", `/activities/${year}/${month}`);
+    }, [month, year]);
 
     const years = [...Array(20).keys()].map(i => today.getFullYear() - i);
 

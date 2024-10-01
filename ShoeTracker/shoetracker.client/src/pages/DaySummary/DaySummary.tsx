@@ -36,9 +36,7 @@ const DaySummary = () => {
         navigate('/activities');
     };
 
-    // TODO:
-    // Total daily minutes
-    // Ability to add new activity for today
+    // TODO: Ability to add new activity for today
 
     return (
         <div className="day-summary">

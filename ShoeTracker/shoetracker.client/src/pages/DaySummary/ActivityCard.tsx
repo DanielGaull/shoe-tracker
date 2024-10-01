@@ -13,8 +13,6 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
     const pace = calculatePace(distanceAsMiles(activity.distance, activity.distanceUnits), activity.time);
     const navigate = useNavigate();
 
-    // TODO: Edit/delete
-
     return (
         <div
             style={{

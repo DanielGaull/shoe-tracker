@@ -34,6 +34,10 @@ const router = createBrowserRouter([
                 element: <ActivityList />,
             },
             {
+                path: '/activities/:year/:month',
+                element: <ActivityList />,
+            },
+            {
                 path: '/create-activity',
                 element: <EditActivity isNew />,
             },
