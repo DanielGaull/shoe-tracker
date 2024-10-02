@@ -17,30 +17,26 @@ namespace ShoeTracker.Server.Service
             _shoeService = shoeService;
         }
 
-        public async Task<IList<GetActivityDto>> GetActivitiesAsync(string userId, int month, int year)
+        public async Task<IList<GetActivityDto>> GetActivitiesAsync(string userId, int month, int year, bool includeShoe, bool includeExtraDays)
         {
             var activityDocs = await _database.GetActivitiesForUserAsync(userId, month, year);
             var activities = activityDocs.Select(doc => DocToDto(doc)).ToList();
+            if (includeShoe)
+            {
+                return await ActivitiesWithShoesAsync(activities);
+            }
             return activities;
         }
 
-        public async Task<IList<GetActivityDto>> GetActivitiesWithShoeAsync(string userId, int month, int year)
-        {
-            var activities = await GetActivitiesAsync(userId, month, year);
-            return await ActivitiesWithShoesAsync(activities);
-        }
-
-        public async Task<IList<GetActivityDto>> GetActivitiesAsync(string userId, int month, int day, int year)
+        public async Task<IList<GetActivityDto>> GetActivitiesForDayAsync(string userId, int month, int day, int year, bool includeShoes)
         {
             var activityDocs = await _database.GetActivitiesForUserAsync(userId, month, day, year);
             var activities = activityDocs.Select(doc => DocToDto(doc)).ToList();
+            if (includeShoes)
+            {
+                return await ActivitiesWithShoesAsync(activities);
+            }
             return activities;
-        }
-
-        public async Task<IList<GetActivityDto>> GetActivitiesWithShoeAsync(string userId, int month, int day, int year)
-        {
-            var activities = await GetActivitiesAsync(userId, month, day, year);
-            return await ActivitiesWithShoesAsync(activities);
         }
 
         public async Task<IList<GetActivityDto>> GetActivitiesForShoeAsync(string shoeId)

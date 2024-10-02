@@ -18,22 +18,22 @@ namespace ShoeTracker.Server.Controllers
             _authService = authService;
         }
 
+        // If includeShoes = true, then populates the Shoe property of GetActivityDto
+        // If includeExtraDays = true, then will include days that fall within weeks in this month but aren't part of this month
         [HttpGet("{month}/{year}")]
         public async Task<IActionResult> GetActivitiesAsync(
             [FromRoute] int month,
             [FromRoute] int year,
-            [FromQuery] bool includeShoes = false)
+            [FromQuery] bool includeShoes = false,
+            [FromQuery] bool includeExtraDays = false)
         {
-            if (includeShoes)
-            {
-                var activities = await _activityService.GetActivitiesWithShoeAsync(_authService.GetCurrentUserId(), month, year);
-                return Ok(activities);
-            }
-            else
-            {
-                var activities = await _activityService.GetActivitiesAsync(_authService.GetCurrentUserId(), month, year);
-                return Ok(activities);
-            }
+            var activities = await _activityService.GetActivitiesAsync(
+                _authService.GetCurrentUserId(), 
+                month, 
+                year,
+                includeShoes,
+                includeExtraDays);
+            return Ok(activities);
         }
 
         [HttpGet("{month}/{day}/{year}")]
@@ -43,16 +43,8 @@ namespace ShoeTracker.Server.Controllers
             [FromRoute] int year,
             [FromQuery] bool includeShoes = false)
         {
-            if (includeShoes)
-            {
-                var activities = await _activityService.GetActivitiesWithShoeAsync(_authService.GetCurrentUserId(), month, day, year);
-                return Ok(activities);
-            }
-            else
-            {
-                var activities = await _activityService.GetActivitiesAsync(_authService.GetCurrentUserId(), month, day, year);
-                return Ok(activities);
-            }
+            var activities = await _activityService.GetActivitiesForDayAsync(_authService.GetCurrentUserId(), month, day, year, includeShoes);
+            return Ok(activities);
         }
 
         [HttpGet("{activityId}")]
