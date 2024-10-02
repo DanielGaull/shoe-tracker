@@ -5,6 +5,11 @@
     border-top-color: transparent;
     animation: rotate 1s linear infinite;
     border-radius: 50%;
+
+    &.small {
+        width: 20px;
+        height: 20px;
+    }
 }
 @keyframes rotate {
     0% {

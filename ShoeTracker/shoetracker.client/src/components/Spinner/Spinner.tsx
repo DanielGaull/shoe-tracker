@@ -2,8 +2,12 @@ import React from 'react';
 
 import './Spinner.css';
 
-const Spinner  = () => {
-    return <div className="spinner" />;
+interface SpinnerProps {
+    small?: boolean;
+}
+
+const Spinner  = ({ small = false }: SpinnerProps) => {
+    return <div className={`spinner ${small ? 'small' : ''}`} />;
 };
 
 export default Spinner;
