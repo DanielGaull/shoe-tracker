@@ -9,6 +9,8 @@ import EditActivity from './pages/ModifyActivity/EditActivity.tsx';
 import CreateAccount from './pages/CreateAccount/CreateAccount.tsx';
 import AccountCreated from './pages/CreateAccount/AccountCreated.tsx';
 import SignIn from './pages/SignIn/SignIn.tsx';
+import CouldNotReachServer from './pages/ErrorPages/CouldNotReachServer.tsx';
+import DaySummary from './pages/DaySummary/DaySummary.tsx';
 
 const router = createBrowserRouter([
     {
@@ -32,9 +34,21 @@ const router = createBrowserRouter([
                 element: <ActivityList />,
             },
             {
+                path: '/activities/:year/:month',
+                element: <ActivityList />,
+            },
+            {
                 path: '/create-activity',
                 element: <EditActivity isNew />,
-            }
+            },
+            {
+                path: '/day-summary/:year/:month/:day',
+                element: <DaySummary />,
+            },
+            {
+                path: '/edit-activity/:activityId',
+                element: <EditActivity />,
+            },
         ]
     },
     {
@@ -48,6 +62,10 @@ const router = createBrowserRouter([
     {
         path: '/sign-in',
         element: <SignIn />,
+    },
+    {
+        path: '/500',
+        element: <CouldNotReachServer />,
     },
   ]);
   

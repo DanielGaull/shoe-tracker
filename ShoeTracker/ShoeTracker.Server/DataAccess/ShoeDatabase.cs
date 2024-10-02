@@ -60,6 +60,17 @@ namespace ShoeTracker.Server.DataAccess
             return querySnapshot.Documents.Select(doc => doc.ConvertTo<ActivityDocument>());
         }
 
+        public async Task<IEnumerable<ActivityDocument>> GetActivitiesForUserAsync(string userId, int month, int day, int year)
+        {
+            var query = ActivityCollectionReference()
+                .WhereEqualTo("userId", userId)
+                .WhereEqualTo("month", month)
+                .WhereEqualTo("day", day)
+                .WhereEqualTo("year", year);
+            var querySnapshot = await query.GetSnapshotAsync();
+            return querySnapshot.Documents.Select(doc => doc.ConvertTo<ActivityDocument>());
+        }
+
         public async Task<IEnumerable<ActivityDocument>> GetActivitiesForShoeAsync(string shoeId)
         {
             var query = ActivityCollectionReference()

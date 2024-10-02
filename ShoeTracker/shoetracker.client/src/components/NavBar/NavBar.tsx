@@ -39,6 +39,8 @@ const NavBar = () => {
                 const axiosErr = err as AxiosError;
                 if (axiosErr.response?.status === 401) {
                     navigate('/sign-in');
+                } else if (axiosErr.response?.status === 500) {
+                    navigate('/500');
                 }
             }
 

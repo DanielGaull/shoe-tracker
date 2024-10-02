@@ -27,23 +27,20 @@ namespace ShoeTracker.Server.Service
         public async Task<IList<GetActivityDto>> GetActivitiesWithShoeAsync(string userId, int month, int year)
         {
             var activities = await GetActivitiesAsync(userId, month, year);
+            return await ActivitiesWithShoesAsync(activities);
+        }
 
-            var shoes = new Dictionary<string, GetShoeDto>();
-            foreach (var activity in activities)
-            {
-                if (!shoes.ContainsKey(activity.ShoeId))
-                {
-                    var shoe = await _shoeService.GetShoeAsync(activity.ShoeId);
-                    shoes.Add(activity.ShoeId, shoe);
-                    activity.Shoe = shoe;
-                }
-                else
-                {
-                    activity.Shoe = shoes[activity.ShoeId];
-                }
-            }
-
+        public async Task<IList<GetActivityDto>> GetActivitiesAsync(string userId, int month, int day, int year)
+        {
+            var activityDocs = await _database.GetActivitiesForUserAsync(userId, month, day, year);
+            var activities = activityDocs.Select(doc => DocToDto(doc)).ToList();
             return activities;
+        }
+
+        public async Task<IList<GetActivityDto>> GetActivitiesWithShoeAsync(string userId, int month, int day, int year)
+        {
+            var activities = await GetActivitiesAsync(userId, month, day, year);
+            return await ActivitiesWithShoesAsync(activities);
         }
 
         public async Task<IList<GetActivityDto>> GetActivitiesForShoeAsync(string shoeId)
@@ -67,14 +64,16 @@ namespace ShoeTracker.Server.Service
             await _database.AddActivityAsync(activity);
         }
 
-        public Task UpdateActivityAsync(string id, string userId, CreateActivityDto dto)
+        public async Task UpdateActivityAsync(string id, string userId, CreateActivityDto dto)
         {
-            throw new NotImplementedException();
+            ValidateActivity(dto);
+            ActivityDocument doc = DtoToDoc(id, userId, dto);
+            await _database.UpdateActivityAsync(id, doc);
         }
 
-        public Task DeleteActivityAsync(string id)
+        public async Task DeleteActivityAsync(string id)
         {
-            throw new NotImplementedException();
+            await _database.DeleteActivityAsync(id);
         }
 
         private GetActivityDto DocToDto(ActivityDocument doc)
@@ -113,6 +112,26 @@ namespace ShoeTracker.Server.Service
                 Year = dto.Date.Year,
                 Ordinal = dto.Ordinal,
             };
+        }
+
+        private async Task<IList<GetActivityDto>> ActivitiesWithShoesAsync(IList<GetActivityDto> activities)
+        {
+            var shoes = new Dictionary<string, GetShoeDto>();
+            foreach (var activity in activities)
+            {
+                if (!shoes.ContainsKey(activity.ShoeId))
+                {
+                    var shoe = await _shoeService.GetShoeAsync(activity.ShoeId);
+                    shoes.Add(activity.ShoeId, shoe);
+                    activity.Shoe = shoe;
+                }
+                else
+                {
+                    activity.Shoe = shoes[activity.ShoeId];
+                }
+            }
+
+            return activities;
         }
 
         private void ValidateActivity(CreateActivityDto dto)

@@ -36,6 +36,25 @@ namespace ShoeTracker.Server.Controllers
             }
         }
 
+        [HttpGet("{month}/{day}/{year}")]
+        public async Task<IActionResult> GetActivitiesAsync(
+            [FromRoute] int month,
+            [FromRoute] int day,
+            [FromRoute] int year,
+            [FromQuery] bool includeShoes = false)
+        {
+            if (includeShoes)
+            {
+                var activities = await _activityService.GetActivitiesWithShoeAsync(_authService.GetCurrentUserId(), month, day, year);
+                return Ok(activities);
+            }
+            else
+            {
+                var activities = await _activityService.GetActivitiesAsync(_authService.GetCurrentUserId(), month, day, year);
+                return Ok(activities);
+            }
+        }
+
         [HttpGet("{activityId}")]
         public async Task<IActionResult> GetActivityAsync([FromRoute] string activityId)
         {
@@ -53,6 +72,34 @@ namespace ShoeTracker.Server.Controllers
         public async Task<IActionResult> CreateActivityAsync([FromBody] CreateActivityDto dto)
         {
             await _activityService.AddActivityAsync(_authService.GetCurrentUserId(), dto);
+            return Ok();
+        }
+
+        [HttpPut("{activityId}")]
+        public async Task<IActionResult> UpdateShoeAsync([FromRoute] string activityId, [FromBody] CreateActivityDto dto)
+        {
+            var userId = _authService.GetCurrentUserId();
+            var activity = await _activityService.GetActivityAsync(activityId);
+            if (activity is null || activity.UserId != userId)
+            {
+                return NotFound();
+            }
+
+            await _activityService.UpdateActivityAsync(activityId, userId, dto);
+            return Ok();
+        }
+
+        [HttpDelete("{activityId}")]
+        public async Task<IActionResult> DeleteShoeAsync([FromRoute] string activityId)
+        {
+            var userId = _authService.GetCurrentUserId();
+            var activity = await _activityService.GetActivityAsync(activityId);
+            if (activity is null || activity.UserId != userId)
+            {
+                return NotFound();
+            }
+
+            await _activityService.DeleteActivityAsync(activityId);
             return Ok();
         }
     }

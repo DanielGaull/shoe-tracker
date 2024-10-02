@@ -1,0 +1,66 @@
+.day-summary {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+}
+
+.summary-stat {
+    border: 5px solid white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    margin: 10px;
+    min-width: 200px;
+
+    .summary-stat-title {
+        font-size: 20px;
+    }
+    .summary-stat-value {
+        font-size: 64px;
+    }
+
+    &.summary-stat-yellow {
+        border-color: #5f5420;
+        /* background-color: #867520; */
+    }
+    &.summary-stat-green {
+        border-color: #294d2b;
+        /* background-color: #334034; */
+    }
+    &.summary-stat-red {
+        border-color: #672222;
+        /* background-color: #a63939; */
+    }
+}
+
+.summary {
+    display: flex;
+}
+
+.day-activity-card {
+    border-radius: 10px;
+    padding: 2px 5px;
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    width: 45vw;
+    position: relative;
+}
+
+.day-activity-details {
+    font-size: 17px;
+}
+
+.day-activity-desc {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.activity-action-icons {
+    position: absolute;
+    top: -23px;
+    right: -7px;
+}

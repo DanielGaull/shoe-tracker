@@ -132,8 +132,20 @@ input {
     }
 
     &.thin-input {
-        width: 70px;
+        width: 90px;
     }
+}
+
+.white-text-link {
+    color: white;
+
+    &:hover {
+        color: white;
+    }
+}
+
+.i {
+    font-style: italic;
 }
 
 input[type=range] {
