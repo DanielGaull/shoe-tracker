@@ -56,6 +56,7 @@ const ActivityList = () => {
         const response = await axios.get(`/api/activities/${month}/${year}`, {
             params: {
                 includeShoes: true,
+                includeExtraDays: true,
             },
         });
         setActivities(response.data);
