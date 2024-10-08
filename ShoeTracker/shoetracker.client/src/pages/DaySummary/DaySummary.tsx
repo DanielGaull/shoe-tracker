@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
-import { Activity } from "../../types/activity";
+import { Activity, Time } from "../../types/activity";
 
 import './DaySummary.css';
 import Spinner from "../../components/Spinner/Spinner";
@@ -31,6 +31,48 @@ const DaySummary = () => {
         load();
     }, []);
 
+    const dailyMileage = roundTo(activities.reduce(
+        (prev, cur) => {
+            let sum = prev + distanceAsMiles(cur.distance, cur.distanceUnits);
+            if (cur.warmup) {
+                sum += distanceAsMiles(cur.warmup.distance, cur.warmup.distanceUnits);
+            }
+            if (cur.cooldown) {
+                sum += distanceAsMiles(cur.cooldown.distance, cur.cooldown.distanceUnits);
+            }
+            if (cur.strides) {
+                sum += distanceAsMiles(cur.strides.distance, cur.strides.distanceUnits);
+            }
+            return sum;
+        }, 0),
+    2);
+
+    const dailyTime = timeToString(activities.reduce(
+        (prev, cur) => {
+            let sum: Time = addTimes(prev, cur.time);
+            if (cur.warmup) {
+                sum = addTimes(sum, cur.warmup.time);
+            }
+            if (cur.cooldown) {
+                sum = addTimes(sum, cur.cooldown.time);
+            }
+            if (cur.strides) {
+                sum = addTimes(sum, cur.strides.time);
+            }
+            return sum;
+        }, { hours: 0, minutes: 0, seconds: 0 }),
+    );
+
+    const subActivities = activities.reduce(
+        (prev, cur) => {
+            let count = prev;
+            if (cur.warmup) count++;
+            if (cur.cooldown) count++;
+            if (cur.strides) count++;
+            return count;
+        }, 
+    0);
+
     // TODO: Ability to add new activity for today
 
     return (
@@ -47,22 +89,18 @@ const DaySummary = () => {
                     <div className="summary">
                         <SummaryStat
                             title="Daily Activities"
-                            value={activities.length}
+                            value={`${activities.length} (+${subActivities})`}
                             className="summary-stat-yellow"
                         />
                         <SummaryStat
                             title="Total Daily Mileage"
-                            value={roundTo(activities.reduce((prev, cur) => 
-                                    prev + distanceAsMiles(cur.distance, cur.distanceUnits), 0), 2)}
+                            value={dailyMileage}
                             units="mi."
                             className="summary-stat-green"
                         />
                         <SummaryStat
                             title="Total Time"
-                            value={timeToString(
-                                activities.reduce((prev, cur) => 
-                                    addTimes(prev, cur.time), { hours: 0, minutes: 0, seconds: 0 })
-                            )}
+                            value={dailyTime}
                             className="summary-stat-red"
                         />
                     </div>
