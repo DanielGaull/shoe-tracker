@@ -6,12 +6,8 @@ namespace ShoeTracker.Server.Models
     // Like warmup/cooldown/strides
     // No name, unique ID, or user ID needed
     [FirestoreData]
-    public struct SubRun
+    public class SubRun
     {
-        public SubRun()
-        {
-        }
-
         [FirestoreProperty("shoeId")]
         public string ShoeId { get; set; } = string.Empty;
 

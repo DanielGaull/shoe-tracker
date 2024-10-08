@@ -4,6 +4,7 @@ using ShoeTracker.Server.Exception;
 using ShoeTracker.Server.Extensions;
 using ShoeTracker.Server.Models;
 using ShoeTracker.Server.Models.Request;
+using System.Diagnostics;
 
 namespace ShoeTracker.Server.Service
 {
@@ -136,17 +137,35 @@ namespace ShoeTracker.Server.Service
         private async Task<IList<GetActivityDto>> ActivitiesWithShoesAsync(IList<GetActivityDto> activities)
         {
             var shoes = new Dictionary<string, GetShoeDto>();
+            var shoesToGet = new List<string>();
             foreach (var activity in activities)
             {
-                if (!shoes.ContainsKey(activity.ShoeId))
+                shoesToGet.AddIfNotIncluded(activity.ShoeId);
+                shoesToGet.AddIfNotIncluded(activity.Warmup?.ShoeId);
+                shoesToGet.AddIfNotIncluded(activity.Cooldown?.ShoeId);
+                shoesToGet.AddIfNotIncluded(activity.Strides?.ShoeId);
+            }
+
+            foreach (var id in shoesToGet)
+            {
+                var shoe = await _shoeService.GetShoeAsync(id);
+                shoes.Add(id, shoe);
+            }
+
+            foreach (var activity in activities)
+            {
+                activity.Shoe = shoes[activity.ShoeId];
+                if (activity.Warmup != null)
                 {
-                    var shoe = await _shoeService.GetShoeAsync(activity.ShoeId);
-                    shoes.Add(activity.ShoeId, shoe);
-                    activity.Shoe = shoe;
+                    activity.Warmup.Shoe = shoes[activity.Warmup.ShoeId];
                 }
-                else
+                if (activity.Cooldown != null)
                 {
-                    activity.Shoe = shoes[activity.ShoeId];
+                    activity.Cooldown.Shoe = shoes[activity.Cooldown.ShoeId];
+                }
+                if (activity.Strides != null)
+                {
+                    activity.Strides.Shoe = shoes[activity.Strides.ShoeId];
                 }
             }
 

@@ -1,7 +1,47 @@
 import React from 'react';
-import { Activity } from '../../types/activity';
+import { Activity, SubRun } from '../../types/activity';
 import { calculateBackground, calculatePace, calculateTextColor, distanceAsMiles, distanceUnitToAbbreviation, timeToString } from '../../util/util';
 import { useNavigate } from 'react-router';
+
+interface SubrunDisplayProps {
+    subrun?: SubRun;
+    title: string;
+}
+
+const SubrunDisplay = ({ subrun, title }: SubrunDisplayProps) => {
+    const background = subrun ? 
+        (subrun.shoe ? calculateBackground(subrun.shoe.gradient) : 'white') : 
+        undefined;
+    const color = subrun ? 
+        calculateTextColor(subrun.shoe ? subrun.shoe.textColor : 'Dark') :
+        undefined;
+    const pace = subrun ? 
+        calculatePace(distanceAsMiles(subrun.distance, subrun.distanceUnits), subrun.time) : 
+        { hours: 0, minutes: 0, seconds: 0 };
+
+    return (
+        <div 
+            style={{
+                background,
+                color,
+            }}
+            className="day-activity-subrun"
+        >
+            <div>{title}</div>
+            {!subrun && <div>{`No ${title}`}</div>}
+            {subrun && (
+                <>
+                    <div>
+                        {subrun.distance}
+                        {distanceUnitToAbbreviation(subrun.distanceUnits)} •&nbsp;
+                        {timeToString(subrun.time)}
+                    </div>
+                    <div>({timeToString(pace)})</div>
+                </>
+            )}
+        </div>
+    );
+};
 
 interface ActivityCardProps {
     activity: Activity;
@@ -49,6 +89,12 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
             </div>
             <div className="day-activity-desc">
                 {activity.description}
+            </div>
+
+            <div className="day-activity-subrun-container">
+                <SubrunDisplay subrun={activity.warmup} title="Warmup" />
+                <SubrunDisplay subrun={activity.cooldown} title="Cooldown" />
+                <SubrunDisplay subrun={activity.strides} title="Strides" />
             </div>
         </div>
     );
