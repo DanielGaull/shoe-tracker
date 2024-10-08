@@ -2,6 +2,7 @@
 using Google.Cloud.Firestore;
 using Google.Cloud.Firestore.V1;
 using Google.Type;
+using Microsoft.AspNetCore.OutputCaching;
 using ShoeTracker.Server.DataAccess.Models;
 
 namespace ShoeTracker.Server.DataAccess
@@ -69,6 +70,103 @@ namespace ShoeTracker.Server.DataAccess
                 .WhereEqualTo("year", year);
             var querySnapshot = await query.GetSnapshotAsync();
             return querySnapshot.Documents.Select(doc => doc.ConvertTo<ActivityDocument>());
+        }
+
+        public async Task<IEnumerable<ActivityDocument>> GetActivitiesForUserAsync(string userId, int startMonth, 
+            int startDay, int startYear, int endMonth, int endDay, int endYear)
+        {
+            QuerySnapshot[]? groupedResults;
+            if (startYear == endYear)
+            {
+                if (startMonth == endMonth)
+                {
+                    // Just need to get the days in between
+                    var query = ActivityCollectionReference()
+                        .WhereEqualTo("userId", userId)
+                        .WhereEqualTo("month", startMonth)
+                        .WhereEqualTo("year", startYear)
+                        .WhereGreaterThanOrEqualTo("day", startDay)
+                        .WhereLessThanOrEqualTo("day", endDay);
+                    groupedResults = await Task.WhenAll(new[]
+                    {
+                        query.GetSnapshotAsync(),
+                    });
+                }
+                else
+                {
+                    // Like below case, 3 queries
+                    // Get all days at the end of the first month
+                    // Get all days in between the two months
+                    // Get all days at the start of the last month
+                    var startQuery = ActivityCollectionReference()
+                        .WhereEqualTo("userId", userId)
+                        .WhereEqualTo("year", startYear)
+                        .WhereEqualTo("month", startMonth)
+                        .WhereGreaterThanOrEqualTo("day", startDay);
+                    var middleQuery = ActivityCollectionReference()
+                        .WhereEqualTo("userId", userId)
+                        .WhereEqualTo("year", startYear)
+                        .WhereGreaterThan("month", startMonth)
+                        .WhereLessThan("month", endMonth);
+                    var endQuery = ActivityCollectionReference()
+                        .WhereEqualTo("userId", userId)
+                        .WhereEqualTo("year", startYear)
+                        .WhereEqualTo("month", endMonth)
+                        .WhereLessThanOrEqualTo("day", endDay);
+                    groupedResults = await Task.WhenAll(new[]
+                    {
+                        startQuery.GetSnapshotAsync(),
+                        endQuery.GetSnapshotAsync(),
+                        middleQuery.GetSnapshotAsync(),
+                    });
+                }
+            }
+            else
+            {
+                // 5 separate queries
+                // Get all activities in the first month
+                // Get all activities in the start year after the first month
+                // Get all activities in the last month
+                // Get all activities in the last year before the last month
+                // Get all activities in the between years
+                var startQuery1 = ActivityCollectionReference()
+                    .WhereEqualTo("userId", userId)
+                    .WhereEqualTo("year", startYear)
+                    .WhereEqualTo("month", startMonth)
+                    .WhereGreaterThanOrEqualTo("day", startDay);
+                var startQuery2 = ActivityCollectionReference()
+                    .WhereEqualTo("userId", userId)
+                    .WhereEqualTo("year", startYear)
+                    .WhereGreaterThan("month", startMonth);
+                var endQuery1 = ActivityCollectionReference()
+                    .WhereEqualTo("userId", userId)
+                    .WhereEqualTo("year", endYear)
+                    .WhereEqualTo("month", endMonth)
+                    .WhereLessThanOrEqualTo("day", endDay);
+                var endQuery2 = ActivityCollectionReference()
+                    .WhereEqualTo("userId", userId)
+                    .WhereEqualTo("year", endYear)
+                    .WhereLessThan("month", endMonth);
+                var middleQuery = ActivityCollectionReference()
+                    .WhereEqualTo("userId", userId)
+                    .WhereLessThan("year", endYear)
+                    .WhereGreaterThan("year", endYear);
+                groupedResults = await Task.WhenAll(new[]
+                {
+                    startQuery1.GetSnapshotAsync(),
+                    startQuery2.GetSnapshotAsync(),
+                    endQuery1.GetSnapshotAsync(),
+                    endQuery2.GetSnapshotAsync(),
+                    middleQuery.GetSnapshotAsync(),
+                });
+            }
+
+            var activities = new List<ActivityDocument>();
+            foreach (var snapshot in groupedResults)
+            {
+                activities.AddRange(snapshot.Documents.Select(d => d.ConvertTo<ActivityDocument>()));
+            }
+            return activities;
         }
 
         public async Task<IEnumerable<ActivityDocument>> GetActivitiesForShoeAsync(string shoeId)

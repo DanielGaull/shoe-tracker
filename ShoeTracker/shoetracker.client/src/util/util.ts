@@ -46,7 +46,7 @@ const stringDateToDateModel = (date: string): DateModel => {
     };
 };
 
-const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const distanceUnitToAbbreviation = (unit: DistanceUnit): string => {
@@ -115,6 +115,20 @@ const addTimes = (t1: Time, t2: Time): Time => {
     return secondsToTime(totalSeconds);
 };
 
+const getMonday = (d: Date): Date => {
+    const diff = d.getDate() - convertJsWeekdayToIndex(d.getDay());
+    const newD = new Date(d);
+    return new Date(newD.setDate(diff));
+};
+
+const convertJsWeekdayToIndex = (weekday: number): number => {
+    if (weekday === 0) {
+        return 6;
+    } else {
+        return weekday - 1;
+    }
+};
+
 export { 
     calculateBackground,
     calculateTextColor,
@@ -128,4 +142,6 @@ export {
     getSecondsFromTime,
     calculatePace,
     addTimes,
+    getMonday,
+    convertJsWeekdayToIndex,
 };

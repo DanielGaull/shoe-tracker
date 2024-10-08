@@ -1,39 +1,57 @@
 import React from 'react';
-import { calculateBackground, weekdays } from '../../util/util';
+import { convertJsWeekdayToIndex, getMonday, weekdays } from '../../util/util';
 import { Activity } from '../../types/activity';
-
-import './Calendar.css';
 import ActivityCard from '../../pages/ActivityList/ActivityCard';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
+
+import './Calendar.css';
 
 const getDaysInMonth = (month: number, year: number): number => {
     return new Date(year, month, 0).getDate();
 };
 
-type Day = { date: number, dayOfWeek: number, isToday: boolean, exists: true } | { exists: false };
+type Day = { 
+    date: number,
+    isToday: boolean,
+    exists: true,
+    month: number,
+    year: number,
+} | { 
+    exists: false,
+};
 
 const constructDays = (month: number, year: number): Day[][] => {
     const today = new Date();
     const firstDayOfMonth = new Date(year, month - 1, 1);
-    const firstWeekday = firstDayOfMonth.getDay();
+    const trueFirstDay = getMonday(firstDayOfMonth);
+    const firstWeekday = convertJsWeekdayToIndex(firstDayOfMonth.getDay());
     const days: Day[][] = [];
     let nextDateToAdd = 1;
     const daysInMonth = getDaysInMonth(month, year);
 
     const firstWeek: Day[] = [];
-    // Add all of the days before the first weekday, which don't exist
+    let earlyNextDateToAdd = trueFirstDay.getDate();
+    // Add all of the days before the first weekday
     for (let i = 0; i < firstWeekday; i++) {
         firstWeek.push({
-            exists: false,
+            exists: true,
+            date: earlyNextDateToAdd,
+            isToday: false,
+            month: trueFirstDay.getMonth() + 1,
+            year: trueFirstDay.getFullYear(),
         });
+        earlyNextDateToAdd++;
     }
-    // Finish out adding the first week, this time with the actual existing days
+
+    // Finish out adding the first week, this time with the actual days in the month
     for (let i = firstWeekday; i < 7; i++) {
         firstWeek.push({
             exists: true,
             date: nextDateToAdd,
-            dayOfWeek: i,
             isToday: (nextDateToAdd === today.getDate()) && (month - 1 === today.getMonth()) && (year === today.getFullYear()),
+            month,
+            year,
         });
         nextDateToAdd++;
     }
@@ -45,9 +63,10 @@ const constructDays = (month: number, year: number): Day[][] => {
     while (nextDateToAdd < daysInMonth + 1) {
         week.push({
             exists: true,
-            dayOfWeek: weekday,
             date: nextDateToAdd,
             isToday: nextDateToAdd === today.getDate() && month - 1 === today.getMonth() && year === today.getFullYear(),
+            month,
+            year,
         });
         nextDateToAdd++;
         weekday++;
@@ -56,6 +75,20 @@ const constructDays = (month: number, year: number): Day[][] => {
             days.push(week);
             week = [];
         }
+    }
+    // Add the trailing days for the start of the next month
+    let currentDate = new Date(year, month - 1, nextDateToAdd);
+    nextDateToAdd = 1;
+    while (weekday < 7 && week.length > 0) {
+        week.push({
+            exists: true,
+            date: nextDateToAdd,
+            isToday: false,
+            month: currentDate.getMonth() + 1,
+            year: currentDate.getFullYear(),
+        });
+        nextDateToAdd++;
+        weekday++;
     }
     // Don't leave out the final week
     if (week.length > 0) {
@@ -89,11 +122,22 @@ const Calendar = ({ month, year, activities }: CalendarProps) => {
                                 }
 
                                 const todayActivities = activities
-                                    .filter(a => a.date.day === day.date)
+                                    .filter(a => 
+                                        a.date.day === day.date &&
+                                        a.date.month === day.month &&
+                                        a.date.year === day.year
+                                    )
                                     .sort((a, b) => a.ordinal - b.ordinal);
 
                                 return (
-                                    <td key={ix} className={`day ${day.isToday ? 'today' : ''}`}>
+                                    <td
+                                        key={ix}
+                                        className={classNames({
+                                            day: true,
+                                            today: day.isToday,
+                                            'not-this-month': day.month !== month,
+                                        })}
+                                    >
                                         <Link
                                             to={`/day-summary/${year}/${month}/${day.date}`}
                                             className="white-text-link"
