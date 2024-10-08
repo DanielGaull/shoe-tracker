@@ -105,6 +105,9 @@ namespace ShoeTracker.Server.Service
                 Description = doc.Description,
                 Date = new DateModel(doc.Month, doc.Day, doc.Year),
                 Ordinal = doc.Ordinal,
+                Warmup = doc.Warmup,
+                Cooldown = doc.Cooldown,
+                Strides = doc.Strides,
             };
         }
 
@@ -124,6 +127,9 @@ namespace ShoeTracker.Server.Service
                 Day = dto.Date.Day,
                 Year = dto.Date.Year,
                 Ordinal = dto.Ordinal,
+                Warmup = dto.Warmup,
+                Cooldown = dto.Cooldown,
+                Strides = dto.Strides,
             };
         }
 

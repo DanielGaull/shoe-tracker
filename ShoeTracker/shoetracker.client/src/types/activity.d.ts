@@ -8,6 +8,14 @@ export interface Time {
     seconds: number;
 }
 
+export interface SubRun {
+    shoeId: string;
+    shoe?: Shoe;
+    time: Time;
+    distance: number;
+    distanceUnits: DistanceUnit;
+}
+
 export interface Activity {
     id: string;
     userId: string;
@@ -20,6 +28,9 @@ export interface Activity {
     date: DateModel;
     ordinal: number;
     shoe?: Shoe;
+    warmup?: SubRun;
+    cooldown?: SubRun;
+    strides?: SubRun;
 }
 
 export interface EditActivityDto {
@@ -31,4 +42,7 @@ export interface EditActivityDto {
     description?: string;
     date: DateModel;
     ordinal: number;
+    warmup?: SubRun;
+    cooldown?: SubRun;
+    strides?: SubRun;
 }

@@ -134,6 +134,11 @@ input {
     &.thin-input {
         width: 90px;
     }
+
+    &.small-input {
+        font-size: 18px;
+        width: 50px;
+    }
 }
 
 .white-text-link {
