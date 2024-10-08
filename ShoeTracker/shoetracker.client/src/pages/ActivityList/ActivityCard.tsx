@@ -1,6 +1,26 @@
 import React from "react";
-import { Activity } from "../../types/activity";
+import { Activity, SubRun } from "../../types/activity";
 import { calculateBackground, calculateTextColor, distanceUnitToAbbreviation, timeToString } from "../../util/util";
+
+interface SubrunCardProps {
+    subrun?: SubRun;
+    title: string;
+}
+
+const SubrunCard = ({ subrun, title }: SubrunCardProps) => {
+    if (!subrun) return null;
+
+    return (
+        <>
+            <div>
+                {title}:&nbsp;
+                {subrun.distance}
+                {distanceUnitToAbbreviation(subrun.distanceUnits)} •&nbsp;
+                {timeToString(subrun.time)}
+            </div>
+        </>
+    );
+};
 
 interface ActivityCardProps {
     activity: Activity;
@@ -25,6 +45,9 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
                 {timeToString(activity.time)}
             </div>
             <i>{activity.shoe?.shoeName}</i>
+            <SubrunCard subrun={activity.warmup} title="Warmup" />
+            <SubrunCard subrun={activity.cooldown} title="Cooldown" />
+            <SubrunCard subrun={activity.strides} title="Strides" />
         </div>
     )
 };
