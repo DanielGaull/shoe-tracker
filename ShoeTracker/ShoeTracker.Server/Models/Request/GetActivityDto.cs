@@ -23,5 +23,11 @@
         public int Ordinal { get; set; }
 
         public GetShoeDto? Shoe { get; set; } = null;
+
+        public SubRun? Warmup { get; set; } = null;
+
+        public SubRun? Cooldown { get; set; } = null;
+
+        public SubRun? Strides { get; set; } = null;
     }
 }
