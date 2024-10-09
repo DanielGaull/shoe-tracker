@@ -45,9 +45,10 @@ const SubrunDisplay = ({ subrun, title }: SubrunDisplayProps) => {
 
 interface ActivityCardProps {
     activity: Activity;
+    onDeleteClicked: () => any;
 }
 
-const ActivityCard = ({ activity }: ActivityCardProps) => {
+const ActivityCard = ({ activity, onDeleteClicked }: ActivityCardProps) => {
     const background = activity.shoe ? calculateBackground(activity.shoe.gradient) : 'white';
     const color = calculateTextColor(activity.shoe ? activity.shoe.textColor : 'Dark');
     const pace = calculatePace(distanceAsMiles(activity.distance, activity.distanceUnits), activity.time);
@@ -70,7 +71,7 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
                 </button>
                 <button
                     className="i-button"
-                    onClick={() => alert('TODO: on delete clicked')}
+                    onClick={() => onDeleteClicked()}
                 >
                     X
                 </button>
