@@ -11,3 +11,24 @@
     padding: 6px 20px;
     margin-left: 5px;
 }
+
+.small-select {
+    padding: 6px 20px;
+    margin-left: 5px;
+    /* width: 110px; */
+    font-size: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.sub-run-editor {
+    border-radius: 15px;
+    padding: 10px 15px;
+    border: 2px dashed #888;
+    margin: 10px 0px;
+}
+
+.subruns {
+    display: flex;
+    justify-content: space-evenly;
+}

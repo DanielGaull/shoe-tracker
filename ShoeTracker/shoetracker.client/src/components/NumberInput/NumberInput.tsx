@@ -1,14 +1,19 @@
+import classNames from 'classnames';
 import React from 'react';
 
 interface NumberInputProps {
     value: string;
     onChange: (value: string) => any;
     allowFloats?: boolean;
+    small?: boolean;
 }
 
-const NumberInput = ({ value, onChange, allowFloats = false, ...rest }: NumberInputProps) => (
+const NumberInput = ({ value, onChange, allowFloats = false, small = false, ...rest }: NumberInputProps) => (
     <input
-        className="thin-input"
+        className={classNames({
+            'thin-input': true,
+            'small-input': small,
+        })}
         value={value}
         onChange={(e) => {
             if (allowFloats) {

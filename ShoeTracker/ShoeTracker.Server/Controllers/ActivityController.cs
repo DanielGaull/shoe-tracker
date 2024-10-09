@@ -68,7 +68,7 @@ namespace ShoeTracker.Server.Controllers
         }
 
         [HttpPut("{activityId}")]
-        public async Task<IActionResult> UpdateShoeAsync([FromRoute] string activityId, [FromBody] CreateActivityDto dto)
+        public async Task<IActionResult> UpdateActivityAsync([FromRoute] string activityId, [FromBody] CreateActivityDto dto)
         {
             var userId = _authService.GetCurrentUserId();
             var activity = await _activityService.GetActivityAsync(activityId);
@@ -82,7 +82,7 @@ namespace ShoeTracker.Server.Controllers
         }
 
         [HttpDelete("{activityId}")]
-        public async Task<IActionResult> DeleteShoeAsync([FromRoute] string activityId)
+        public async Task<IActionResult> DeleteActivityAsync([FromRoute] string activityId)
         {
             var userId = _authService.GetCurrentUserId();
             var activity = await _activityService.GetActivityAsync(activityId);

@@ -41,5 +41,14 @@ namespace ShoeTracker.Server.DataAccess.Models
 
         [FirestoreProperty("ord")]
         public int Ordinal { get; set; }
+
+        [FirestoreProperty("warmup")]
+        public SubRun? Warmup { get; set; }
+
+        [FirestoreProperty("cooldown")]
+        public SubRun? Cooldown { get; set; }
+
+        [FirestoreProperty("strides")]
+        public SubRun? Strides { get; set; }
     }
 }

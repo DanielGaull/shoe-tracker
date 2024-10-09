@@ -13,5 +13,14 @@
             DateTime start = dt.StartOfWeek(startOfWeek);
             return start.AddDays(7);
         }
+
+        // Adds to a list if the item is not null and is not already in the list
+        public static void AddIfNotIncluded<T>(this List<T> list, T? item)
+        {
+            if (item != null && !list.Contains(item))
+            {
+                list.Add(item);
+            }
+        }
     }
 }

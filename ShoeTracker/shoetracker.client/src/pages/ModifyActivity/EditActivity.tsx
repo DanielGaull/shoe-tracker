@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Activity, DistanceUnit, EditActivityDto } from '../../types/activity';
+import { Activity, DistanceUnit, EditActivityDto, SubRun } from '../../types/activity';
 import NumberInput from '../../components/NumberInput/NumberInput';
 import { useNavigate, useParams } from 'react-router';
 import { Shoe } from '../../types/shoes';
 import axios, { AxiosError } from 'axios';
 import { stringDateToDateModel } from '../../util/util';
+import SubRunEditor from './SubRunEditor';
 
 import './EditActivity.css';
 
@@ -28,6 +29,9 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
     const [desc, setDesc] = useState('');
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [ordinal, setOrdinal] = useState('0');
+    const [warmup, setWarmup] = useState<SubRun | undefined>(undefined);
+    const [cooldown, setCooldown] = useState<SubRun | undefined>(undefined);
+    const [strides, setStrides] = useState<SubRun | undefined>(undefined);
 
     const [err, setErr] = useState('');
     const { activityId } = useParams();
@@ -51,6 +55,9 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
                 setMinutes(activity.time.minutes.toString());
                 setSeconds(activity.time.seconds.toString());
                 setOrdinal(activity.ordinal.toString());
+                setWarmup(activity.warmup);
+                setCooldown(activity.cooldown);
+                setStrides(activity.strides);
             }
         }
         load();
@@ -74,6 +81,9 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
                 seconds: parseInt(seconds),
             },
             shoeId,
+            warmup,
+            cooldown,
+            strides,
         };
 
         try {
@@ -177,6 +187,27 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
                         </select>
                     </div>
                 </div>
+            </div>
+
+            <div className="subruns">
+                <SubRunEditor
+                    title="Warmup"
+                    value={warmup}
+                    onChange={setWarmup}
+                    shoes={shoes}
+                />
+                <SubRunEditor
+                    title="Cooldown"
+                    value={cooldown}
+                    onChange={setCooldown}
+                    shoes={shoes}
+                />
+                <SubRunEditor
+                    title="Strides"
+                    value={strides}
+                    onChange={setStrides}
+                    shoes={shoes}
+                />
             </div>
 
             {err.length > 0 && <pre className="error-text">{err}</pre>}
