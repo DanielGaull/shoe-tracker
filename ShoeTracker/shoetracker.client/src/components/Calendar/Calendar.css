@@ -7,7 +7,6 @@
     padding: 5px;
     box-shadow: 2px 2px 2px black;
     transition: 0.5s;
-    cursor: pointer;
     user-select: none;
 
     &:hover {
@@ -21,6 +20,10 @@
 
     &.not-this-month {
         background-color: rgb(42, 42, 42);
+    }
+
+    &.weekly-summary {
+        background-color: rgb(85, 85, 85);
     }
 }
 
