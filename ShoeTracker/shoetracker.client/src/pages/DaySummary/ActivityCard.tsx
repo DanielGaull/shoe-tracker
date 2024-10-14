@@ -89,7 +89,9 @@ const ActivityCard = ({ activity, onDeleteClicked }: ActivityCardProps) => {
                 ({activity.shoe?.brand} {activity.shoe?.model} {activity.shoe?.modelVersion})
             </div>
             <div className="day-activity-desc">
-                {activity.description}
+                {activity.description?.split('\n').map((line, ix) => (
+                    <div key={ix}>{line}</div>
+                ))}
             </div>
 
             <div className="day-activity-subrun-container">

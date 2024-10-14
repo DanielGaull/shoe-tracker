@@ -43,7 +43,11 @@ const ShoeEntry = ({ shoe, displayOnly, onDeleteClicked = () => {} }: ShoeEntryP
             <div className="subtitle">{shoe.brand} {shoe.model} {shoe.modelVersion}</div>
             <div>Start Date: {shoe.startDate.month}/{shoe.startDate.day}/{shoe.startDate.year}</div>
             <div>Mileage: {roundTo(shoe.miles, 2)} mi (warning at {shoe.warnAtMileage} mi)</div>
-            <div className="description">{shoe.description}</div>
+            <div className="description">
+                {shoe.description?.split('\n').map((line, ix) => (
+                    <div key={ix}>{line}</div>
+                ))}
+            </div>
         </div>
     );
 };
