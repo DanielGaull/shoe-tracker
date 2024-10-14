@@ -74,9 +74,30 @@ namespace ShoeTracker.Server.Service
         private async Task<GetShoeDto> DocToDtoAsync(ShoeDocument doc)
         {
             var activities = await _database.GetActivitiesForShoeAsync(doc.Id);
-            var mileage = doc.StartingMileage + 
+            var mileage = doc.StartingMileage;
+            foreach (var activity in activities)
+            {
+                if (activity.ShoeId == doc.Id)
+                {
+                    mileage += DistanceInMiles(activity.DistanceUnits, activity.Distance);
+                }
+                if (activity.Warmup != null && activity.Warmup.ShoeId == doc.Id)
+                {
+                    mileage += DistanceInMiles(activity.Warmup.DistanceUnits, activity.Warmup.Distance);
+                }
+                if (activity.Cooldown != null && activity.Cooldown.ShoeId == doc.Id)
+                {
+                    mileage += DistanceInMiles(activity.Cooldown.DistanceUnits, activity.Cooldown.Distance);
+                }
+                if (activity.Strides != null && activity.Strides.ShoeId == doc.Id)
+                {
+                    mileage += DistanceInMiles(activity.Strides.DistanceUnits, activity.Strides.Distance);
+                }
+            }
+
+            var mileage2 = doc.StartingMileage +
                 activities
-                    .Select(a => 
+                    .Select(a =>
                         DistanceInMiles(a.DistanceUnits, a.Distance))
                     .Sum();
 
@@ -142,6 +163,19 @@ namespace ShoeTracker.Server.Service
                 case "Meters":
                     return distance / 1609;
                 case "Kilometers":
+                    return distance * 1000 / 1609;
+            }
+            throw new InvalidDataException($"Invalid distance unit found: {units}");
+        }
+        private double DistanceInMiles(DistanceUnits units, double distance)
+        {
+            switch (units)
+            {
+                case DistanceUnits.Miles:
+                    return distance;
+                case DistanceUnits.Meters:
+                    return distance / 1609;
+                case DistanceUnits.Kilometers:
                     return distance * 1000 / 1609;
             }
             throw new InvalidDataException($"Invalid distance unit found: {units}");

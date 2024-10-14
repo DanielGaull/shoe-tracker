@@ -103,7 +103,10 @@ const DaySummary = () => {
                     <div className="summary">
                         <SummaryStat
                             title="Daily Activities"
-                            value={`${activities.length} (+${subActivities})`}
+                            value={subActivities > 0 ? 
+                                `${activities.length} (+${subActivities})` : 
+                                activities.length.toString()
+                            }
                             className="summary-stat-yellow"
                         />
                         <SummaryStat

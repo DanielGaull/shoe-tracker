@@ -57,13 +57,6 @@ namespace ShoeTracker.Server.Service
             return activities;
         }
 
-        public async Task<IList<GetActivityDto>> GetActivitiesForShoeAsync(string shoeId)
-        {
-            var activityDocs = await _database.GetActivitiesForShoeAsync(shoeId);
-            var activities = activityDocs.Select(doc => DocToDto(doc)).ToList();
-            return activities;
-        }
-
         public async Task<GetActivityDto> GetActivityAsync(string id)
         {
             var doc = await _database.GetActivityAsync(id);
