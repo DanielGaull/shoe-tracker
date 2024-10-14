@@ -20,6 +20,8 @@ const SubRunEditor = ({ value, onChange = () => {}, title, shoes }: SubRunEditor
     const [distance, setDistance] = useState('0');
     const [distanceUnits, setDistanceUnits] = useState<DistanceUnit>('Miles');
     const [exists, setExists] = useState(!!value ?? false);
+    // Distance when parsed as a float
+    const [floatDistance, setFloatDistance] = useState(0);
 
     useEffect(() => {
         if (value) {
@@ -30,6 +32,7 @@ const SubRunEditor = ({ value, onChange = () => {}, title, shoes }: SubRunEditor
             setShoeId(value.shoeId);
             setDistance(value.distance.toString());
             setDistanceUnits(value.distanceUnits);
+            setFloatDistance(value.distance);
         } else {
             setExists(false);
         }
@@ -42,7 +45,7 @@ const SubRunEditor = ({ value, onChange = () => {}, title, shoes }: SubRunEditor
                 parseInt(hours),
                 parseInt(minutes),
                 parseInt(seconds),
-                parseFloat(distance),
+                floatDistance,
             ];
             // If invalid number, don't update parent state until valid number entered
             if (numbers.filter(isNaN).length > 0) {
@@ -55,7 +58,7 @@ const SubRunEditor = ({ value, onChange = () => {}, title, shoes }: SubRunEditor
                     minutes: parseInt(minutes),
                     seconds: parseInt(seconds),
                 },
-                distance: parseFloat(distance),
+                distance: floatDistance,
                 distanceUnits,
                 shoeId,
             };
@@ -64,7 +67,7 @@ const SubRunEditor = ({ value, onChange = () => {}, title, shoes }: SubRunEditor
             onChange(undefined);
         }
 
-    }, [hours, minutes, seconds, shoeId, distance, distanceUnits, exists]);
+    }, [hours, minutes, seconds, shoeId, floatDistance, distanceUnits, exists]);
 
     return (
         <div className="sub-run-editor">
@@ -81,7 +84,10 @@ const SubRunEditor = ({ value, onChange = () => {}, title, shoes }: SubRunEditor
                     <div>
                         <NumberInput
                             value={distance}
-                            onChange={(v) => setDistance(v)}
+                            onChange={(v) => {
+                                setDistance(v);
+                                setFloatDistance(parseFloat(v));
+                            }}
                             allowFloats
                             small
                         />
