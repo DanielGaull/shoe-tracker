@@ -8,6 +8,7 @@ import { stringDateToDateModel } from '../../util/util';
 import SubRunEditor from './SubRunEditor';
 
 import './EditActivity.css';
+import { useSearchParams } from 'react-router-dom';
 
 const units: DistanceUnit[] = ['Miles', 'Kilometers', 'Meters'];
 
@@ -35,6 +36,8 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
 
     const [err, setErr] = useState('');
     const { activityId } = useParams();
+
+    const [params] = useSearchParams();
 
     async function load() {
         const response = await axios.get('/api/shoes');
@@ -66,6 +69,12 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
     useEffect(() => {
         load();
     }, []);
+
+    useEffect(() => {
+        if (params.get('month') && params.get('day') && params.get('year')) {
+            setDate(`${params.get('year')}-${params.get('month')!.padStart(2, '0')}-${params.get('day')!.padStart(2, '0')}`);
+        }
+    }, [params]);
 
     const submit = async () => {
         const dateObj = stringDateToDateModel(date);

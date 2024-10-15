@@ -87,13 +87,16 @@ const DaySummary = () => {
         doDelete();
     }, []);
 
-    // TODO: Ability to add new activity for today
-
     return (
         <div className="day-summary">
-            <Link to={`/activities/${year}/${month}`}>
-                <button className="small">← Back</button>
-            </Link>
+            <div>
+                <Link to={`/activities/${year}/${month}`}>
+                    <button className="small mr">← Back</button>
+                </Link>
+                <Link to={`/create-activity?month=${month}&day=${day}&year=${year}`}>
+                    <button className="small">Add Activity</button>
+                </Link>
+            </div>
             <h2>Day Summary ({month}/{day}/{year})</h2>
 
             {loading && <Spinner />}

@@ -99,7 +99,6 @@ const constructDays = (month: number, year: number): Day[][] => {
 };
 
 const getActivitiesInWeek = (days: Day[], allActivities: Activity[]): Activity[] => {
-    console.log(days);
     return allActivities.filter(a => 
         days.filter(d => d.date === a.date.day && d.month === a.date.month && d.year === a.date.year)
             .length > 0
