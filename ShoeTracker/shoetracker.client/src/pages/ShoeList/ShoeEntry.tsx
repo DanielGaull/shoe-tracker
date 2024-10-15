@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Shoe } from "../../types/shoes";
-import { calculateBackground, calculateTextColor } from "../../util/util";
+import { calculateBackground, calculateTextColor, roundTo } from "../../util/util";
 import { useNavigate } from "react-router";
 
 interface ShoeEntryProps {
@@ -42,8 +42,12 @@ const ShoeEntry = ({ shoe, displayOnly, onDeleteClicked = () => {} }: ShoeEntryP
             <div className="title">{shoe.shoeName}</div>
             <div className="subtitle">{shoe.brand} {shoe.model} {shoe.modelVersion}</div>
             <div>Start Date: {shoe.startDate.month}/{shoe.startDate.day}/{shoe.startDate.year}</div>
-            <div>Mileage: {shoe.miles} mi (warning at {shoe.warnAtMileage} mi)</div>
-            <div className="description">{shoe.description}</div>
+            <div>Mileage: {roundTo(shoe.miles, 2)} mi (warning at {shoe.warnAtMileage} mi)</div>
+            <div className="description">
+                {shoe.description?.split('\n').map((line, ix) => (
+                    <div key={ix}>{line}</div>
+                ))}
+            </div>
         </div>
     );
 };

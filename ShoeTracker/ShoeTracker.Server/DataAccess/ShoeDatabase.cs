@@ -171,10 +171,28 @@ namespace ShoeTracker.Server.DataAccess
 
         public async Task<IEnumerable<ActivityDocument>> GetActivitiesForShoeAsync(string shoeId)
         {
-            var query = ActivityCollectionReference()
+            var baseQuery = ActivityCollectionReference()
                 .WhereEqualTo("shoeId", shoeId);
-            var querySnapshot = await query.GetSnapshotAsync();
-            return querySnapshot.Documents.Select(doc => doc.ConvertTo<ActivityDocument>());
+            var warmupQuery = ActivityCollectionReference()
+                .WhereEqualTo("warmup.shoeId", shoeId);
+            var cooldownQuery = ActivityCollectionReference()
+                .WhereEqualTo("cooldown.shoeId", shoeId);
+            var stridesQuery = ActivityCollectionReference()
+                .WhereEqualTo("strides.shoeId", shoeId);
+            var groupedResults = await Task.WhenAll(new[]
+            {
+                baseQuery.GetSnapshotAsync(),
+                warmupQuery.GetSnapshotAsync(),
+                cooldownQuery.GetSnapshotAsync(),
+                stridesQuery.GetSnapshotAsync(),
+            });
+
+            var activities = new List<ActivityDocument>();
+            foreach (var snapshot in groupedResults)
+            {
+                activities.AddRange(snapshot.Documents.Select(d => d.ConvertTo<ActivityDocument>()));
+            }
+            return activities;
         }
 
         public async Task<ActivityDocument?> GetActivityAsync(string activityId)
