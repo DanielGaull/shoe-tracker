@@ -163,7 +163,11 @@ interface WeeklySummaryDisplayProps {
 const WeeklySummaryDisplay = ({ summary }: WeeklySummaryDisplayProps) => {
     return (
         <>
-            <div>Activities: {summary.activities} (+{summary.subActivities})</div>
+            <div>
+                Activities:
+                &nbsp;{summary.activities}
+                {summary.subActivities > 0 && <>&nbsp;(+{summary.subActivities})</>}
+            </div>
             <div>Distance: {roundTo(summary.mileage, 2)} mi.</div>
             <div>Time: {timeToString(summary.totalTime)}</div>
         </>
