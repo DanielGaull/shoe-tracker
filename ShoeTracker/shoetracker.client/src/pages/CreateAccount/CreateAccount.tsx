@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { CreateAccountDto } from '../../types/account';
 import { useNavigate } from 'react-router';
+import Spinner from '../../components/Spinner/Spinner';
 
 import './CreateAccount.css';
 
@@ -11,6 +12,7 @@ const CreateAccount = () => {
     const [last, setLast] = useState('');
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const [pwErr, setPwErr] = useState<string | null>(null);
     const [err, setErr] = useState('');
@@ -18,6 +20,7 @@ const CreateAccount = () => {
     const navigate = useNavigate();
 
     const submit = async () => {
+        setLoading(true);
         const newAccount: CreateAccountDto = {
             firstName: first,
             lastName: last,
@@ -29,10 +32,12 @@ const CreateAccount = () => {
             await axios.post('/api/auth/create-account', newAccount);
             setErr('');
             navigate('/account-created');
+            setLoading(false);
 
         } catch (err) {
             const axiosError = err as AxiosError;
             setErr(axiosError.response?.data as string || 'Unknown error occurred');
+            setLoading(false);
         }
     };
 
@@ -82,9 +87,8 @@ const CreateAccount = () => {
             {err.length > 0 && <pre className="error-text">{err}</pre>}
 
             <div className="button-row">
-                <button className="mt fc" onClick={submit}>
-                    Submit
-                </button>
+                {loading && <Spinner small />}
+                {!loading && <button className="mt fc" onClick={submit}>Submit</button>}
             </div>
 
             <a className="button-row mt" href="/sign-in">
