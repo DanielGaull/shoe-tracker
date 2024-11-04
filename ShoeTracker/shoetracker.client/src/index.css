@@ -214,3 +214,8 @@ label {
 .us-none {
     user-select: none;
 }
+
+.full-width {
+    display: flex;
+    justify-content: space-between;
+}

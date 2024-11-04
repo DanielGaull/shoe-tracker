@@ -8,6 +8,7 @@ import { stringDateToDateModel } from '../../util/util';
 import SubRunEditor from './SubRunEditor';
 
 import './EditActivity.css';
+import { useSearchParams } from 'react-router-dom';
 
 const units: DistanceUnit[] = ['Miles', 'Kilometers', 'Meters'];
 
@@ -35,6 +36,8 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
 
     const [err, setErr] = useState('');
     const { activityId } = useParams();
+
+    const [params] = useSearchParams();
 
     async function load() {
         const response = await axios.get('/api/shoes');
@@ -67,13 +70,20 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
         load();
     }, []);
 
+    useEffect(() => {
+        if (params.get('month') && params.get('day') && params.get('year')) {
+            setDate(`${params.get('year')}-${params.get('month')!.padStart(2, '0')}-${params.get('day')!.padStart(2, '0')}`);
+        }
+    }, [params]);
+
     const submit = async () => {
+        const dateObj = stringDateToDateModel(date);
         const newActivity: EditActivityDto = {
             name: name,
             description: desc.length > 0 ? desc : '',
             distance: parseFloat(distance),
             distanceUnits,
-            date: stringDateToDateModel(date),
+            date: dateObj,
             ordinal: parseInt(ordinal),
             time: {
                 hours: parseInt(hours),
@@ -93,7 +103,7 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
                 await axios.put(`/api/activities/${activityId}`, newActivity);
             }
             setErr('');
-            navigate('/activities');
+            navigate(`/day-summary/${dateObj.year}/${dateObj.month}/${dateObj.day}`);
         } catch (err) {
             const axiosError = err as AxiosError;
             setErr(axiosError.response?.data as string || 'Unknown error occurred');
@@ -213,7 +223,16 @@ const EditActivity = ({ isNew }: EditActivityProps) => {
             {err.length > 0 && <pre className="error-text">{err}</pre>}
 
             <div className="button-row">
-                <button className="mt mr-s fc" onClick={() => navigate('/activities')}>Cancel</button>
+                <button
+                    className="mt mr-s fc"
+                    onClick={() => 
+                    {
+                        const dateObj = stringDateToDateModel(date);
+                        navigate(`/day-summary/${dateObj.year}/${dateObj.month}/${dateObj.day}`);
+                    }}
+                >
+                    Cancel
+                </button>
                 <button className="mt fc" onClick={submit}>Submit</button>
             </div>
         </div>

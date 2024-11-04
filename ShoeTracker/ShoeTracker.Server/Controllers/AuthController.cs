@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Firebase.Auth;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,25 @@ namespace ShoeTracker.Server.Controllers
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignInAsync([FromBody] SignInDto dto)
         {
-            string? userId = await _authService.SignInUserAsync(dto.Email, dto.Password);
+            string? userId = null;
+            try
+            {
+                userId = await _authService.SignInUserAsync(dto.Email, dto.Password);
+            }
+            catch (FirebaseAuthHttpException ex)
+            {
+                switch (ex.Reason)
+                {
+                    case AuthErrorReason.InvalidEmailAddress:
+                    case AuthErrorReason.MissingEmail:
+                        return BadRequest("Please enter a valid email");
+                    case AuthErrorReason.MissingPassword:
+                        return BadRequest("Please enter a password");
+                    case AuthErrorReason.Unknown:
+                        return StatusCode((int)HttpStatusCode.Unauthorized, "Invalid email or password");
+                }
+            }
+            
             if (userId is null)
             {
                 return StatusCode((int)HttpStatusCode.Unauthorized);
@@ -69,8 +88,24 @@ namespace ShoeTracker.Server.Controllers
             }
 
             // TODO: make sure email doesn't exist yet
-            string newUserId = await _authService.RegisterUserAsync(dto.Email, dto.Password);
-            await _userService.CreateUserAsync(newUserId, dto);
+            try
+            {
+                string newUserId = await _authService.RegisterUserAsync(dto.Email, dto.Password);
+                await _userService.CreateUserAsync(newUserId, dto);
+            }
+            catch (FirebaseAuthHttpException ex)
+            {
+                switch (ex.Reason)
+                {
+                    case AuthErrorReason.InvalidEmailAddress:
+                    case AuthErrorReason.MissingEmail:
+                        return BadRequest("Please enter a valid email");
+                    case AuthErrorReason.MissingPassword:
+                        return BadRequest("Please enter a password");
+                    case AuthErrorReason.Unknown:
+                        return StatusCode((int)HttpStatusCode.Unauthorized, "Invalid email or password");
+                }
+            }
 
             return Ok();
         }
